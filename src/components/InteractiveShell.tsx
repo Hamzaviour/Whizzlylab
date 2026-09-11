@@ -63,16 +63,16 @@ export default function InteractiveShell({
       {/* Background Sparkles: Active across all sections and pages, excluded from home hero */}
       <div
         aria-hidden="true"
-        className={`pointer-events-none fixed inset-0 z-0 transition-opacity duration-700 ${
+        className={`pointer-events-none fixed inset-0 z-[1] transition-opacity duration-700 ${
           showSparkles ? "opacity-100" : "opacity-0"
         }`}
       >
         <SparklesCore
           id="global-sparkles-canvas"
-          minSize={0.5}
-          maxSize={1.8}
-          speed={0.4}
-          particleDensity={85}
+          minSize={0.6}
+          maxSize={2.4}
+          speed={0.65}
+          particleDensity={400}
           particleColor="#FFFFFF"
           particleColor2="#00F0FF"
           particleColor3="#A855F7"
@@ -93,7 +93,7 @@ export default function InteractiveShell({
           }}
         />
       )}
-      <div className="relative z-10">{children}</div>
+      <div className="relative z-[2]">{children}</div>
       <StickyMobileCTA />
       <WhizzlyChatbot />
       <CookieConsent />

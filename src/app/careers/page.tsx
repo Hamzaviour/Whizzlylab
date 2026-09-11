@@ -64,7 +64,7 @@ export default function CareersPage() {
   }));
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[hsl(260_87%_3%)] text-foreground">
+    <main className="min-h-screen overflow-x-hidden bg-transparent text-foreground">
       {/* Search Engine Structured Data */}
       {jobPostingSchemas.map((schema, idx) => (
         <script

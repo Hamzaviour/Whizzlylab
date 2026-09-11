@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ExternalLink, GitBranch, Sparkles, ArrowUpRight } from "lucide-react";
@@ -165,7 +165,7 @@ export default function WorkPage() {
   };
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[hsl(260_87%_3%)] text-foreground">
+    <main className="min-h-screen overflow-x-hidden bg-transparent text-foreground">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}

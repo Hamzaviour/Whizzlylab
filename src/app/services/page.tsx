@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function ServicesIndexPage() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[hsl(260_87%_3%)] text-foreground">
+    <main className="min-h-screen overflow-x-hidden bg-transparent text-foreground">
       <PageNavbar />
 
       <section className="relative px-4 py-12 sm:px-8 sm:py-24">

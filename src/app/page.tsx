@@ -84,7 +84,7 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[hsl(260_87%_3%)] text-foreground">
+    <main className="relative min-h-screen overflow-x-hidden bg-transparent text-foreground">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}

@@ -5,7 +5,7 @@ import CtaFooter from "@/components/CtaFooter";
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[hsl(260_87%_3%)] text-foreground flex flex-col justify-between">
+    <main className="min-h-screen overflow-x-hidden bg-transparent text-foreground flex flex-col justify-between">
       <PageNavbar />
 
       <section className="relative flex flex-1 flex-col items-center justify-center px-4 py-20 text-center sm:py-28">

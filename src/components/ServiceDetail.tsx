@@ -10,7 +10,7 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
   const others = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 3);
 
   return (
-    <main className="min-h-screen bg-[hsl(260_87%_3%)] text-foreground">
+    <main className="min-h-screen bg-transparent text-foreground">
       <PageNavbar />
 
       <section className="relative overflow-hidden px-5 pt-10 pb-20 sm:px-8 sm:pt-14">

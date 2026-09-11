@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[hsl(260_87%_3%)] text-foreground">
+    <main className="min-h-screen overflow-x-hidden bg-transparent text-foreground">
       <PageNavbar />
       <PricingContent />
       <CtaFooter />

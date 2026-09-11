@@ -20,37 +20,46 @@ export default function SparklesCore({
   id = "sparkles-canvas",
   className = "",
   background = "transparent",
-  minSize = 0.5,
-  maxSize = 1.8,
-  speed = 0.5,
+  minSize = 0.6,
+  maxSize = 2.2,
+  speed = 0.6,
   particleColor = "#FFFFFF",
   particleColor2 = "#00F0FF",
   particleColor3 = "#A855F7",
-  particleDensity = 120,
+  particleDensity = 350,
   enableTwinkle = true,
 }: SparklesProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [dimensions, setDimensions] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
+  const [dimensions, setDimensions] = useState<{ w: number; h: number }>(() => ({
+    w: typeof window !== "undefined" ? window.innerWidth : 1440,
+    h: typeof window !== "undefined" ? window.innerHeight : 900,
+  }));
 
   useEffect(() => {
-    if (!containerRef.current) return;
-
     const updateSize = () => {
       if (containerRef.current) {
-        const { offsetWidth, offsetHeight } = containerRef.current;
-        setDimensions({ w: offsetWidth, h: offsetHeight });
+        const w = containerRef.current.offsetWidth || window.innerWidth;
+        const h = containerRef.current.offsetHeight || window.innerHeight;
+        setDimensions({ w, h });
+      } else if (typeof window !== "undefined") {
+        setDimensions({ w: window.innerWidth, h: window.innerHeight });
       }
     };
 
     updateSize();
 
-    const resizeObserver = new ResizeObserver(() => {
-      updateSize();
-    });
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined" && containerRef.current) {
+      resizeObserver = new ResizeObserver(() => updateSize());
+      resizeObserver.observe(containerRef.current);
+    }
 
-    resizeObserver.observe(containerRef.current);
-    return () => resizeObserver.disconnect();
+    window.addEventListener("resize", updateSize);
+    return () => {
+      window.removeEventListener("resize", updateSize);
+      if (resizeObserver) resizeObserver.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -65,10 +74,11 @@ export default function SparklesCore({
     canvas.height = dimensions.h * dpr;
     ctx.scale(dpr, dpr);
 
-    const colors = [particleColor, particleColor2, particleColor3];
+    const colors = [particleColor, particleColor2, particleColor3, "#38BDF8", "#E0AEFF"];
+    // Scale count gracefully: between 150 and 550 particles for a rich starry field
     const particleCount = Math.min(
-      280,
-      Math.max(40, Math.floor(((dimensions.w * dimensions.h) / 10000) * (particleDensity / 100)))
+      550,
+      Math.max(140, Math.floor(((dimensions.w * dimensions.h) / 10000) * (particleDensity / 100)))
     );
 
     let animationFrameId: number;
@@ -89,11 +99,11 @@ export default function SparklesCore({
         this.y = Math.random() * dimensions.h;
         this.size = Math.random() * (maxSize - minSize) + minSize;
         this.speedX = (Math.random() - 0.5) * speed * 0.4;
-        this.speedY = (Math.random() * 0.5 + 0.3) * speed;
+        this.speedY = (Math.random() * 0.6 + 0.3) * speed;
         this.opacity = Math.random() * 0.8 + 0.2;
         this.color = colors[Math.floor(Math.random() * colors.length)];
         this.twinklePhase = Math.random() * Math.PI * 2;
-        this.twinkleSpeed = 0.02 + Math.random() * 0.035;
+        this.twinkleSpeed = 0.02 + Math.random() * 0.04;
       }
 
       update() {
@@ -126,11 +136,20 @@ export default function SparklesCore({
 
       draw() {
         if (!ctx) return;
+        ctx.save();
         ctx.fillStyle = this.color;
         ctx.globalAlpha = this.opacity;
+
+        // Glowing halo on medium-to-large stars
+        if (this.size > 1.2) {
+          ctx.shadowBlur = 7;
+          ctx.shadowColor = this.color;
+        }
+
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
+        ctx.restore();
       }
     }
 
