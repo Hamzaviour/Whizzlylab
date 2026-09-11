@@ -193,7 +193,7 @@ export default function AboutPage() {
                 <ArrowUpRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/#work"
+                href="/work"
                 className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3.5 text-sm font-medium text-white transition hover:border-white/40 hover:bg-white/10"
               >
                 Explore Shipped Work
@@ -260,8 +260,8 @@ export default function AboutPage() {
                   Our portfolio includes mission-critical architectures such as{" "}
                   <strong className="text-white">EchoSense</strong> (real-time crisis NLP streaming on Kafka &amp; Spark),{" "}
                   <strong className="text-white">CureCMS</strong> (HIPAA-conscious healthcare revenue cycle automation),{" "}
-                  <strong className="text-white">COMPLYSECOPS</strong> (AI compliance &amp; cybersecurity), and{" "}
-                  <strong className="text-white">OXO Packaging</strong> (high-volume e-commerce).
+                  <strong className="text-white">XecureAI</strong> (AI governance &amp; cybersecurity platform), and{" "}
+                  <strong className="text-white">Al-Deewan Collection</strong> (fashion e-commerce), plus more.
                 </p>
               </div>
             </div>

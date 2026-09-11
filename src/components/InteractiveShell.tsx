@@ -3,14 +3,13 @@
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import ScrollProgress from "./ScrollProgress";
-import SplashScreen, { SPLASH_DONE_EVENT } from "./SplashScreen";
 import StickyMobileCTA from "./StickyMobileCTA";
 import CookieConsent from "./CookieConsent";
 import Analytics from "./Analytics";
 import WhizzlyChatbot from "./chat/WhizzlyChatbot";
 
 /**
- * Site-wide: splash handoff, scroll progress, soft cursor glow (desktop).
+ * Site-wide: scroll progress, soft cursor glow (desktop).
  */
 export default function InteractiveShell({
   children,
@@ -18,25 +17,10 @@ export default function InteractiveShell({
   children: React.ReactNode;
 }) {
   const [enabled, setEnabled] = useState(false);
-  const [contentReady, setContentReady] = useState(false);
   const mx = useMotionValue(-200);
   const my = useMotionValue(-200);
   const x = useSpring(mx, { stiffness: 120, damping: 28 });
   const y = useSpring(my, { stiffness: 120, damping: 28 });
-
-  useEffect(() => {
-    try {
-      if (sessionStorage.getItem("whizzly-splash-seen")) {
-        setContentReady(true);
-      }
-    } catch {
-      /* wait for splash event */
-    }
-
-    const onDone = () => setContentReady(true);
-    window.addEventListener(SPLASH_DONE_EVENT, onDone);
-    return () => window.removeEventListener(SPLASH_DONE_EVENT, onDone);
-  }, []);
 
   useEffect(() => {
     const fine = window.matchMedia("(pointer: fine)").matches;
@@ -54,7 +38,6 @@ export default function InteractiveShell({
 
   return (
     <>
-      <SplashScreen />
       <ScrollProgress />
       {enabled && (
         <motion.div
@@ -68,17 +51,7 @@ export default function InteractiveShell({
           }}
         />
       )}
-      <motion.div
-        initial={false}
-        animate={
-          contentReady
-            ? { opacity: 1, y: 0, filter: "blur(0px)" }
-            : { opacity: 0.35, y: 18, filter: "blur(6px)" }
-        }
-        transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
-      >
-        {children}
-      </motion.div>
+      {children}
       <StickyMobileCTA />
       <WhizzlyChatbot />
       <CookieConsent />

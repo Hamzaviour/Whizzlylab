@@ -140,7 +140,9 @@ export default function CtaFooter() {
                 <li><Link href="/" className="hover:text-white transition">Home</Link></li>
                 <li><Link href="/about" className="hover:text-white transition">About</Link></li>
                 <li><Link href="/services" className="hover:text-white transition">Services</Link></li>
+                <li><Link href="/work" className="hover:text-white transition">Work</Link></li>
                 <li><Link href="/pricing" className="hover:text-white transition">Pricing</Link></li>
+                <li><Link href="/careers" className="hover:text-white transition">Careers</Link></li>
                 <li><Link href="/contact" className="hover:text-white transition">Contact</Link></li>
               </ul>
             </div>

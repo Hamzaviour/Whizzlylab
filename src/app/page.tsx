@@ -3,7 +3,6 @@ import HeroSection from "@/components/HeroSection";
 import { BASE_URL, ogImage } from "@/lib/seo";
 import FeatureCardsSection from "@/components/FeatureCardsSection";
 import ServiceCarousel3D from "@/components/ServiceCarousel3D";
-import CaseStudies from "@/components/CaseStudies";
 import BenefitsSection from "@/components/BenefitsSection";
 import CtaFooter from "@/components/CtaFooter";
 import ThreeNeuralField from "@/components/ThreeNeuralField";
@@ -202,8 +201,6 @@ export default function Home() {
 
         <div className="relative z-10">
           <FeatureCardsSection />
-
-          <CaseStudies />
 
           <ServiceCarousel3D />
 
