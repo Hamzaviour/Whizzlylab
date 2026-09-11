@@ -61,31 +61,12 @@ export default function ContactCTA() {
               <div className="mt-8 flex flex-wrap gap-3">
                 <motion.a
                   whileHover={{ y: -3, scale: 1.03 }}
-                  href="https://github.com/Hamzaviour"
+                  href="https://www.linkedin.com/company/whizzly-lab"
                   target="_blank"
                   rel="noreferrer"
                   className="glass inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm text-white transition hover:border-[var(--cyan)]/40"
                 >
-                  <GitHubIcon className="h-4 w-4" />
-                  GitHub
-                </motion.a>
-                <motion.a
-                  whileHover={{ y: -3, scale: 1.03 }}
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="glass inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm text-emerald-300 transition hover:border-emerald-400/40"
-                >
-                  WhatsApp
-                </motion.a>
-                <motion.a
-                  whileHover={{ y: -3, scale: 1.03 }}
-                  href="https://hamzayounas.netlify.app/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="glass inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm text-white transition hover:border-[var(--cyan)]/40"
-                >
-                  Portfolio
+                  LinkedIn
                 </motion.a>
               </div>
 

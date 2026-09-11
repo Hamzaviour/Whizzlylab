@@ -1,5 +1,5 @@
 export const COMPANY_EMAIL = "whizzlylab@gmail.com";
-export const WHATSAPP_NUMBER = "923039969903";
+export const WHATSAPP_NUMBER = "923097404009";
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 export const WEB3FORMS_KEY = "069cf7c6-8dd2-4689-8adb-d428909f12b7";
 

@@ -151,7 +151,7 @@ export default async function TwitterImage() {
               display: "flex",
             }}
           >
-            RAG agents, real-time Kafka data streaming, machine learning, and full-stack software built by lead AI engineer Hamza Younas.
+            RAG agents, real-time Kafka data streaming, machine learning, and full-stack software engineered by Whizzly Lab's elite engineering team.
           </p>
         </div>
 

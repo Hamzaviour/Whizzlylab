@@ -29,7 +29,7 @@ export default function Footer() {
         <div className="flex items-center gap-4">
           <motion.a
             whileHover={{ y: -3, scale: 1.08 }}
-            href="https://github.com/Hamzaviour"
+            href="https://github.com/WhizzlyLab"
             target="_blank"
             rel="noreferrer"
             aria-label="GitHub"
@@ -39,22 +39,13 @@ export default function Footer() {
           </motion.a>
           <motion.a
             whileHover={{ y: -3, scale: 1.08 }}
-            href="https://www.linkedin.com/in/hamza-younas"
+            href="https://www.linkedin.com/company/whizzly-lab"
             target="_blank"
             rel="noreferrer"
             aria-label="LinkedIn"
             className="rounded-full border border-white/10 p-2.5 text-white/70 transition hover:border-[var(--cyan)]/40 hover:text-[var(--cyan)]"
           >
             <LinkedInIcon className="h-4 w-4" />
-          </motion.a>
-          <motion.a
-            whileHover={{ y: -3, scale: 1.05 }}
-            href="https://hamzavelous-echosense-ai.hf.space/login"
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full border border-white/10 px-3 py-2 text-xs text-white/70 transition hover:border-[var(--cyan)]/40 hover:text-[var(--cyan)]"
-          >
-            HF Spaces
           </motion.a>
         </div>
 

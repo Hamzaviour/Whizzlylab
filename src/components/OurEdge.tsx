@@ -47,9 +47,7 @@ export default function OurEdge() {
           </h2>
           <p className="mt-5 text-base leading-relaxed text-[var(--text-secondary)] sm:text-lg">
             Whizzly Lab bridges polished product experience with heavy-duty backend
-            architecture. Led by AI engineer{" "}
-            <strong className="font-medium text-[var(--text-primary)]">Hamza Younas</strong>, we
-            engineer intelligent, end-to-end systems — from distributed data pipelines
+            architecture. We engineer intelligent, end-to-end systems — from distributed data pipelines
             to production-grade RAG agents — that people actually rely on.
           </p>
           <p className="mt-4 text-[var(--text-secondary)]">

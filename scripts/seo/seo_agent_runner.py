@@ -45,7 +45,7 @@ TARGET_KEYWORDS = [
     "RAG Systems",
     "Kafka Data Pipelines",
     "Next.js Development",
-    "Hamza Younas",
+    "Whizzly Lab Team",
     "Whizzly Lab",
     "Autonomous Agents",
     "Data Engineering",

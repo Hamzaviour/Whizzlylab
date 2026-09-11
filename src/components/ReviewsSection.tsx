@@ -18,7 +18,7 @@ const reviews = [
     location: "London, UK",
     rating: 5,
     project: "RAG & HIPAA Medical AI",
-    text: "Their RAG implementation for our medical documentation system cut retrieval time by 70%. Hamza and team understood HIPAA requirements from day one. Rare to find that depth in an engineering team.",
+    text: "Their RAG implementation for our medical documentation system cut retrieval time by 70%. The team understood HIPAA requirements from day one. Rare to find that depth in an engineering team.",
   },
   {
     name: "Ayesha Rahman",

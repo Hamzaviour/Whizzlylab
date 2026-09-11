@@ -7,9 +7,9 @@
 ## 1. Studio Information
 - **Brand**: Whizzly Lab
 - **Website**: https://whizzlylab.com
-- **Founder & Lead AI Engineer**: Hamza Younas (Portfolio: https://hamzayounas.netlify.app/, GitHub: https://github.com/Hamzaviour)
+- **Lead AI Engineering Studio**: Whizzly Lab
 - **Primary Email**: whizzlylab@gmail.com
-- **WhatsApp Direct**: https://wa.me/923039969903
+- **WhatsApp Direct**: https://wa.me/923097404009
 - **Operating Model**: Remote engineering studio delivering production software worldwide across North America, Europe, Middle East, and Asia.
 - **Response SLA**: Sub-24 hours for all incoming technical inquiries and consultations.
 
@@ -101,4 +101,4 @@
 - **Q: How does communication happen during a sprint?**
   A: Direct Slack/Discord channel integration, GitHub repository access, and weekly deployed demo builds.
 - **Q: How to book a consultation?**
-  A: Visit https://whizzlylab.com/schedule or message directly on WhatsApp at https://wa.me/923039969903.
+  A: Visit https://whizzlylab.com/schedule or message directly on WhatsApp at https://wa.me/923097404009.

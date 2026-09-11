@@ -95,7 +95,7 @@ export function retrieveKnowledge(
     }
 
     if (
-      (queryLower.includes("hamza") || queryLower.includes("founder") || queryLower.includes("who built") || queryLower.includes("experience")) &&
+      (queryLower.includes("team") || queryLower.includes("founder") || queryLower.includes("who built") || queryLower.includes("experience")) &&
       chunk.id === "founder-profile"
     ) {
       score += 15.0;
@@ -149,7 +149,7 @@ ${r.chunk.content}`
     .join("\n\n");
 
   return `You are Whizzly Lab's Senior AI Solutions Architect & Technical Consultant.
-Whizzly Lab is an elite AI engineering studio founded by Lead AI Engineer Hamza Younas.
+Whizzly Lab is an elite AI engineering studio delivering production-grade AI systems.
 
 ### YOUR GOAL:
 Provide direct, high-caliber, technical answers to client inquiries about Whizzly Lab's services, real-time data pipelines (Kafka/Spark), RAG systems, machine learning, web engineering, pricing, and project workflows.
@@ -159,7 +159,7 @@ Provide direct, high-caliber, technical answers to client inquiries about Whizzl
 2. **Be Technically Precise**: Use exact technical terminology (e.g. multi-stage RAG, Apache Kafka broker partitions, PySpark streaming, Qdrant vector indexing, Next.js App Router, Docker).
 3. **Format Clearly with Markdown**: Use bullet points, bold text for key terms, code blocks when illustrating tech stacks, and source links.
 4. **Currency Handling**: The visitor's preferred currency is ${currency}. Provide figures in ${currency} (or both USD and PKR if estimating).
-5. **Call to Action (CTA)**: When discussing projects, timelines, or pricing, naturally encourage the visitor to schedule a 1:1 technical call at \`/schedule\` or message Hamza on WhatsApp at \`https://wa.me/923039969903\`.
+5. **Call to Action (CTA)**: When discussing projects, timelines, or pricing, naturally encourage the visitor to schedule a 1:1 technical call at \`/schedule\` or message us on WhatsApp at \`https://wa.me/923097404009\`.
 6. **Tone**: Confident, elite, professional, responsive, and consultative.
 
 ### RETRIEVED GROUNDING CONTEXT:
@@ -230,7 +230,7 @@ Would you like a custom architecture breakdown or fixed-price quote for your pro
       "How do milestone payments work?",
     ];
     actionCta = {
-      text: "Get an exact scope & timeline estimate from Hamza:",
+      text: "Get an exact scope & timeline estimate from our team:",
       url: "/schedule",
       label: "📅 Schedule Discovery Call",
     };
@@ -304,10 +304,10 @@ Check out our case study on **EchoSense AI** (our high-throughput streaming NLP 
 We operate globally with a **sub-24 hour response SLA**:
 
 1. **Book a 1:1 Technical Call**:
-   Schedule directly on our calendar: [**whizzlylab.com/schedule**](/schedule) (15-30 min scoping session with lead AI engineer Hamza Younas).
+   Schedule directly on our calendar: [**whizzlylab.com/schedule**](/schedule) (15-30 min scoping session with our lead AI engineers).
 
 2. **Direct WhatsApp Chat**:
-   Message Hamza on WhatsApp: [**+92 303 9969903**](https://wa.me/923039969903) for rapid responses.
+   Message us on WhatsApp: [**+92 309 7404009**](https://wa.me/923097404009) for rapid responses.
 
 3. **Email Inquiry**:
    Send your project brief or RFP to [**whizzlylab@gmail.com**](mailto:whizzlylab@gmail.com).
@@ -343,7 +343,7 @@ How can we assist with your product or engineering roadmap today?`;
     suggestedQuestions = [
       "What services does Whizzly Lab provide?",
       "What is your project pricing in USD / PKR?",
-      "How can I book a discovery call with Hamza?",
+      "How can I book a discovery call with Whizzly Lab?",
       "Can you explain your RAG & Kafka pipelines?",
     ];
   }

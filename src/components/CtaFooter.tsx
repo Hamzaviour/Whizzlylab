@@ -164,8 +164,8 @@ export default function CtaFooter() {
                 <li><a href="https://www.linkedin.com/company/whizzly-lab" target="_blank" rel="noreferrer" className="hover:text-white transition">LinkedIn</a></li>
                 <li><a href="https://www.instagram.com/whizzlylab" target="_blank" rel="noreferrer" className="hover:text-white transition">Instagram</a></li>
                 <li><a href="https://www.facebook.com/profile.php?id=61592686831558" target="_blank" rel="noreferrer" className="hover:text-white transition">Facebook</a></li>
-                <li><a href="https://github.com/Hamzaviour" target="_blank" rel="noreferrer" className="hover:text-white transition">GitHub</a></li>
-                <li><a href="https://hamzavelous-echosense-ai.hf.space/login" target="_blank" rel="noreferrer" className="hover:text-white transition">Hugging Face</a></li>
+                <li><a href="https://github.com/WhizzlyLab" target="_blank" rel="noreferrer" className="hover:text-white transition">GitHub</a></li>
+
                 <li><Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link></li>
               </ul>
             </div>

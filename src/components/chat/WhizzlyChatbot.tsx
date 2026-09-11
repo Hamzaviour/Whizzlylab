@@ -47,7 +47,7 @@ const STARTER_PROMPTS = [
   "⚡ What AI & RAG systems do you build?",
   "💰 What is your project pricing (USD / PKR)?",
   "🌐 How does your Kafka & Spark data pipeline work?",
-  "📅 How do I schedule a technical call with Hamza?",
+  "📅 How do I schedule a technical call with Whizzly Lab?",
 ];
 
 export default function WhizzlyChatbot() {
@@ -126,7 +126,7 @@ export default function WhizzlyChatbot() {
         id: `assistant-${Date.now()}`,
         role: "assistant",
         content:
-          "I apologize, but I'm currently unable to reach the neural gateway. You can schedule a call directly with Hamza at **/schedule** or WhatsApp at **+92 303 9969903**.",
+          "I apologize, but I'm currently unable to reach the neural gateway. You can schedule a call directly at **/schedule** or WhatsApp at **+92 309 7404009**.",
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         actionCta: {
           text: "Schedule directly with our Lead AI Engineer:",
@@ -544,7 +544,7 @@ export default function WhizzlyChatbot() {
                   </Link>
                   <span>•</span>
                   <a
-                    href="https://wa.me/923039969903"
+                    href="https://wa.me/923097404009"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-emerald-300 transition-colors flex items-center gap-1"

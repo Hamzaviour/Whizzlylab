@@ -70,21 +70,12 @@ export default function ContactSection() {
               </p>
               <p>
                 <a
-                  href="https://github.com/Hamzaviour"
+                  href="https://www.linkedin.com/company/whizzly-lab"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-foreground"
                 >
-                  GitHub
-                </a>
-                {" · "}
-                <a
-                  href="https://hamzavelous-echosense-ai.hf.space/login"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-foreground"
-                >
-                  Hugging Face
+                  LinkedIn
                 </a>
               </p>
             </div>

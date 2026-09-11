@@ -16,14 +16,11 @@ export default function SiteFooter() {
           />
         </div>
         <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-foreground/45">
-          <a href="https://hamzayounas.netlify.app/" target="_blank" rel="noreferrer" className="hover:text-foreground">
-            Portfolio
+          <a href="https://www.linkedin.com/company/whizzly-lab" target="_blank" rel="noreferrer" className="hover:text-foreground">
+            LinkedIn
           </a>
-          <a href="https://github.com/Hamzaviour" target="_blank" rel="noreferrer" className="hover:text-foreground">
-            GitHub
-          </a>
-          <a href="https://hamzavelous-echosense-ai.hf.space/login" target="_blank" rel="noreferrer" className="hover:text-foreground">
-            HF Spaces
+          <a href="https://www.instagram.com/whizzlylab" target="_blank" rel="noreferrer" className="hover:text-foreground">
+            Instagram
           </a>
           <span>© {new Date().getFullYear()} Whizzly Lab</span>
         </div>

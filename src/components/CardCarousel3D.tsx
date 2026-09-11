@@ -27,7 +27,7 @@ const CARD_COLORS = [
 
 // Different card details for each of the cards
 const CARD_DETAILS = [
-  { number: '4232 8908 1121 4892', name: 'HAMZA YOUNAS', cvv: '382' },
+  { number: '4232 8908 1121 4892', name: 'WHIZZLY LAB CLIENT', cvv: '382' },
   { number: '4154 7831 9904 5124', name: 'WHIZZLY LAB', cvv: '109' },
   { number: '5457 4120 7733 9035', name: 'ECHOSENSE AI', cvv: '764' },
   { number: '4441 5567 1223 2468', name: 'CURECMS RCM', cvv: '491' },

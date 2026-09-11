@@ -1,14 +1,11 @@
 # Whizzly Lab
 
-> Whizzly Lab is an AI, machine learning, and full-stack engineering studio founded by AI engineer Hamza Younas. We build production-grade intelligent systems, real-time data pipelines, and scalable web applications for organizations worldwide.
+> Whizzly Lab is an AI, machine learning, and full-stack engineering studio. We build production-grade intelligent systems, real-time data pipelines, and scalable web applications for organizations worldwide.
 
 ## Overview
 - **Domain**: https://whizzlylab.com
-- **Founder**: Hamza Younas (https://hamzayounas.netlify.app/)
 - **Contact Email**: whizzlylab@gmail.com
-- **WhatsApp**: https://wa.me/923039969903
-- **GitHub**: https://github.com/Hamzaviour
-- **Hugging Face**: https://hamzavelous-echosense-ai.hf.space/login
+- **WhatsApp**: https://wa.me/923097404009
 - **Delivery**: Worldwide remote delivery across US, UK, UAE, EU, and Asian time zones with a sub-24h response SLA.
 
 ## Core Capabilities

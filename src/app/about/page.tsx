@@ -22,14 +22,14 @@ import { BASE_URL, ogImage } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "About — Whizzly Lab | AI, ML & Full-Stack Engineering Studio",
   description:
-    "Whizzly Lab is an AI, machine learning, and full-stack engineering studio founded by Hamza Younas. We build intelligent systems, real-time data pipelines, and production software for global clients.",
+    "Whizzly Lab is an AI, machine learning, and full-stack engineering studio. We build intelligent systems, real-time data pipelines, and production software for global clients.",
   alternates: {
     canonical: `${BASE_URL}/about`,
   },
   openGraph: {
     title: "About — Whizzly Lab | AI, ML & Full-Stack Engineering Studio",
     description:
-      "Whizzly Lab is an AI, machine learning, and full-stack engineering studio founded by Hamza Younas. Building intelligent systems that ship.",
+      "Whizzly Lab is an AI, machine learning, and full-stack engineering studio. Building intelligent systems that ship.",
     url: `${BASE_URL}/about`,
     images: [
       {
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "About — Whizzly Lab | AI Engineering Studio",
-    description: "AI, ML & full-stack engineering studio founded by Hamza Younas.",
+    description: "AI, ML & full-stack engineering studio building intelligent systems that ship.",
     images: [ogImage("/og-image.png")],
   },
 };
@@ -135,7 +135,7 @@ export default function AboutPage() {
             url: `${BASE_URL}/about`,
             name: "About Whizzly Lab — AI, ML & Full-Stack Engineering Studio",
             description:
-              "Whizzly Lab is an AI, machine learning, and full-stack engineering studio founded by Hamza Younas. We engineer intelligent software systems that ship and scale.",
+              "Whizzly Lab is an AI, machine learning, and full-stack engineering studio. We engineer intelligent software systems that ship and scale.",
             isPartOf: {
               "@id": `${BASE_URL}/#website`,
             },
@@ -254,16 +254,7 @@ export default function AboutPage() {
                   Built by engineers with a bias for shipping
                 </h2>
                 <p className="text-base leading-relaxed text-hero-sub/85">
-                  Founded by AI engineer{" "}
-                  <a
-                    href="https://hamzayounas.netlify.app/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-semibold text-white underline underline-offset-4 hover:text-cyan-300"
-                  >
-                    Hamza Younas
-                  </a>
-                  , Whizzly Lab brings together specialized full-stack developers, ML engineers, and systems architects who treat every project like a scalable product.
+                  Whizzly Lab brings together specialized full-stack developers, ML engineers, and systems architects who treat every project like a scalable product.
                 </p>
                 <p className="text-base leading-relaxed text-hero-sub/80">
                   Our portfolio includes mission-critical architectures such as{" "}
@@ -272,33 +263,6 @@ export default function AboutPage() {
                   <strong className="text-white">COMPLYSECOPS</strong> (AI compliance &amp; cybersecurity), and{" "}
                   <strong className="text-white">OXO Packaging</strong> (high-volume e-commerce).
                 </p>
-
-                <div className="flex flex-wrap items-center gap-3 pt-2">
-                  <a
-                    href="https://hamzayounas.netlify.app/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition hover:bg-white/10 hover:border-white/40"
-                  >
-                    Founder Portfolio <ExternalLink className="h-3.5 w-3.5 text-cyan-400" />
-                  </a>
-                  <a
-                    href="https://github.com/Hamzaviour"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition hover:bg-white/10 hover:border-white/40"
-                  >
-                    GitHub <ExternalLink className="h-3.5 w-3.5 text-cyan-400" />
-                  </a>
-                  <a
-                    href="https://hamzavelous-echosense-ai.hf.space/login"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-xs font-semibold text-white transition hover:bg-white/10 hover:border-white/40"
-                  >
-                    Hugging Face Space <ExternalLink className="h-3.5 w-3.5 text-cyan-400" />
-                  </a>
-                </div>
               </div>
             </div>
           </div>
@@ -425,16 +389,18 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="relative aspect-[3/2] overflow-hidden rounded-3xl border border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.6)] order-1 lg:order-2">
-              <Image
-                src="/team-photo.png"
-                alt="Whizzly Lab engineering team collaborating"
-                fill
-                className="object-cover"
-                sizes="(max-width:1024px) 100vw, 50vw"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[hsl(260_87%_3%)]/80 via-transparent to-transparent" />
+            <div className="relative aspect-[3/2] overflow-hidden rounded-3xl border border-white/15 shadow-[0_12px_40px_rgba(0,0,0,0.6)] order-1 lg:order-2 bg-gradient-to-br from-indigo-950/80 via-[#0d0520] to-cyan-950/60 flex items-center justify-center">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,rgba(99,102,241,0.18)_0%,transparent_70%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_70%,rgba(6,182,212,0.12)_0%,transparent_60%)]" />
+              <div className="relative z-10 flex flex-col items-center gap-4 p-8 text-center">
+                <div className="flex items-center gap-3">
+                  {["AI","ML","Cloud","Kafka","RAG"].map((tag) => (
+                    <span key={tag} className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold text-cyan-300">{tag}</span>
+                  ))}
+                </div>
+                <p className="text-2xl font-bold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>Global Engineering Collective</p>
+                <p className="text-sm text-hero-sub/70 max-w-xs">Specialized engineers across AI, ML, and full-stack — building systems that scale.</p>
+              </div>
               <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/10 bg-[#05010f]/80 p-3 backdrop-blur-md text-xs text-hero-sub/80 flex items-center justify-between">
                 <span>✦ Dedicated remote engineering teams</span>
                 <span className="text-cyan-300">Global Delivery</span>

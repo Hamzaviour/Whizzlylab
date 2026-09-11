@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ExternalLink, Sparkles } from "lucide-react";
+import { ExternalLink, GitBranch, Sparkles } from "lucide-react";
 import { TextRevealWords } from "./TextRevealOnScroll";
 import TiltCard from "./TiltCard";
 
@@ -17,6 +17,7 @@ const cases = [
     image:
       "https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80",
     live: "https://hamzavelous-echosense-ai.hf.space/login",
+    github: null,
   },
   {
     title: "CureCMS Solution",
@@ -28,28 +29,67 @@ const cases = [
     image:
       "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80",
     live: "https://curercmsolution.com/",
+    github: null,
   },
   {
-    title: "COMPLYSECOPS",
-    tag: "Cybersecurity · SaaS Platform",
-    outcome: "15+ Hours Saved Weekly",
+    title: "XecureAI",
+    tag: "Cybersecurity · AI Governance",
+    outcome: "Enterprise GRC & AI Safety",
     description:
-      "Cybersecurity and compliance consulting platform with an AI assistant, GRC services, penetration testing, and global SOC support.",
-    stack: ["Next.js", "AI Assistant", "Compliance GRC", "Cloud SOC"],
+      "XecureAI helps organizations manage cyber risk, achieve compliance, strengthen security controls, and adopt AI responsibly — a full-suite cybersecurity and AI governance platform.",
+    stack: ["Next.js", "AI Governance", "GRC", "Cybersecurity"],
     image:
       "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
-    live: "https://complysecops.netlify.app/",
+    live: "https://xecureai.com/",
+    github: "https://github.com/Hamzaviour/XecureAi",
   },
   {
-    title: "OXO Packaging",
-    tag: "E-Commerce · Custom Engine",
-    outcome: "500+ Daily Bulk Orders",
+    title: "Al-Deewan Collection",
+    tag: "E-Commerce · Fashion Retail",
+    outcome: "100% Original Pakistani Lawn",
     description:
-      "Custom packaging e-commerce with product categories, quote flows, and wholesale ordering built for international clients.",
-    stack: ["Full-Stack", "Custom Pricing Engine", "E-Commerce", "Stripe"],
+      "Full-stack e-commerce platform for authentic Pakistani designer fashion — featuring Khaadi, Sapphire, Asim Jofa & Nishat collections with seamless browsing and ordering.",
+    stack: ["Next.js", "E-Commerce", "Stripe", "Full-Stack"],
     image:
-      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
-    live: "https://umairpackaging.netlify.app/",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80",
+    live: "https://aldeewancollection.com/",
+    github: "https://github.com/Hamzaviour/Al-Deewan-Website",
+  },
+  {
+    title: "Marginalia",
+    tag: "Productivity · Annotation",
+    outcome: "Smart Annotation Engine",
+    description:
+      "A modern, intelligent annotation and note-taking platform designed for readers and researchers — enabling smart marginalia, highlights, and contextual knowledge management.",
+    stack: ["React", "TypeScript", "Vercel", "Full-Stack"],
+    image:
+      "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80",
+    live: "https://marginalia-ochre-nu.vercel.app/",
+    github: "https://github.com/Hamzaviour/Marginalia",
+  },
+  {
+    title: "Deewan POS System",
+    tag: "Retail · Point of Sale",
+    outcome: "Streamlined Retail Operations",
+    description:
+      "A robust Point-of-Sale system built for the Al-Deewan retail brand — featuring inventory management, sales tracking, customer records, and real-time reporting.",
+    stack: ["React", "Node.js", "PostgreSQL", "REST API"],
+    image:
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80",
+    live: null,
+    github: "https://github.com/Hamzaviour/Deewan-POS-System",
+  },
+  {
+    title: "Knowly",
+    tag: "EdTech · Knowledge Platform",
+    outcome: "Intelligent Learning Engine",
+    description:
+      "A next-generation knowledge and learning platform — enabling structured, AI-assisted knowledge discovery, course creation, and intelligent content recommendations.",
+    stack: ["Next.js", "AI", "TypeScript", "Full-Stack"],
+    image:
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
+    live: "https://knowly-blue.vercel.app/",
+    github: "https://github.com/Hamzaviour/Knowly",
   },
 ];
 
@@ -60,21 +100,21 @@ export default function CaseStudies() {
         <div className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="text-xs font-semibold tracking-[0.2em] text-cyan-400/80 uppercase">
-              Proven Production Builds
+              Case Studies
             </p>
             <TextRevealWords
               text="Shipped systems with measurable impact"
               className="font-general mt-3 text-3xl font-medium tracking-tight text-foreground sm:text-5xl"
             />
             <p className="mt-4 max-w-2xl text-hero-sub/80 text-base">
-              Explore deployed systems engineered by Whizzly Lab — spanning real-time NLP streaming, healthcare agents, cybersecurity, and enterprise e-commerce.
+              Explore deployed systems engineered by Whizzly Lab — spanning real-time NLP streaming, healthcare agents, cybersecurity, AI governance, e-commerce, and enterprise software.
             </p>
           </div>
 
           <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-2.5 backdrop-blur-md self-start md:self-auto">
             <Sparkles className="h-4 w-4 text-cyan-400" />
             <span className="text-xs font-medium text-hero-sub/90">
-              100% Live In Production
+              7 Production Builds
             </span>
           </div>
         </div>
@@ -120,8 +160,8 @@ export default function CaseStudies() {
                     </p>
                   </div>
 
-                  <div className="mt-6 border-t border-white/10 pt-4 flex items-center justify-between">
-                    <div className="flex flex-wrap gap-1.5">
+                  <div className="mt-6 border-t border-white/10 pt-4 flex items-center justify-between gap-3">
+                    <div className="flex flex-wrap gap-1.5 flex-1 min-w-0">
                       {item.stack.map((tech) => (
                         <span
                           key={tech}
@@ -132,14 +172,33 @@ export default function CaseStudies() {
                       ))}
                     </div>
 
-                    <a
-                      href={item.live}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-white transition hover:border-cyan-400/40 hover:bg-cyan-500/10 hover:text-cyan-300"
-                    >
-                      Live App <ExternalLink className="h-3.5 w-3.5" />
-                    </a>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {item.github && (
+                        <a
+                          href={item.github}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`${item.title} GitHub repository`}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white transition hover:border-white/30 hover:bg-white/10"
+                        >
+                          <GitBranch className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                      {item.live ? (
+                        <a
+                          href={item.live}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-white transition hover:border-cyan-400/40 hover:bg-cyan-500/10 hover:text-cyan-300"
+                        >
+                          Live App <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      ) : (
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-medium text-hero-sub/40">
+                          Internal Tool
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </motion.article>

@@ -7,7 +7,7 @@ import { BASE_URL, ogImage } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Pricing — Whizzly Lab | AI & Full-Stack Development Costs (PKR / USD)",
   description:
-    "Transparent pricing for AI systems, machine learning, data pipelines, web development, automation, and full-stack products. Prices in PKR and USD. Founded by Hamza Younas.",
+    "Transparent pricing for AI systems, machine learning, data pipelines, web development, automation, and full-stack products. Prices in PKR and USD.",
   alternates: {
     canonical: `${BASE_URL}/pricing`,
   },

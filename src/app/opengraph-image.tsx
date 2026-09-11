@@ -225,7 +225,7 @@ export default async function OpenGraphImage() {
             }}
           >
             <span style={{ fontSize: "16px", color: "#64748b", fontWeight: 500 }}>
-              whizzlylab.com • Founded by Hamza Younas
+              whizzlylab.com • Elite AI & Engineering Studio
             </span>
             <span style={{ fontSize: "16px", color: "#a855f7", fontWeight: 600 }}>
               Global Remote AI & Engineering

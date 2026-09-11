@@ -27,11 +27,11 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
   {
     id: "founder-profile",
     category: "company",
-    title: "Founder & Lead AI Engineer — Hamza Younas",
-    content: `Whizzly Lab was founded by Hamza Younas, a Lead AI & Software Engineer specializing in agentic RAG workflows, distributed Kafka event streaming, deep learning model deployment, and full-stack cloud architectures. Hamza personally oversees technical architecture, code quality, and delivery for every client engagement. Portfolio: https://hamzayounas.netlify.app/ | GitHub: https://github.com/Hamzaviour`,
-    keywords: ["hamza", "hamza younas", "founder", "lead engineer", "who founded", "ceo", "creator", "portfolio"],
+    title: "Lead AI Engineering Team — Whizzly Lab",
+    content: `Whizzly Lab is an elite AI & software engineering studio specializing in agentic RAG workflows, distributed Kafka event streaming, deep learning model deployment, and full-stack cloud architectures. The team personally oversees technical architecture, code quality, and delivery for every client engagement.`,
+    keywords: ["team", "engineers", "lead engineer", "who built", "who founded", "ceo", "creator"],
     url: "/about",
-    actionText: "Learn About Hamza Younas",
+    actionText: "Schedule a Technical Call",
   },
 
   // ── Services ────────────────────────────────────────────────────────────────
@@ -164,7 +164,7 @@ We offer milestone-based payment schedules (50% upfront, 50% upon delivery and s
     title: "Schedule a Consultation & Contact Whizzly Lab",
     content: `Ready to start a project or need architectural advice?
 - **Schedule Call**: Book directly on our calendar at https://whizzlylab.com/schedule (Cal.com integration, 15-30 min intro call).
-- **WhatsApp**: Message Hamza directly at https://wa.me/923039969903 (+92 303 9969903) for instant messaging.
+- **WhatsApp**: Message us directly at https://wa.me/923097404009 (+92 309 7404009) for instant messaging.
 - **Email**: Reach out at whizzlylab@gmail.com.
 - **Response Time**: We respond to all inquiries within 24 hours.`,
     keywords: ["contact", "schedule", "book a call", "meeting", "call", "whatsapp", "email", "hire", "consultation", "phone", "calendar"],

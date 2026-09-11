@@ -55,7 +55,7 @@ export default function Home() {
         "name": "What is Whizzly Lab (also known as Whizzly or WhizzlyLab)?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Whizzly Lab (also known as Whizzly or WhizzlyLab) is an AI studio and software engineering studio founded by AI engineer Hamza Younas. We specialize in building intelligent AI systems, custom machine learning models, real-time Kafka data pipelines, and production-grade full-stack software for startups and enterprises worldwide."
+          "text": "Whizzly Lab (also known as Whizzly or WhizzlyLab) is an AI studio and software engineering studio specializing in intelligent AI systems, custom machine learning models, real-time Kafka data pipelines, and production-grade full-stack software for startups and enterprises worldwide."
         }
       },
       {
@@ -79,7 +79,7 @@ export default function Home() {
         "name": "How can businesses hire Whizzly Lab for AI and software engineering projects?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Businesses can book a 20-30 minute strategy consultation directly via the Schedule page (https://whizzlylab.com/schedule) or connect directly on WhatsApp at https://wa.me/923039969903."
+          "text": "Businesses can book a 20-30 minute strategy consultation directly via the Schedule page (https://whizzlylab.com/schedule) or connect directly on WhatsApp at https://wa.me/923097404009."
         }
       }
     ]
@@ -225,16 +225,7 @@ export default function Home() {
                   className="font-general mt-3 text-3xl font-bold tracking-tight text-white sm:text-5xl"
                 />
                 <p className="mt-4 text-base leading-relaxed text-hero-sub/80 sm:text-lg">
-                  Hands-on engineering workshops on production RAG systems, autonomous agent workflows, distributed Kafka/Spark streams, Hugging Face deployments, and MLOps best practices — led by AI engineer{" "}
-                  <a
-                    href="https://hamzayounas.netlify.app/"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-white underline underline-offset-4 hover:text-cyan-300"
-                  >
-                    Hamza Younas
-                  </a>{" "}
-                  (shipping globally).
+                  Hands-on engineering workshops on production RAG systems, autonomous agent workflows, distributed Kafka/Spark streams, Hugging Face deployments, and MLOps best practices — delivered by Whizzly Lab's lead AI engineers (shipping globally).
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-2">
