@@ -1,124 +1,76 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Brain, Database, Workflow, ArrowUpRight, type LucideIcon } from "lucide-react";
+import { Brain, Database, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import TextRevealOnScroll, { TextRevealWords } from "./TextRevealOnScroll";
-import TiltCard from "./TiltCard";
+import type { ComponentType, SVGProps } from "react";
 
-type FeatureCardProps = {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  gradient: string;
-  accent: string;
-  tags: string[];
-  link: string;
-  delay: number;
-};
-
-function FeatureCard({
-  title,
-  description,
-  icon: Icon,
-  gradient,
-  accent,
-  tags,
-  link,
-  delay,
-}: FeatureCardProps) {
+// Connected nodes icon matching the 3rd card in the screenshot
+function ConnectedNodesIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.7, ease: "easeOut", delay }}
-      className="group relative flex w-full flex-col"
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
     >
-      <motion.div
-        className="pointer-events-none absolute inset-0 rounded-[32px] opacity-30 blur-2xl transition-opacity duration-500 group-hover:opacity-70"
-        style={{ background: gradient }}
-      />
-      <TiltCard className="relative z-10 h-full w-full">
-        <div className="liquid-glass relative flex h-full min-h-[360px] w-full flex-col justify-between rounded-[32px] border border-white/10 p-8 transition-all duration-300 group-hover:border-white/20 group-hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
-          <div>
-            <div className="flex items-center justify-between">
-              <div
-                className="flex h-14 w-14 items-center justify-center rounded-2xl border transition-transform duration-300 group-hover:scale-110"
-                style={{
-                  background: `${accent}15`,
-                  borderColor: `${accent}40`,
-                  color: accent,
-                }}
-              >
-                <Icon size={28} strokeWidth={2.2} />
-              </div>
-              <Link
-                href={link}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-hero-sub transition hover:border-white/30 hover:bg-white/15 hover:text-white"
-              >
-                <ArrowUpRight className="h-4 w-4" />
-              </Link>
-            </div>
-
-            <h3 className="mt-6 text-2xl font-semibold tracking-tight text-white" style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}>
-              {title}
-            </h3>
-            <p className="mt-3 text-sm leading-relaxed text-hero-sub/75">
-              {description}
-            </p>
-          </div>
-
-          <div className="mt-6 border-t border-white/10 pt-4">
-            <div className="flex flex-wrap gap-1.5">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] font-medium text-hero-sub/70"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </TiltCard>
-    </motion.div>
+      <rect x="3" y="3" width="7" height="7" rx="2.5" />
+      <rect x="14" y="14" width="7" height="7" rx="2.5" />
+      <path d="M6.5 10v3a2 2 0 0 0 2 2h3.5" />
+    </svg>
   );
 }
 
-const cards: FeatureCardProps[] = [
+interface CapabilityCard {
+  title: string;
+  description: string;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
+  borderGradient: string;
+  glowGradient: string;
+  link: string;
+  duration: number;
+  delay: number;
+}
+
+const capabilities: CapabilityCard[] = [
   {
     title: "AI & ML Systems",
     description:
-      "Custom neural models, multi-stage RAG agents, and Hugging Face deployments built for mission-critical production.",
+      "Custom models, RAG agents, and Hugging Face deployments built for production — not demos.",
     icon: Brain,
-    gradient: "linear-gradient(137deg, #FF3D77 0%, #FFB1CE 45%, #FF9D3C 100%)",
-    accent: "#FF3D77",
-    tags: ["RAG Agents", "Hugging Face", "LLM Fine-Tuning", "PyTorch"],
+    borderGradient: "linear-gradient(135deg, #FF2D78 0%, #FF6584 45%, #FFA048 100%)",
+    glowGradient:
+      "radial-gradient(circle at 50% 50%, rgba(255, 45, 120, 0.45) 0%, rgba(255, 160, 72, 0.25) 70%, transparent 100%)",
     link: "/services/ai",
+    duration: 5.5,
     delay: 0.1,
   },
   {
-    title: "Real-Time Data Pipelines",
+    title: "Data Pipelines",
     description:
-      "Kafka, Spark, and PySpark streaming architectures that convert high-velocity event streams into real-time business decisions.",
+      "Kafka, Spark, and PySpark streams that turn raw events into real-time intelligence.",
     icon: Database,
-    gradient: "linear-gradient(137deg, #00F0FF 0%, #7DD3FC 45%, #06B6D4 100%)",
-    accent: "#00F0FF",
-    tags: ["Apache Kafka", "Apache Spark", "Event Streaming", "MLOps"],
+    borderGradient: "linear-gradient(135deg, #38BDF8 0%, #00F0FF 45%, #0284C7 100%)",
+    glowGradient:
+      "radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.45) 0%, rgba(56, 189, 248, 0.25) 70%, transparent 100%)",
     link: "/services/data-pipelines",
+    duration: 7,
     delay: 0.2,
   },
   {
-    title: "Full-Stack Platforms",
+    title: "Full-Stack Products",
     description:
-      "Modern React, Next.js, and cloud-native applications with automated workflows, dashboards, and zero-downtime releases.",
-    icon: Workflow,
-    gradient: "linear-gradient(137deg, #6366f1 0%, #E0AEFF 45%, #F72585 100%)",
-    accent: "#a855f7",
-    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Microservices"],
+      "React, Next.js, and Flask platforms with automation, dashboards, and cloud delivery.",
+    icon: ConnectedNodesIcon,
+    borderGradient: "linear-gradient(135deg, #818CF8 0%, #A855F7 50%, #EC4899 100%)",
+    glowGradient:
+      "radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.45) 0%, rgba(236, 72, 153, 0.25) 70%, transparent 100%)",
     link: "/services/web-development",
+    duration: 6,
     delay: 0.3,
   },
 ];
@@ -129,6 +81,7 @@ export default function FeatureCardsSection() {
       id="features"
       className="relative flex flex-col items-center justify-center px-4 py-20 font-sans sm:px-8 sm:py-32"
     >
+      {/* Header Section */}
       <div className="mb-16 max-w-3xl text-center">
         <TextRevealOnScroll
           as="p"
@@ -145,10 +98,62 @@ export default function FeatureCardsSection() {
         </p>
       </div>
 
-      <div className="grid w-full max-w-6xl grid-cols-1 gap-6 sm:gap-8 md:grid-cols-3">
-        {cards.map((card) => (
-          <FeatureCard key={card.title} {...card} />
-        ))}
+      {/* 3 Glowing Gradient Border Cards matching Screenshot */}
+      <div className="grid w-full max-w-6xl grid-cols-1 gap-7 sm:gap-8 md:grid-cols-3">
+        {capabilities.map((card) => {
+          const Icon = card.icon;
+
+          return (
+            <motion.div
+              key={card.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: card.delay }}
+              whileHover={{ y: -6, scale: 1.015 }}
+              className="group relative flex h-full min-h-[380px] sm:min-h-[410px] w-full flex-col"
+            >
+              <Link href={card.link} className="flex h-full w-full flex-col">
+                {/* 1. Ambient Outer Glow Halo */}
+                <div
+                  className="pointer-events-none absolute -inset-1 rounded-[38px] opacity-35 blur-xl transition-all duration-500 group-hover:opacity-85 group-hover:blur-2xl"
+                  style={{ background: card.glowGradient }}
+                />
+
+                {/* 2. Glowing Animated Gradient Border Container */}
+                <div
+                  className="relative flex h-full w-full flex-col overflow-hidden rounded-[34px] sm:rounded-[36px] p-[3px] transition-all duration-300 group-hover:shadow-[0_0_35px_rgba(255,255,255,0.15)]"
+                  style={{
+                    background: card.borderGradient,
+                    backgroundSize: "220% 220%",
+                    animation: `borderGlowFlow ${card.duration}s ease-in-out infinite`,
+                  }}
+                >
+                  {/* 3. Deep Dark Card Body (matching screenshot interior) */}
+                  <div className="relative flex h-full w-full flex-col justify-between rounded-[31px] sm:rounded-[33px] bg-[#0c051a] p-8 sm:p-9 transition-colors duration-300 group-hover:bg-[#0f0722]">
+                    {/* Top: Icon */}
+                    <div className="flex items-center justify-between">
+                      <Icon className="h-9 w-9 text-white transition-transform duration-300 group-hover:scale-105" />
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <ArrowUpRight className="h-4 w-4 text-white" />
+                      </div>
+                    </div>
+
+                    {/* Bottom: Title & Description */}
+                    <div className="mt-16 sm:mt-20">
+                      <h3 className="text-2xl font-bold tracking-tight text-white sm:text-[26px]">
+                        {card.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-relaxed text-hero-sub/80 sm:text-[15px]">
+                        {card.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          );
+        })}
       </div>
     </section>
   );

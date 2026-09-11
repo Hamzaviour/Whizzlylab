@@ -6,7 +6,6 @@ import ServiceCarousel3D from "@/components/ServiceCarousel3D";
 import BenefitsSection from "@/components/BenefitsSection";
 import CtaFooter from "@/components/CtaFooter";
 import ThreeNeuralField from "@/components/ThreeNeuralField";
-import HomePricing from "@/components/HomePricing";
 import CursorParticles from "@/components/CursorParticles";
 import { TextRevealWords } from "@/components/TextRevealOnScroll";
 import ReviewsSection from "@/components/ReviewsSection";
@@ -205,8 +204,6 @@ export default function Home() {
           <ServiceCarousel3D />
 
           <BenefitsSection />
-
-          <HomePricing />
 
           <ReviewsSection />
 
