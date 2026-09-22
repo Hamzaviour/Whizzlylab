@@ -6,14 +6,14 @@ import { COMPANY_EMAIL } from "@/lib/contact";
 import { BASE_URL, ogImage } from "@/lib/seo";
 
 export const metadata = {
-  title: "Privacy Policy — Whizzly Lab | AI Engineering Studio",
+  title: "Privacy Policy",
   description:
     "Whizzly Lab privacy policy. Learn how we collect, safeguard, and respect your personal and technical project data.",
   alternates: {
     canonical: `${BASE_URL}/privacy`,
   },
   openGraph: {
-    title: "Privacy Policy — Whizzly Lab",
+    title: "Privacy Policy | Whizzly Lab",
     description: "Learn how Whizzly Lab protects and respects your privacy.",
     url: `${BASE_URL}/privacy`,
     images: [
@@ -27,7 +27,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Privacy Policy — Whizzly Lab",
+    title: "Privacy Policy | Whizzly Lab",
     description: "Whizzly Lab privacy and data protection standards.",
     images: [ogImage("/og-image.png")],
   },

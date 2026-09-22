@@ -3,12 +3,17 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import dynamic from "next/dynamic";
 import ScrollProgress from "./ScrollProgress";
 import StickyMobileCTA from "./StickyMobileCTA";
+import StickySocialBar from "./StickySocialBar";
 import CookieConsent from "./CookieConsent";
 import Analytics from "./Analytics";
-import WhizzlyChatbot from "./chat/WhizzlyChatbot";
 import SparklesCore from "./SparklesCore";
+
+const WhizzlyChatbot = dynamic(() => import("./chat/WhizzlyChatbot"), {
+  ssr: false,
+});
 
 /**
  * Site-wide: scroll progress, soft cursor glow (desktop), and ambient sparkles background.
@@ -95,6 +100,7 @@ export default function InteractiveShell({
       )}
       <div className="relative z-[2]">{children}</div>
       <StickyMobileCTA />
+      <StickySocialBar />
       <WhizzlyChatbot />
       <CookieConsent />
       <Analytics />

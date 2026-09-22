@@ -69,19 +69,23 @@ export default function SparklesCore({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+    const dpr = typeof window !== "undefined" ? Math.min(window.devicePixelRatio || 1, 1.5) : 1;
     canvas.width = dimensions.w * dpr;
     canvas.height = dimensions.h * dpr;
     ctx.scale(dpr, dpr);
 
     const colors = [particleColor, particleColor2, particleColor3, "#38BDF8", "#E0AEFF"];
-    // Scale count gracefully: between 150 and 550 particles for a rich starry field
+    const isSmallScreen = dimensions.w < 768;
+    // Scale count gracefully: between 60 on mobile and 220 on desktop for maximum smoothness
+    const maxAllowed = isSmallScreen ? 75 : 240;
+    const minAllowed = isSmallScreen ? 45 : 100;
     const particleCount = Math.min(
-      550,
-      Math.max(140, Math.floor(((dimensions.w * dimensions.h) / 10000) * (particleDensity / 100)))
+      maxAllowed,
+      Math.max(minAllowed, Math.floor(((dimensions.w * dimensions.h) / 12000) * (particleDensity / 100)))
     );
 
     let animationFrameId: number;
+    let isRunning = true;
 
     class Particle {
       x: number;
@@ -136,20 +140,21 @@ export default function SparklesCore({
 
       draw() {
         if (!ctx) return;
-        ctx.save();
         ctx.fillStyle = this.color;
-        ctx.globalAlpha = this.opacity;
 
-        // Glowing halo on medium-to-large stars
-        if (this.size > 1.2) {
-          ctx.shadowBlur = 7;
-          ctx.shadowColor = this.color;
+        // Outer glow without expensive shadowBlur
+        if (this.size > 1.3) {
+          ctx.globalAlpha = this.opacity * 0.22;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size * 2.2, 0, Math.PI * 2);
+          ctx.fill();
         }
 
+        // Star core
+        ctx.globalAlpha = this.opacity;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
-        ctx.restore();
       }
     }
 
@@ -159,7 +164,7 @@ export default function SparklesCore({
     }
 
     const render = () => {
-      if (!ctx) return;
+      if (!ctx || !isRunning) return;
       ctx.clearRect(0, 0, dimensions.w, dimensions.h);
 
       if (background !== "transparent") {
@@ -171,14 +176,28 @@ export default function SparklesCore({
         particles[i].update();
         particles[i].draw();
       }
+      ctx.globalAlpha = 1;
 
       animationFrameId = requestAnimationFrame(render);
     };
 
+    const handleVisibility = () => {
+      if (document.hidden) {
+        isRunning = false;
+        cancelAnimationFrame(animationFrameId);
+      } else if (!isRunning) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(render);
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
     render();
 
     return () => {
+      isRunning = false;
       cancelAnimationFrame(animationFrameId);
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [
     dimensions,

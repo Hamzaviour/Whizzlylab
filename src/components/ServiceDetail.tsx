@@ -50,7 +50,7 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
           <div className="relative mt-10 aspect-[21/9] overflow-hidden rounded-3xl border border-white/10">
             <Image
               src={service.image}
-              alt={service.title}
+              alt={`${service.title} — AI & Software Engineering Services by Whizzly Lab`}
               fill
               className="object-cover"
               sizes="100vw"

@@ -1,7 +1,58 @@
 import type { Metadata, Viewport } from "next";
+import {
+  Instrument_Serif,
+  Barlow,
+  JetBrains_Mono,
+  Syne,
+  DM_Sans,
+  Space_Grotesk,
+} from "next/font/google";
 import "./globals.css";
 import InteractiveShell from "@/components/InteractiveShell";
 import { CurrencyProvider } from "@/lib/currency";
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-heading",
+  display: "swap",
+});
+
+const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-syne",
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["500", "700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL ||
@@ -117,7 +168,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full" data-scroll-behavior="smooth">
+    <html
+      lang="en"
+      className={`h-full ${instrumentSerif.variable} ${barlow.variable} ${jetbrainsMono.variable} ${syne.variable} ${dmSans.variable} ${spaceGrotesk.variable}`}
+      data-scroll-behavior="smooth"
+    >
       <head>
         <script
           type="application/ld+json"
@@ -155,9 +210,9 @@ export default function RootLayout({
                   },
                   sameAs: [
                     "https://www.linkedin.com/company/whizzly-lab",
-                    "https://www.instagram.com/whizzlylab",
+                    "https://www.instagram.com/whizzlylab/",
                     "https://www.facebook.com/profile.php?id=61592686831558",
-                    "https://github.com/WhizzlyLab",
+                    "https://github.com/Hamzaviour/whizzlylab",
                   ],
                   contactPoint: {
                     "@type": "ContactPoint",
@@ -249,21 +304,10 @@ export default function RootLayout({
             }),
           }}
         />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
-        <link
-          href="https://db.onlinewebfonts.com/c/e55e9079ee863276569c8a68d776ef04?family=Futura+Md+BT+Medium"
-          rel="stylesheet"
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}`,
+          }}
         />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />

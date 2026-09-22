@@ -4,10 +4,14 @@ import { FormEvent, useState } from "react";
 import { motion } from "framer-motion";
 import MagneticButton from "./MagneticButton";
 import { Send } from "lucide-react";
-import { GitHubIcon } from "./icons";
+import { GitHubIcon, LinkedInIcon, InstagramIcon, FacebookIcon } from "./icons";
 import {
   COMPANY_EMAIL,
   WHATSAPP_URL,
+  LINKEDIN_URL,
+  INSTAGRAM_URL,
+  FACEBOOK_URL,
+  GITHUB_URL,
   submitWeb3Form,
 } from "@/lib/contact";
 
@@ -58,15 +62,46 @@ export default function ContactCTA() {
                 a clear path from idea to production.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-wrap gap-2.5">
                 <motion.a
                   whileHover={{ y: -3, scale: 1.03 }}
-                  href="https://www.linkedin.com/company/whizzly-lab"
+                  href={LINKEDIN_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="glass inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm text-white transition hover:border-[var(--cyan)]/40"
+                  className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm text-white transition hover:border-[var(--cyan)]/40 hover:text-[var(--cyan)]"
                 >
+                  <LinkedInIcon className="h-4 w-4" />
                   LinkedIn
+                </motion.a>
+                <motion.a
+                  whileHover={{ y: -3, scale: 1.03 }}
+                  href={INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm text-white transition hover:border-[var(--cyan)]/40 hover:text-[var(--cyan)]"
+                >
+                  <InstagramIcon className="h-4 w-4" />
+                  Instagram
+                </motion.a>
+                <motion.a
+                  whileHover={{ y: -3, scale: 1.03 }}
+                  href={FACEBOOK_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm text-white transition hover:border-[var(--cyan)]/40 hover:text-[var(--cyan)]"
+                >
+                  <FacebookIcon className="h-4 w-4" />
+                  Facebook
+                </motion.a>
+                <motion.a
+                  whileHover={{ y: -3, scale: 1.03 }}
+                  href={GITHUB_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="glass inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs sm:text-sm text-white transition hover:border-[var(--cyan)]/40 hover:text-[var(--cyan)]"
+                >
+                  <GitHubIcon className="h-4 w-4" />
+                  GitHub
                 </motion.a>
               </div>
 

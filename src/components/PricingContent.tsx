@@ -26,9 +26,12 @@ export default function PricingContent() {
           className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-5xl md:text-6xl text-white"
           style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}
         >
-          {service.label} pricing in {currency}
+          Transparent AI &amp; Engineering Pricing
         </h1>
-        <p className="mt-4 max-w-2xl text-sm text-hero-sub/80 sm:text-base md:text-lg">
+        <p className="mt-2 text-lg sm:text-xl font-medium text-electric-cyan">
+          {service.label} Estimates in {currency}
+        </p>
+        <p className="mt-3 max-w-2xl text-sm text-hero-sub/80 sm:text-base md:text-lg">
           {service.blurb} Ranges below are industry benchmark averages and can
           vary with functionality, complexity, and service tier.
         </p>

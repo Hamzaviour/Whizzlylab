@@ -10,8 +10,12 @@ import ResponseTimePromise from "@/components/ResponseTimePromise";
 import {
   COMPANY_EMAIL,
   WHATSAPP_URL,
+  LINKEDIN_URL,
+  INSTAGRAM_URL,
+  FACEBOOK_URL,
   submitWeb3Form,
 } from "@/lib/contact";
+import { LinkedInIcon, InstagramIcon, FacebookIcon } from "@/components/icons";
 
 export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
@@ -194,6 +198,40 @@ export default function ContactPage() {
                     <ArrowUpRight className="h-4 w-4" />
                   </Link>
                   <p className="mt-2 text-xs text-hero-sub/60">Technical architecture and budget clarity</p>
+                </div>
+
+                <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition hover:bg-white/[0.06]">
+                  <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider">Social Channels</p>
+                  <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                    <a
+                      href={LINKEDIN_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white transition hover:border-cyan-400/40 hover:text-cyan-300"
+                    >
+                      <LinkedInIcon className="h-3.5 w-3.5" />
+                      LinkedIn
+                    </a>
+                    <a
+                      href={INSTAGRAM_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white transition hover:border-cyan-400/40 hover:text-cyan-300"
+                    >
+                      <InstagramIcon className="h-3.5 w-3.5" />
+                      Instagram
+                    </a>
+                    <a
+                      href={FACEBOOK_URL}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-white transition hover:border-cyan-400/40 hover:text-cyan-300"
+                    >
+                      <FacebookIcon className="h-3.5 w-3.5" />
+                      Facebook
+                    </a>
+                  </div>
+                  <p className="mt-2 text-xs text-hero-sub/60">Follow our engineering updates, articles &amp; client case studies</p>
                 </div>
               </div>
             </div>

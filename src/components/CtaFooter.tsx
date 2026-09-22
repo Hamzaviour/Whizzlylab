@@ -7,7 +7,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import MagneticButton from "./MagneticButton";
-import { WHATSAPP_URL, COMPANY_EMAIL } from "@/lib/contact";
+import {
+  WHATSAPP_URL,
+  COMPANY_EMAIL,
+  LINKEDIN_URL,
+  INSTAGRAM_URL,
+  FACEBOOK_URL,
+  GITHUB_URL,
+} from "@/lib/contact";
 
 const HLS_SRC =
   "https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8";
@@ -163,10 +170,10 @@ export default function CtaFooter() {
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-wider text-white">Ecosystem</h4>
               <ul className="mt-4 space-y-2 text-sm text-hero-sub/70">
-                <li><a href="https://www.linkedin.com/company/whizzly-lab" target="_blank" rel="noreferrer" className="hover:text-white transition">LinkedIn</a></li>
-                <li><a href="https://www.instagram.com/whizzlylab" target="_blank" rel="noreferrer" className="hover:text-white transition">Instagram</a></li>
-                <li><a href="https://www.facebook.com/profile.php?id=61592686831558" target="_blank" rel="noreferrer" className="hover:text-white transition">Facebook</a></li>
-                <li><a href="https://github.com/WhizzlyLab" target="_blank" rel="noreferrer" className="hover:text-white transition">GitHub</a></li>
+                <li><a href={LINKEDIN_URL} target="_blank" rel="noreferrer" className="hover:text-white transition">LinkedIn</a></li>
+                <li><a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="hover:text-white transition">Instagram</a></li>
+                <li><a href={FACEBOOK_URL} target="_blank" rel="noreferrer" className="hover:text-white transition">Facebook</a></li>
+                <li><a href={GITHUB_URL} target="_blank" rel="noreferrer" className="hover:text-white transition">GitHub</a></li>
 
                 <li><Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link></li>
               </ul>

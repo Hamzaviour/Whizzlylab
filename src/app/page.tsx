@@ -12,7 +12,9 @@ import ReviewsSection from "@/components/ReviewsSection";
 import { Sparkles, Cpu, Brain, Database, Layers, CheckCircle2, ShieldAlert } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Whizzly Lab — AI Studio, ML & Software Engineering Services",
+  title: {
+    absolute: "Whizzly Lab — AI Studio, ML & Software Engineering Services",
+  },
   description:
     "Whizzly Lab is an elite AI studio delivering AI services, machine learning solutions, real-time Kafka data pipelines, and full-stack software engineering services globally.",
   alternates: {
@@ -44,51 +46,8 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is Whizzly Lab (also known as Whizzly or WhizzlyLab)?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Whizzly Lab (also known as Whizzly or WhizzlyLab) is an AI studio and software engineering studio specializing in intelligent AI systems, custom machine learning models, real-time Kafka data pipelines, and production-grade full-stack software for startups and enterprises worldwide."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What AI studio and software engineering services does Whizzly Lab provide?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Whizzly Lab provides comprehensive AI services and software engineering services including: (1) Custom AI and RAG agents, (2) Machine Learning and MLOps deployment, (3) Real-time Apache Kafka and Spark streaming data pipelines, (4) Production-grade Next.js and full-stack web platforms, (5) Workflow automation, microservices, and API architecture."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is Whizzly Lab the same as Whizzy Lab or Whizlabs?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "No. Whizzly Lab (https://whizzlylab.com) is an independent AI studio and software engineering consultancy. Whizzly Lab is not affiliated with Whizzy Lab or Whizlabs, and is not an online certification training or practice exam platform."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How can businesses hire Whizzly Lab for AI and software engineering projects?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Businesses can book a 20-30 minute strategy consultation directly via the Schedule page (https://whizzlylab.com/schedule) or connect directly on WhatsApp at https://wa.me/923097404009."
-        }
-      }
-    ]
-  };
-
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-transparent text-foreground">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
       <HeroSection />
 
       {/* Primary Studio Identity & Entity Definition (Optimized for Google Understanding & Disambiguation) */}
@@ -199,15 +158,23 @@ export default function Home() {
           </div>
 
         <div className="relative z-10">
-          <FeatureCardsSection />
+          <div className="content-auto">
+            <FeatureCardsSection />
+          </div>
 
-          <ServiceCarousel3D />
+          <div className="content-auto">
+            <ServiceCarousel3D />
+          </div>
 
-          <BenefitsSection />
+          <div className="content-auto">
+            <BenefitsSection />
+          </div>
 
-          <ReviewsSection />
+          <div className="content-auto">
+            <ReviewsSection />
+          </div>
 
-          <section id="learning" className="relative px-4 py-20 sm:px-8 sm:py-32">
+          <section id="learning" className="content-auto relative px-4 py-20 sm:px-8 sm:py-32">
             <div className="liquid-glass relative mx-auto max-w-6xl overflow-hidden rounded-3xl border border-white/10 p-8 sm:p-14 shadow-[0_12px_48px_rgba(0,0,0,0.6)]">
               <ThreeNeuralField className="opacity-35" />
               <div className="relative z-10 max-w-3xl">
@@ -249,7 +216,9 @@ export default function Home() {
             </div>
           </section>
 
-          <CtaFooter />
+          <div className="content-auto">
+            <CtaFooter />
+          </div>
         </div>
       </div>
     </main>

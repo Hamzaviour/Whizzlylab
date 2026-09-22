@@ -7,7 +7,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import PAGE_NAV from "@/lib/nav";
-import { WHATSAPP_URL } from "@/lib/contact";
+import {
+  WHATSAPP_URL,
+  LINKEDIN_URL,
+  INSTAGRAM_URL,
+  FACEBOOK_URL,
+  GITHUB_URL,
+} from "@/lib/contact";
+import { LinkedInIcon, InstagramIcon, FacebookIcon, GitHubIcon } from "./icons";
 import { CurrencyToggle } from "@/lib/currency";
 
 export default function ModernNavbar() {
@@ -170,6 +177,45 @@ export default function ModernNavbar() {
                   Chat on WhatsApp
                   <ArrowUpRight className="h-4 w-4" />
                 </a>
+
+                <div className="flex items-center justify-center gap-3 pt-2">
+                  <a
+                    href={LINKEDIN_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="LinkedIn"
+                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/70 transition hover:border-cyan-400/40 hover:text-cyan-300"
+                  >
+                    <LinkedInIcon className="h-4 w-4" />
+                  </a>
+                  <a
+                    href={INSTAGRAM_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Instagram"
+                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/70 transition hover:border-cyan-400/40 hover:text-cyan-300"
+                  >
+                    <InstagramIcon className="h-4 w-4" />
+                  </a>
+                  <a
+                    href={FACEBOOK_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Facebook"
+                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/70 transition hover:border-cyan-400/40 hover:text-cyan-300"
+                  >
+                    <FacebookIcon className="h-4 w-4" />
+                  </a>
+                  <a
+                    href={GITHUB_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="GitHub"
+                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/70 transition hover:border-cyan-400/40 hover:text-cyan-300"
+                  >
+                    <GitHubIcon className="h-4 w-4" />
+                  </a>
+                </div>
               </div>
             </div>
           </motion.div>

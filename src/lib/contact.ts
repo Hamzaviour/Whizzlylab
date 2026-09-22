@@ -1,6 +1,10 @@
 export const COMPANY_EMAIL = "whizzlylab@gmail.com";
 export const WHATSAPP_NUMBER = "923097404009";
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
+export const LINKEDIN_URL = "https://www.linkedin.com/company/whizzly-lab";
+export const INSTAGRAM_URL = "https://www.instagram.com/whizzlylab/";
+export const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61592686831558";
+export const GITHUB_URL = "https://github.com/Hamzaviour/whizzlylab";
 export const WEB3FORMS_KEY = "069cf7c6-8dd2-4689-8adb-d428909f12b7";
 
 export async function submitWeb3Form(payload: Record<string, string>) {

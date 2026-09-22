@@ -9,14 +9,14 @@ import { BASE_URL, ogImage } from "@/lib/seo";
 import { OPEN_POSITIONS } from "@/lib/careers";
 
 export const metadata: Metadata = {
-  title: "Careers — Whizzly Lab | Join Our Engineering & AI Studio",
+  title: "Careers & Engineering Roles",
   description:
     "Join Whizzly Lab's high-density engineering studio. We're hiring remote AI/LLM engineers, full-stack developers, and distributed systems architects building high-impact production systems.",
   alternates: {
     canonical: `${BASE_URL}/careers`,
   },
   openGraph: {
-    title: "Careers — Whizzly Lab | Join Our Engineering & AI Studio",
+    title: "Careers & Engineering Roles | Whizzly Lab",
     description:
       "Join Whizzly Lab's high-density engineering studio. Remote-first, cutting-edge AI stack, autonomous ownership, and competitive compensation.",
     url: `${BASE_URL}/careers`,
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Careers at Whizzly Lab — AI & Full-Stack Engineering",
+    title: "Careers & Engineering Roles | Whizzly Lab",
     description:
       "We're hiring senior AI engineers, full-stack builders, and systems architects. 100% remote, production-first engineering.",
     images: [ogImage("/og-image.png")],

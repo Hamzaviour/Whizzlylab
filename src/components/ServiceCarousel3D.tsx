@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { SERVICES as SERVICE_PAGES } from "@/lib/services";
@@ -28,17 +28,6 @@ const CARDS: Card[] = SERVICE_PAGES.map((s) => ({
 const CARD_BG = "rgba(10, 10, 20, 0.85)";
 const CARD_DEPTH = 400;
 const AUTO_PLAY_MS = 4000;
-
-function loadFonts() {
-  if (typeof document === "undefined") return;
-  if (document.getElementById("sc3d-fonts")) return;
-  const link = document.createElement("link");
-  link.id = "sc3d-fonts";
-  link.rel = "stylesheet";
-  link.href =
-    "https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap";
-  document.head.appendChild(link);
-}
 
 function ServiceCard({ card }: { card: Card }) {
   const [hovered, setHovered] = useState(false);
@@ -266,11 +255,22 @@ export default function ServiceCarousel3D() {
   const anglePerCard = 360 / totalCards;
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isInView, setIsInView] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
   const [cumulativeRotation, setCumulativeRotation] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    loadFonts();
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -281,7 +281,7 @@ export default function ServiceCarousel3D() {
   }, []);
 
   useEffect(() => {
-    if (isPaused || AUTO_PLAY_MS <= 0) return;
+    if (isPaused || !isInView || AUTO_PLAY_MS <= 0) return;
     const timer = setInterval(() => {
       setActiveIndex((prev) => {
         setCumulativeRotation((r) => r - anglePerCard);
@@ -289,7 +289,7 @@ export default function ServiceCarousel3D() {
       });
     }, AUTO_PLAY_MS);
     return () => clearInterval(timer);
-  }, [isPaused, totalCards, anglePerCard]);
+  }, [isPaused, isInView, totalCards, anglePerCard]);
 
   const goTo = (targetIndex: number) => {
     setActiveIndex((prev) => {
@@ -322,6 +322,7 @@ export default function ServiceCarousel3D() {
 
   return (
     <section
+      ref={sectionRef}
       id="services"
       className="relative flex w-full flex-col items-center overflow-x-hidden bg-[#06060f]/75 px-5 pt-24 pb-16 backdrop-blur-[1px] sm:pt-28 sm:pb-20"
       style={{

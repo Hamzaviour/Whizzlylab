@@ -1,6 +1,5 @@
-"use client";
-
 import Image from "next/image";
+import { LINKEDIN_URL, INSTAGRAM_URL, FACEBOOK_URL, GITHUB_URL } from "@/lib/contact";
 
 export default function SiteFooter() {
   return (
@@ -9,18 +8,24 @@ export default function SiteFooter() {
         <div className="flex items-center gap-3">
           <Image
             src="/logo-full.png"
-            alt="Whizzly Lab"
+            alt="Whizzly Lab — AI & Software Engineering Studio"
             width={200}
             height={72}
             className="h-14 w-auto object-contain drop-shadow-[0_0_20px_rgba(0,240,255,0.35)]"
           />
         </div>
         <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-foreground/45">
-          <a href="https://www.linkedin.com/company/whizzly-lab" target="_blank" rel="noreferrer" className="hover:text-foreground">
+          <a href={LINKEDIN_URL} target="_blank" rel="noreferrer" className="hover:text-foreground">
             LinkedIn
           </a>
-          <a href="https://www.instagram.com/whizzlylab" target="_blank" rel="noreferrer" className="hover:text-foreground">
+          <a href={INSTAGRAM_URL} target="_blank" rel="noreferrer" className="hover:text-foreground">
             Instagram
+          </a>
+          <a href={FACEBOOK_URL} target="_blank" rel="noreferrer" className="hover:text-foreground">
+            Facebook
+          </a>
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="hover:text-foreground">
+            GitHub
           </a>
           <span>© {new Date().getFullYear()} Whizzly Lab</span>
         </div>

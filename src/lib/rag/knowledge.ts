@@ -166,8 +166,12 @@ We offer milestone-based payment schedules (50% upfront, 50% upon delivery and s
 - **Schedule Call**: Book directly on our calendar at https://whizzlylab.com/schedule (Cal.com integration, 15-30 min intro call).
 - **WhatsApp**: Message us directly at https://wa.me/923097404009 (+92 309 7404009) for instant messaging.
 - **Email**: Reach out at whizzlylab@gmail.com.
+- **LinkedIn**: https://www.linkedin.com/company/whizzly-lab
+- **Instagram**: https://www.instagram.com/whizzlylab/
+- **Facebook**: https://www.facebook.com/profile.php?id=61592686831558
+- **GitHub**: https://github.com/Hamzaviour/whizzlylab
 - **Response Time**: We respond to all inquiries within 24 hours.`,
-    keywords: ["contact", "schedule", "book a call", "meeting", "call", "whatsapp", "email", "hire", "consultation", "phone", "calendar"],
+    keywords: ["contact", "schedule", "book a call", "meeting", "call", "whatsapp", "email", "hire", "consultation", "phone", "calendar", "socials", "linkedin", "instagram", "facebook", "github"],
     url: "/schedule",
     actionText: "Book a Free 1:1 Technical Call",
   },

@@ -8,14 +8,14 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { BASE_URL, ogImage } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Case Studies & Work — Whizzly Lab | Shipped AI & Engineering Projects",
+  title: "Case Studies & Shipped Projects",
   description:
     "Explore Whizzly Lab's portfolio of production-grade case studies — AI systems, real-time pipelines, healthcare automation, cybersecurity platforms, e-commerce, and more.",
   alternates: {
     canonical: `${BASE_URL}/work`,
   },
   openGraph: {
-    title: "Case Studies & Work — Whizzly Lab | Shipped AI & Engineering Projects",
+    title: "Case Studies & Shipped Projects | Whizzly Lab",
     description:
       "Explore Whizzly Lab's portfolio of production-grade case studies — AI, ML, cybersecurity, e-commerce, EdTech, and enterprise software.",
     url: `${BASE_URL}/work`,
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Case Studies — Whizzly Lab",
+    title: "Case Studies & Shipped Projects | Whizzly Lab",
     description:
       "Production-grade shipped systems by Whizzly Lab: AI, cybersecurity, healthcare, e-commerce, and more.",
     images: [ogImage("/og-image.png")],
@@ -162,6 +162,16 @@ export default function WorkPage() {
     description:
       "Whizzly Lab portfolio of production-grade shipped systems spanning AI, cybersecurity, healthcare, e-commerce, and enterprise software.",
     isPartOf: { "@id": `${BASE_URL}/#website` },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: cases.map((c, idx) => ({
+        "@type": "CreativeWork",
+        position: idx + 1,
+        name: c.title,
+        description: c.description,
+        url: c.live || `${BASE_URL}/work`,
+      })),
+    },
   };
 
   return (

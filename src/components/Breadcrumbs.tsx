@@ -8,6 +8,14 @@ export interface BreadcrumbItem {
 }
 
 export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
+  const resolveItemUrl = (item: BreadcrumbItem, index: number) => {
+    if (item.href) {
+      return item.href.startsWith("http") ? item.href : `${BASE_URL}${item.href}`;
+    }
+    const slug = item.label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    return index === 0 ? BASE_URL : `${BASE_URL}/${slug}`;
+  };
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -15,7 +23,7 @@ export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
       "@type": "ListItem",
       position: index + 1,
       name: item.label,
-      item: item.href ? (item.href.startsWith("http") ? item.href : `${BASE_URL}${item.href}`) : undefined,
+      item: resolveItemUrl(item, index),
     })),
   };
 

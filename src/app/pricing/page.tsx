@@ -5,14 +5,14 @@ import PricingContent from "@/components/PricingContent";
 import { BASE_URL, ogImage } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Pricing — Whizzly Lab | AI & Full-Stack Development Costs (PKR / USD)",
+  title: "Pricing & Plans (USD & PKR)",
   description:
     "Transparent pricing for AI systems, machine learning, data pipelines, web development, automation, and full-stack products. Prices in PKR and USD.",
   alternates: {
     canonical: `${BASE_URL}/pricing`,
   },
   openGraph: {
-    title: "Pricing — Whizzly Lab | AI & Full-Stack Development Costs",
+    title: "Pricing & Plans (USD & PKR) | Whizzly Lab",
     description: "Transparent pricing for AI, ML & full-stack engineering by Whizzly Lab.",
     url: `${BASE_URL}/pricing`,
     images: [
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pricing — Whizzly Lab | AI & Full-Stack Development Costs",
+    title: "Pricing & Plans (USD & PKR) | Whizzly Lab",
     description: "Transparent AI & full-stack engineering pricing in PKR and USD.",
     images: [ogImage("/og-image.png")],
   },

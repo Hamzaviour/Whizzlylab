@@ -79,6 +79,7 @@ export default function HeroSection() {
             >
               Lab
             </span>
+            <span className="sr-only"> — AI Studio, Machine Learning & Software Engineering Services</span>
           </motion.h1>
 
           <div className="mt-4 max-w-xl">
@@ -141,18 +142,21 @@ function HeroCursorParticles() {
     if (!ctx) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    if (reduce || !finePointer) return;
 
     type P = { x: number; y: number; vx: number; vy: number; r: number; life: number; maxLife: number; color: string };
     let particles: P[] = [];
     let w = 0;
     let h = 0;
+    let isVisible = true;
+    let isLooping = false;
 
     const COLORS = ["#6366f1", "#a855f7", "#00f0ff", "#60a5fa", "#c084fc"];
 
     const resize = () => {
       const parent = canvas.parentElement;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       w = parent?.clientWidth || window.innerWidth;
       h = parent?.clientHeight || window.innerHeight;
       canvas.width = Math.floor(w * dpr);
@@ -180,6 +184,13 @@ function HeroCursorParticles() {
       }
     };
 
+    const startLoop = () => {
+      if (!isLooping && isVisible) {
+        isLooping = true;
+        raf.current = requestAnimationFrame(tick);
+      }
+    };
+
     const onMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       if (e.clientY < rect.top || e.clientY > rect.bottom || e.clientX < rect.left || e.clientX > rect.right) {
@@ -189,10 +200,16 @@ function HeroCursorParticles() {
       mouse.current.x = e.clientX - rect.left;
       mouse.current.y = e.clientY - rect.top;
       mouse.current.active = true;
+      startLoop();
     };
     const onLeave = () => { mouse.current.active = false; };
 
     const tick = () => {
+      if (!isVisible) {
+        isLooping = false;
+        return;
+      }
+
       ctx.clearRect(0, 0, w, h);
 
       if (mouse.current.active) {
@@ -200,12 +217,13 @@ function HeroCursorParticles() {
       }
 
       particles = particles.filter((p) => p.life > 0);
-          for (const p of particles) {
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
         p.vx *= 0.97;
         p.vy *= 0.97;
-        p.life -= 0.018;
+        p.life -= 0.02;
 
         if (p.life <= 0) continue;
 
@@ -215,20 +233,50 @@ function HeroCursorParticles() {
         ctx.globalAlpha = alpha;
         ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
         ctx.fill();
-        ctx.globalAlpha = 1;
       }
+      ctx.globalAlpha = 1;
 
-      raf.current = requestAnimationFrame(tick);
+      if (particles.length > 0 || mouse.current.active) {
+        raf.current = requestAnimationFrame(tick);
+      } else {
+        isLooping = false;
+      }
     };
 
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && (particles.length > 0 || mouse.current.active)) {
+          startLoop();
+        } else if (!isVisible) {
+          isLooping = false;
+          cancelAnimationFrame(raf.current);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(canvas);
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        isVisible = false;
+        isLooping = false;
+        cancelAnimationFrame(raf.current);
+      } else {
+        isVisible = true;
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     resize();
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", resize, { passive: true });
     window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("mouseout", onLeave);
-    raf.current = requestAnimationFrame(tick);
 
     return () => {
       cancelAnimationFrame(raf.current);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseout", onLeave);

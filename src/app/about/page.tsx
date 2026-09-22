@@ -20,16 +20,16 @@ import FAQSection from "@/components/FAQSection";
 import { BASE_URL, ogImage } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "About — Whizzly Lab | AI, ML & Full-Stack Engineering Studio",
+  title: "About Our AI & Engineering Studio",
   description:
-    "Whizzly Lab is an AI, machine learning, and full-stack engineering studio. We build intelligent systems, real-time data pipelines, and production software for global clients.",
+    "Whizzly Lab is an elite AI, ML, and full-stack engineering studio. We build intelligent agent systems, real-time data streams, and production-grade software.",
   alternates: {
     canonical: `${BASE_URL}/about`,
   },
   openGraph: {
-    title: "About — Whizzly Lab | AI, ML & Full-Stack Engineering Studio",
+    title: "About Our AI & Engineering Studio | Whizzly Lab",
     description:
-      "Whizzly Lab is an AI, machine learning, and full-stack engineering studio. Building intelligent systems that ship.",
+      "Whizzly Lab is an elite AI, ML, and full-stack engineering studio building production-grade software.",
     url: `${BASE_URL}/about`,
     images: [
       {
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "About — Whizzly Lab | AI Engineering Studio",
+    title: "About Our AI & Engineering Studio | Whizzly Lab",
     description: "AI, ML & full-stack engineering studio building intelligent systems that ship.",
     images: [ogImage("/og-image.png")],
   },
@@ -235,7 +235,7 @@ export default function AboutPage() {
               <div className="relative aspect-square overflow-hidden rounded-3xl border border-white/15 bg-black/40 lg:col-span-5 flex items-center justify-center p-8">
                 <Image
                   src="/transparent-logo.png"
-                  alt="Whizzly Lab Logo"
+                  alt="Whizzly Lab AI Engineering Studio Logo"
                   width={360}
                   height={360}
                   className="object-contain drop-shadow-[0_0_35px_rgba(0,240,255,0.3)]"

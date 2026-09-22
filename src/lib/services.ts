@@ -16,7 +16,7 @@ export const SERVICES: ServicePage[] = [
     slug: "web-development",
     title: "Web Development",
     short:
-      "High-performance React and Next.js products with Flask APIs, Docker, and cloud delivery.",
+      "High-performance Next.js and React web applications engineered with secure API layers, microservices, Docker containers, and scalable cloud deployments.",
     tag: "",
     accentColor: "#3b82f6",
     image:
@@ -38,7 +38,7 @@ export const SERVICES: ServicePage[] = [
     slug: "machine-learning",
     title: "Machine Learning",
     short:
-      "Supervised learning, deep models, evaluation loops, and Hugging Face pipelines.",
+      "Bespoke machine learning engineering by Whizzly Lab. We train, evaluate, and deploy deep neural models, Hugging Face pipelines, and robust MLOps systems.",
     tag: "",
     accentColor: "#a855f7",
     image:
@@ -60,7 +60,7 @@ export const SERVICES: ServicePage[] = [
     slug: "ai",
     title: "AI",
     short:
-      "RAG systems, agentic workflows, LangChain, ChromaDB, and production LLM deployments.",
+      "Production-grade agentic AI systems, multi-stage RAG pipelines, LangChain integrations, vector databases, and enterprise LLM applications with guardrails.",
     tag: "Popular",
     accentColor: "#00F0FF",
     image:
@@ -82,7 +82,7 @@ export const SERVICES: ServicePage[] = [
     slug: "automation",
     title: "Automation",
     short:
-      "n8n workflows, AWS orchestration, and voice AI with Whisper, Deepgram, and ElevenLabs.",
+      "End-to-end workflow automation, n8n orchestrations, cloud microservices, and multimodal voice AI pipelines using Whisper, Deepgram, and ElevenLabs.",
     tag: "",
     accentColor: "#ec4899",
     image:
@@ -104,7 +104,7 @@ export const SERVICES: ServicePage[] = [
     slug: "data-analytics",
     title: "Data Analytics",
     short:
-      "Power BI, Tableau, and Looker Studio storytelling for executive decision-making.",
+      "Enterprise business intelligence dashboards in Power BI, Tableau, and Looker Studio. Reliable ETL data pipelines turning complex data into actionable metrics.",
     tag: "",
     accentColor: "#14b8a6",
     image:
@@ -126,7 +126,7 @@ export const SERVICES: ServicePage[] = [
     slug: "business-solutions",
     title: "Business Solutions",
     short:
-      "Healthcare, compliance, and e-commerce platforms engineered end-to-end.",
+      "Custom domain platforms for healthcare, compliance, and e-commerce. Production-grade software engineered with automated AI workflows and strict security.",
     tag: "Premium",
     accentColor: "#f43f5e",
     image:
@@ -148,7 +148,7 @@ export const SERVICES: ServicePage[] = [
     slug: "computer-vision",
     title: "Computer Vision",
     short:
-      "Classification and detection models for satellite, industrial, and operational vision tasks.",
+      "Custom computer vision pipelines, YOLO object detection, satellite image analysis, and deep neural inference systems engineered for operational scale.",
     tag: "",
     accentColor: "#8b5cf6",
     image:
@@ -170,7 +170,7 @@ export const SERVICES: ServicePage[] = [
     slug: "data-pipelines",
     title: "Data Pipelines",
     short:
-      "Kafka, Spark, and PySpark streams that turn raw events into real-time intelligence.",
+      "Real-time distributed streaming architectures with Apache Kafka, Apache Spark, and PySpark for sub-second event processing, NLP, and AI pipelines.",
     tag: "New",
     accentColor: "#f59e0b",
     image:

@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { GitHubIcon, LinkedInIcon } from "./icons";
+import { GitHubIcon, LinkedInIcon, InstagramIcon, FacebookIcon } from "./icons";
+import { LINKEDIN_URL, INSTAGRAM_URL, FACEBOOK_URL, GITHUB_URL } from "@/lib/contact";
 
 export default function Footer() {
   return (
@@ -11,7 +12,7 @@ export default function Footer() {
         <div className="flex items-center gap-3">
           <Image
             src="/logo.png"
-            alt="Whizzly Lab"
+            alt="Whizzly Lab — AI & Software Engineering Studio"
             width={140}
             height={112}
             className="h-12 w-auto object-contain sm:h-14"
@@ -26,26 +27,46 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <motion.a
             whileHover={{ y: -3, scale: 1.08 }}
-            href="https://github.com/WhizzlyLab"
-            target="_blank"
-            rel="noreferrer"
-            aria-label="GitHub"
-            className="rounded-full border border-white/10 p-2.5 text-white/70 transition hover:border-[var(--cyan)]/40 hover:text-[var(--cyan)]"
-          >
-            <GitHubIcon className="h-4 w-4" />
-          </motion.a>
-          <motion.a
-            whileHover={{ y: -3, scale: 1.08 }}
-            href="https://www.linkedin.com/company/whizzly-lab"
+            href={LINKEDIN_URL}
             target="_blank"
             rel="noreferrer"
             aria-label="LinkedIn"
             className="rounded-full border border-white/10 p-2.5 text-white/70 transition hover:border-[var(--cyan)]/40 hover:text-[var(--cyan)]"
           >
             <LinkedInIcon className="h-4 w-4" />
+          </motion.a>
+          <motion.a
+            whileHover={{ y: -3, scale: 1.08 }}
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Instagram"
+            className="rounded-full border border-white/10 p-2.5 text-white/70 transition hover:border-[var(--cyan)]/40 hover:text-[var(--cyan)]"
+          >
+            <InstagramIcon className="h-4 w-4" />
+          </motion.a>
+          <motion.a
+            whileHover={{ y: -3, scale: 1.08 }}
+            href={FACEBOOK_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Facebook"
+            className="rounded-full border border-white/10 p-2.5 text-white/70 transition hover:border-[var(--cyan)]/40 hover:text-[var(--cyan)]"
+          >
+            <FacebookIcon className="h-4 w-4" />
+          </motion.a>
+          <motion.a
+            whileHover={{ y: -3, scale: 1.08 }}
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub"
+            className="rounded-full border border-white/10 p-2.5 text-white/70 transition hover:border-[var(--cyan)]/40 hover:text-[var(--cyan)]"
+          >
+            <GitHubIcon className="h-4 w-4" />
           </motion.a>
         </div>
 

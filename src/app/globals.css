@@ -1,10 +1,4 @@
 @import "tailwindcss";
-@import "@fontsource/geist-sans/400.css";
-@import "@fontsource/geist-sans/500.css";
-@import "@fontsource/geist-sans/600.css";
-@import "@fontsource/geist-sans/700.css";
-@import "@fontsource/space-grotesk/700.css";
-@import "@fontsource/raleway/200.css";
 
 :root {
   --background: 260 87% 3%;
@@ -24,10 +18,14 @@
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-hero-sub: hsl(var(--hero-sub));
-  --font-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "General Sans", "Geist Sans", sans-serif;
-  --font-heading: "Instrument Serif", serif;
-  --font-body: "Barlow", sans-serif;
+  --font-sans: var(--font-body), "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "General Sans", var(--font-syne), var(--font-body), sans-serif;
+  --font-heading: var(--font-heading), "Instrument Serif", serif;
+  --font-body: var(--font-body), "Barlow", sans-serif;
+  --font-syne: var(--font-syne), "Syne", sans-serif;
+  --font-dm: var(--font-dm-sans), "DM Sans", sans-serif;
+  --font-mono: var(--font-mono), "JetBrains Mono", monospace;
+  --font-space: var(--font-space-grotesk), "Space Grotesk", sans-serif;
 }
 
 * {
@@ -57,7 +55,37 @@ body {
 }
 
 .font-general {
-  font-family: "General Sans", "Geist Sans", sans-serif;
+  font-family: var(--font-display), "General Sans", sans-serif;
+}
+
+.font-syne {
+  font-family: var(--font-syne), "Syne", sans-serif;
+}
+
+.font-dm {
+  font-family: var(--font-dm-sans), "DM Sans", sans-serif;
+}
+
+.font-heading {
+  font-family: var(--font-heading), "Instrument Serif", serif;
+}
+
+.font-body {
+  font-family: var(--font-body), "Barlow", sans-serif;
+}
+
+.font-space {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+}
+
+.font-mono {
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+}
+
+/* Modern Web Performance: Content-visibility for below-the-fold elements */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 750px;
 }
 
 .text-hero-sub {

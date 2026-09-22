@@ -10,6 +10,10 @@
 - **Lead AI Engineering Studio**: Whizzly Lab
 - **Primary Email**: whizzlylab@gmail.com
 - **WhatsApp Direct**: https://wa.me/923097404009
+- **LinkedIn**: https://www.linkedin.com/company/whizzly-lab
+- **Instagram**: https://www.instagram.com/whizzlylab/
+- **Facebook**: https://www.facebook.com/profile.php?id=61592686831558
+- **GitHub**: https://github.com/Hamzaviour/whizzlylab
 - **Operating Model**: Remote engineering studio delivering production software worldwide across North America, Europe, Middle East, and Asia.
 - **Response SLA**: Sub-24 hours for all incoming technical inquiries and consultations.
 

@@ -5,6 +5,9 @@ import { Send } from "lucide-react";
 import {
   COMPANY_EMAIL,
   WHATSAPP_URL,
+  LINKEDIN_URL,
+  INSTAGRAM_URL,
+  FACEBOOK_URL,
   submitWeb3Form,
 } from "@/lib/contact";
 
@@ -68,16 +71,34 @@ export default function ContactSection() {
                   Chat with us on WhatsApp
                 </a>
               </p>
-              <p>
+              <div className="flex flex-wrap items-center gap-3 pt-1">
                 <a
-                  href="https://www.linkedin.com/company/whizzly-lab"
+                  href={LINKEDIN_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-foreground"
+                  className="hover:text-foreground transition underline underline-offset-4"
                 >
                   LinkedIn
                 </a>
-              </p>
+                <span>·</span>
+                <a
+                  href={INSTAGRAM_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-foreground transition underline underline-offset-4"
+                >
+                  Instagram
+                </a>
+                <span>·</span>
+                <a
+                  href={FACEBOOK_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-foreground transition underline underline-offset-4"
+                >
+                  Facebook
+                </a>
+              </div>
             </div>
           </div>
 
