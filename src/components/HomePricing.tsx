@@ -24,8 +24,7 @@ export default function HomePricing() {
             Transparent Pricing Calculator
           </p>
           <h2
-            className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
-            style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}
+            className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl font-heading"
           >
             {service.label} from {format(from)}
           </h2>

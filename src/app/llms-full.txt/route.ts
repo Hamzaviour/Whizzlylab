@@ -13,7 +13,7 @@ export async function GET() {
       },
     });
   } catch (error) {
-    return new NextResponse("Whizzly Lab — Complete Technical Documentation (https://whizzlylab.com)", {
+    return new NextResponse("Whizzly Lab: Complete Technical Documentation (https://whizzlylab.com)", {
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }

@@ -33,7 +33,7 @@ export const STUDIO_VALUES = [
   },
   {
     title: "Extreme Ownership & Autonomy",
-    description: "You own systems from architectural RFC to production telemetry. We give you context, resources, and trust — no micromanagement.",
+    description: "You own systems from architectural RFC to production telemetry. We give you context, resources, and trust with no micromanagement.",
     badge: "Self-Directed",
   },
   {
@@ -127,7 +127,7 @@ export const OPEN_POSITIONS: JobPosition[] = [
     ],
     requirements: [
       "3+ years building and scaling production web applications with Next.js and TypeScript.",
-      "Strong aesthetic sensibility and pride in craft — typography, layout spacing, and animation physics.",
+      "Strong aesthetic sensibility and pride in craft: typography, layout spacing, and animation physics.",
       "Solid understanding of server-side rendering (SSR), streaming responses, caching, and edge computing.",
       "Experience with modern authentication (NextAuth, Clerk), payment systems (Stripe), and PostgreSQL.",
       "Excellent communication and ability to work asynchronously with minimal supervision.",

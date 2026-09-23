@@ -12,7 +12,7 @@ const edges = [
   {
     icon: Cpu,
     title: "Intelligence baked in",
-    text: "RAG, agentic workflows, and Hugging Face deployments — models that think and ship, not just demos.",
+    text: "RAG, agentic workflows, and Hugging Face deployments: models that think and ship, not just demos.",
   },
   {
     icon: Cloud,
@@ -22,7 +22,7 @@ const edges = [
   {
     icon: Zap,
     title: "Interface + infrastructure",
-    text: "We don't just build pretty UIs — we own the heavy backend so every screen feels instantaneous.",
+    text: "We don't just build pretty UIs, we own the heavy backend so every screen feels instantaneous.",
   },
 ];
 
@@ -47,8 +47,8 @@ export default function OurEdge() {
           </h2>
           <p className="mt-5 text-base leading-relaxed text-[var(--text-secondary)] sm:text-lg">
             Whizzly Lab bridges polished product experience with heavy-duty backend
-            architecture. We engineer intelligent, end-to-end systems — from distributed data pipelines
-            to production-grade RAG agents — that people actually rely on.
+            architecture. We engineer intelligent, end-to-end systems from distributed data pipelines
+            to production-grade RAG agents that people actually rely on.
           </p>
           <p className="mt-4 text-[var(--text-secondary)]">
             Engineered for reliability and shipping globally: predictive models, real-time

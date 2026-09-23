@@ -21,7 +21,7 @@ export const metadata = {
         url: ogImage("/og-image.png"),
         width: 1200,
         height: 630,
-        alt: "Privacy Policy — Whizzly Lab",
+        alt: "Privacy Policy: Whizzly Lab",
       },
     ],
   },
@@ -48,12 +48,12 @@ export default function PrivacyPage() {
           />
 
           <div className="mt-6">
-            <span className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-semibold text-cyan-300">
-              ✦ Legal &amp; Data Protection
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-slate-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+              Legal &amp; Data Protection
             </span>
             <h1
-              className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl"
-              style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}
+              className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl font-heading"
             >
               Privacy Policy
             </h1>
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
 
           <div className="mt-12 space-y-10 text-base leading-relaxed text-hero-sub/85">
             <div className="liquid-glass rounded-3xl border border-white/10 p-6 sm:p-8">
-              <h2 className="text-xl font-bold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+              <h2 className="text-xl font-bold text-white font-heading">
                 1. Overview &amp; Commitment
               </h2>
               <p className="mt-3">
@@ -73,20 +73,20 @@ export default function PrivacyPage() {
             </div>
 
             <div className="liquid-glass rounded-3xl border border-white/10 p-6 sm:p-8">
-              <h2 className="text-xl font-bold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+              <h2 className="text-xl font-bold text-white font-heading">
                 2. Information We Collect
               </h2>
               <p className="mt-3">
                 We only collect data necessary to provide discovery consultations, technical architectural reviews, and service delivery:
               </p>
               <ul className="mt-3 list-disc space-y-2 pl-5 text-sm">
-                <li><strong className="text-white">Directly Provided Information:</strong> Name, work email, telephone/WhatsApp number, company name, service interest, project specifications, and budget range submitted via our contact, schedule, or pricing forms.</li>
+                <li><strong className="text-white">Directly Provided Information:</strong> Name, work email, telephone number, company name, service interest, project specifications, and budget range submitted via our contact, schedule, or pricing forms.</li>
                 <li><strong className="text-white">Technical &amp; Telemetry Data:</strong> Browser type, operating system, IP address, referral URLs, time spent on pages, and anonymous interaction metrics collected through cookies.</li>
               </ul>
             </div>
 
             <div className="liquid-glass rounded-3xl border border-white/10 p-6 sm:p-8">
-              <h2 className="text-xl font-bold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+              <h2 className="text-xl font-bold text-white font-heading">
                 3. Confidentiality, Client IP &amp; NDAs
               </h2>
               <p className="mt-3">
@@ -99,7 +99,7 @@ export default function PrivacyPage() {
             </div>
 
             <div className="liquid-glass rounded-3xl border border-white/10 p-6 sm:p-8">
-              <h2 className="text-xl font-bold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+              <h2 className="text-xl font-bold text-white font-heading">
                 4. Cookies &amp; Tracking Technologies
               </h2>
               <p className="mt-3">
@@ -108,7 +108,7 @@ export default function PrivacyPage() {
             </div>
 
             <div className="liquid-glass rounded-3xl border border-white/10 p-6 sm:p-8">
-              <h2 className="text-xl font-bold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+              <h2 className="text-xl font-bold text-white font-heading">
                 5. Global Privacy Rights (GDPR &amp; CCPA)
               </h2>
               <p className="mt-3">
@@ -123,7 +123,7 @@ export default function PrivacyPage() {
             </div>
 
             <div className="liquid-glass rounded-3xl border border-white/10 p-6 sm:p-8">
-              <h2 className="text-xl font-bold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+              <h2 className="text-xl font-bold text-white font-heading">
                 6. Security &amp; Data Retention
               </h2>
               <p className="mt-3">
@@ -132,7 +132,7 @@ export default function PrivacyPage() {
             </div>
 
             <div className="liquid-glass rounded-3xl border border-white/10 p-6 sm:p-8">
-              <h2 className="text-xl font-bold text-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+              <h2 className="text-xl font-bold text-white font-heading">
                 7. Contact Us
               </h2>
               <p className="mt-3">

@@ -8,7 +8,7 @@ export default function SiteFooter() {
         <div className="flex items-center gap-3">
           <Image
             src="/logo-full.png"
-            alt="Whizzly Lab — AI & Software Engineering Studio"
+            alt="Whizzly Lab: AI & Software Engineering Studio"
             width={200}
             height={72}
             className="h-14 w-auto object-contain drop-shadow-[0_0_20px_rgba(0,240,255,0.35)]"

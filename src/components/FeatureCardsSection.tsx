@@ -40,7 +40,7 @@ const capabilities: CapabilityCard[] = [
   {
     title: "AI & ML Systems",
     description:
-      "Custom models, RAG agents, and Hugging Face deployments built for production — not demos.",
+      "Custom models, RAG agents, and Hugging Face deployments built for production, not demos.",
     icon: Brain,
     borderGradient: "linear-gradient(135deg, #FF2D78 0%, #FF6584 45%, #FFA048 100%)",
     glowGradient:

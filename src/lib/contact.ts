@@ -1,6 +1,9 @@
 export const COMPANY_EMAIL = "whizzlylab@gmail.com";
-export const WHATSAPP_NUMBER = "923097404009";
-export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
+export const COMPANY_PHONE = "+1 (424) 451-0714";
+export const COMPANY_PHONE_RAW = "+14244510714";
+export const PHONE_URL = `tel:${COMPANY_PHONE_RAW}`;
+export const WHATSAPP_NUMBER = "14244510714";
+export const WHATSAPP_URL = PHONE_URL;
 export const LINKEDIN_URL = "https://www.linkedin.com/company/whizzly-lab";
 export const INSTAGRAM_URL = "https://www.instagram.com/whizzlylab/";
 export const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61592686831558";

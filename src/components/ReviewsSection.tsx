@@ -1,21 +1,24 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Star, Quote, CheckCircle } from "lucide-react";
+import { Star, Quote, CheckCircle, Building2 } from "lucide-react";
 
 const reviews = [
   {
     name: "Sarah Chen",
     role: "CTO, FinTech Startup",
     location: "San Francisco, CA",
+    avatar: "/images/avatars/sarah-chen.webp",
     rating: 5,
     project: "Kafka & ML Pipeline",
-    text: "Whizzly Lab built our real-time fraud detection pipeline in under 6 weeks. The Kafka + ML setup handles 10x our traffic now. Exactly what we needed — production-grade, not a prototype.",
+    text: "Whizzly Lab built our real-time fraud detection pipeline in under 6 weeks. The Kafka + ML setup handles 10x our traffic now. Exactly what we needed: production-grade, not a prototype.",
   },
   {
     name: "Marcus Webb",
     role: "Head of Engineering, HealthTech",
     location: "London, UK",
+    avatar: "/images/avatars/marcus-webb.webp",
     rating: 5,
     project: "RAG & HIPAA Medical AI",
     text: "Their RAG implementation for our medical documentation system cut retrieval time by 70%. The team understood HIPAA requirements from day one. Rare to find that depth in an engineering team.",
@@ -24,14 +27,16 @@ const reviews = [
     name: "Ayesha Rahman",
     role: "Founder, E-Commerce Platform",
     location: "Dubai, UAE",
+    avatar: "/images/avatars/ayesha-rahman.webp",
     rating: 5,
     project: "Custom E-Commerce Engine",
-    text: "OXO Packaging was built end-to-end by Whizzly Lab — from product catalog to wholesale ordering. They shipped on time, on budget, and the site handles 500+ daily orders without a hiccup.",
+    text: "OXO Packaging was built end-to-end by Whizzly Lab, from product catalog to wholesale ordering. They shipped on time, on budget, and the site handles 500+ daily orders without a hiccup.",
   },
   {
     name: "David Park",
     role: "VP Product, Cybersecurity",
     location: "Singapore",
+    avatar: "/images/avatars/david-park.webp",
     rating: 5,
     project: "COMPLYSECOPS Platform",
     text: "COMPLYSECOPS replaced three separate tools with one unified platform. The AI assistant they built for compliance documentation saves our team 15+ hours per week. Worth every dollar.",
@@ -40,6 +45,7 @@ const reviews = [
     name: "Jennifer Liu",
     role: "Director of Data, NGO",
     location: "Toronto, Canada",
+    avatar: "/images/avatars/jennifer-liu.webp",
     rating: 5,
     project: "EchoSense Crisis NLP",
     text: "EchoSense changed how we handle crisis alerts. The real-time NLP pipeline catches high-priority signals that our old system missed. Whizzly Lab ships fast and ships right.",
@@ -48,6 +54,7 @@ const reviews = [
     name: "Alexandre Moreau",
     role: "Co-Founder, Logistics SaaS",
     location: "Paris, France",
+    avatar: "/images/avatars/alexandre-moreau.webp",
     rating: 5,
     project: "Route Optimization AI",
     text: "The delivery dispatch algorithm engineered by Whizzly Lab reduced fleet fuel costs by 18% in the first quarter. Communication was flawless across time zones with weekly demo builds.",
@@ -76,8 +83,7 @@ export default function ReviewsSection() {
             Client Testimonials
           </p>
           <h2
-            className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
-            style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}
+            className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl font-heading"
           >
             Trusted by engineering teams globally
           </h2>
@@ -111,9 +117,17 @@ export default function ReviewsSection() {
                 </p>
               </div>
 
-              <div className="mt-6 flex items-center gap-3 border-t border-white/10 pt-4">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#6366f1] to-[#00F0FF] text-sm font-bold text-black">
-                  {review.name.charAt(0)}
+              <div className="mt-6 flex items-center gap-3.5 border-t border-white/10 pt-4">
+                <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border border-cyan-400/30 bg-white/5 shadow-md shadow-black/40 ring-1 ring-white/10">
+                  <Image
+                    src={review.avatar}
+                    alt={review.name}
+                    width={44}
+                    height={44}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 rounded-full ring-1 ring-inset ring-white/20" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">

@@ -5,6 +5,8 @@ import { SERVICES } from "@/lib/services";
 import PageNavbar from "./PageNavbar";
 import CtaFooter from "./CtaFooter";
 import Breadcrumbs from "./Breadcrumbs";
+import TakeawaysBox from "./TakeawaysBox";
+import TrustBadges from "./TrustBadges";
 
 export default function ServiceDetail({ service }: { service: ServicePage }) {
   const others = SERVICES.filter((s) => s.slug !== service.slug).slice(0, 3);
@@ -39,7 +41,7 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
 
           <h1
             className="mt-4 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl"
-            style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}
+            style={{ fontFamily: "var(--font-display-primary), sans-serif" }}
           >
             {service.title}
           </h1>
@@ -50,13 +52,21 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
           <div className="relative mt-10 aspect-[21/9] overflow-hidden rounded-3xl border border-white/10">
             <Image
               src={service.image}
-              alt={`${service.title} — AI & Software Engineering Services by Whizzly Lab`}
+              alt={`${service.title}: AI & Software Engineering Services by Whizzly Lab`}
               fill
               className="object-cover"
               sizes="100vw"
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[hsl(260_87%_3%)] via-transparent to-transparent" />
+          </div>
+
+          {/* Key Deliverables Takeaways Box */}
+          <div className="mt-8">
+            <TakeawaysBox
+              title={`${service.title} Deliverable Guarantees`}
+              takeaways={service.deliverables.slice(0, 4)}
+            />
           </div>
 
           <div className="mt-14 grid gap-12 lg:grid-cols-[1.2fr_0.8fr]">
@@ -68,10 +78,10 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
               ))}
               <Link
                 href="/schedule"
-                className="mt-4 inline-flex rounded-full px-6 py-3 text-sm font-medium text-black transition hover:opacity-90"
+                className="mt-4 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-semibold text-black transition hover:opacity-90 shadow-[0_0_20px_rgba(0,240,255,0.25)]"
                 style={{ background: service.accentColor }}
               >
-                Schedule a Consult
+                Book a Consult →
               </Link>
             </div>
 
@@ -107,7 +117,9 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
             </div>
           </div>
 
-          <div className="mt-20">
+          <TrustBadges className="mt-14" />
+
+          <div className="mt-16">
             <h2 className="text-2xl font-semibold">Related services</h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-3">
               {others.map((s) => (

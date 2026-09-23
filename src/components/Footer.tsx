@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="flex items-center gap-3">
           <Image
             src="/logo.png"
-            alt="Whizzly Lab — AI & Software Engineering Studio"
+            alt="Whizzly Lab: AI & Software Engineering Studio"
             width={140}
             height={112}
             className="h-12 w-auto object-contain sm:h-14"

@@ -23,7 +23,7 @@ export const SERVICES: ServicePage[] = [
       "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1400&q=80",
     headline: "Product-grade web platforms that load fast and scale cleanly.",
     body: [
-      "Whizzly Lab builds modern web products with React, Next.js, and hardened API layers — designed for performance, security, and maintainability.",
+      "Whizzly Lab builds modern web products with React, Next.js, and hardened API layers, designed for performance, security, and maintainability.",
       "From marketing sites to authenticated dashboards, we ship interfaces that feel premium and backends that stay production-ready.",
     ],
     deliverables: [
@@ -45,7 +45,7 @@ export const SERVICES: ServicePage[] = [
       "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1400&q=80",
     headline: "Models that train, evaluate, and ship into real systems.",
     body: [
-      "We design supervised and deep learning pipelines with clear evaluation loops — from feature prep to Hugging Face deployment.",
+      "We design supervised and deep learning pipelines with clear evaluation loops, from feature prep to Hugging Face deployment.",
       "Every model engagement starts with data quality, ends with measurable business outcomes, and stays monitorable after launch.",
     ],
     deliverables: [
@@ -65,7 +65,7 @@ export const SERVICES: ServicePage[] = [
     accentColor: "#00F0FF",
     image:
       "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1400&q=80",
-    headline: "Agentic AI and RAG systems built for production — not demos.",
+    headline: "Agentic AI and RAG systems built for production, not demos.",
     body: [
       "Whizzly Lab delivers retrieval-augmented generation, LangChain agents, and LLM apps that plug into your docs, tools, and workflows.",
       "We focus on grounding, latency, cost control, and safe tool use so AI features earn trust with real users.",
@@ -111,7 +111,7 @@ export const SERVICES: ServicePage[] = [
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80",
     headline: "Dashboards that turn messy data into clear decisions.",
     body: [
-      "We build analytics layers and executive dashboards in Power BI, Tableau, and Looker Studio — connected to the sources your team already trusts.",
+      "We build analytics layers and executive dashboards in Power BI, Tableau, and Looker Studio, connected to the sources your team already trusts.",
       "Expect clean metrics definitions, reliable refresh, and visuals that leadership can act on without digging for answers.",
     ],
     deliverables: [
@@ -133,7 +133,7 @@ export const SERVICES: ServicePage[] = [
       "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1400&q=80",
     headline: "Domain platforms for healthcare, compliance, and commerce.",
     body: [
-      "We ship vertical products like CureCMS, COMPLYSECOPS, and OXO — blending product design, AI, and reliable engineering.",
+      "We ship vertical products like CureCMS, COMPLYSECOPS, and OXO, blending product design, AI, and reliable engineering.",
       "Every engagement is scoped to your sector’s constraints: privacy, auditability, ops workflows, and customer experience.",
     ],
     deliverables: [

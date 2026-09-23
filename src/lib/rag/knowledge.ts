@@ -27,7 +27,7 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
   {
     id: "founder-profile",
     category: "company",
-    title: "Lead AI Engineering Team — Whizzly Lab",
+    title: "Lead AI Engineering Team: Whizzly Lab",
     content: `Whizzly Lab is an elite AI & software engineering studio specializing in agentic RAG workflows, distributed Kafka event streaming, deep learning model deployment, and full-stack cloud architectures. The team personally oversees technical architecture, code quality, and delivery for every client engagement.`,
     keywords: ["team", "engineers", "lead engineer", "who built", "who founded", "ceo", "creator"],
     url: "/about",
@@ -132,7 +132,7 @@ We offer milestone-based payment schedules (50% upfront, 50% upon delivery and s
   {
     id: "case-echosense",
     category: "case_study",
-    title: "EchoSense AI — Real-Time Streaming NLP Architecture",
+    title: "EchoSense AI: Real-Time Streaming NLP Architecture",
     content: `EchoSense AI is a high-throughput streaming NLP intelligence system architected with Apache Kafka, PySpark, and transformer-based sentiment/entity models. It processes real-time social and market data streams, generates instant semantic insights, and renders dynamic analytics dashboards with sub-second response times. Live demo: https://hamzavelous-echosense-ai.hf.space/login`,
     keywords: ["echosense", "echosense ai", "case study", "portfolio item", "kafka project", "streaming nlp"],
     url: "/#case-studies",
@@ -141,7 +141,7 @@ We offer milestone-based payment schedules (50% upfront, 50% upon delivery and s
   {
     id: "case-curecms",
     category: "case_study",
-    title: "CureCMS — Healthcare Content & Clinic Operations",
+    title: "CureCMS: Healthcare Content & Clinic Operations",
     content: `CureCMS is a specialized healthcare management platform with patient appointment scheduling, HIPAA-conscious medical records, doctor directory workflows, and dynamic CMS capabilities built on Next.js and secure cloud infrastructure.`,
     keywords: ["curecms", "healthcare", "case study", "clinic platform"],
     url: "/#case-studies",
@@ -150,7 +150,7 @@ We offer milestone-based payment schedules (50% upfront, 50% upon delivery and s
   {
     id: "case-complysecops",
     category: "case_study",
-    title: "COMPLYSECOPS — Automated Compliance Audit Suite",
+    title: "COMPLYSECOPS: Automated Compliance Audit Suite",
     content: `COMPLYSECOPS is an enterprise compliance automation engine that scans cloud infrastructure, verifies security benchmarks (SOC2, ISO27001), and generates audit-ready reports with automated remediation triggers.`,
     keywords: ["complysecops", "compliance", "security", "case study"],
     url: "/#case-studies",
@@ -164,14 +164,14 @@ We offer milestone-based payment schedules (50% upfront, 50% upon delivery and s
     title: "Schedule a Consultation & Contact Whizzly Lab",
     content: `Ready to start a project or need architectural advice?
 - **Schedule Call**: Book directly on our calendar at https://whizzlylab.com/schedule (Cal.com integration, 15-30 min intro call).
-- **WhatsApp**: Message us directly at https://wa.me/923097404009 (+92 309 7404009) for instant messaging.
+- **Phone**: Call directly at +1 (424) 451-0714 (tel:+14244510714).
 - **Email**: Reach out at whizzlylab@gmail.com.
 - **LinkedIn**: https://www.linkedin.com/company/whizzly-lab
 - **Instagram**: https://www.instagram.com/whizzlylab/
 - **Facebook**: https://www.facebook.com/profile.php?id=61592686831558
 - **GitHub**: https://github.com/Hamzaviour/whizzlylab
 - **Response Time**: We respond to all inquiries within 24 hours.`,
-    keywords: ["contact", "schedule", "book a call", "meeting", "call", "whatsapp", "email", "hire", "consultation", "phone", "calendar", "socials", "linkedin", "instagram", "facebook", "github"],
+    keywords: ["contact", "schedule", "book a call", "meeting", "call", "phone", "email", "hire", "consultation", "calendar", "socials", "linkedin", "instagram", "facebook", "github"],
     url: "/schedule",
     actionText: "Book a Free 1:1 Technical Call",
   },

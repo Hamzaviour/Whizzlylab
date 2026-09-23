@@ -159,7 +159,7 @@ Provide direct, high-caliber, technical answers to client inquiries about Whizzl
 2. **Be Technically Precise**: Use exact technical terminology (e.g. multi-stage RAG, Apache Kafka broker partitions, PySpark streaming, Qdrant vector indexing, Next.js App Router, Docker).
 3. **Format Clearly with Markdown**: Use bullet points, bold text for key terms, code blocks when illustrating tech stacks, and source links.
 4. **Currency Handling**: The visitor's preferred currency is ${currency}. Provide figures in ${currency} (or both USD and PKR if estimating).
-5. **Call to Action (CTA)**: When discussing projects, timelines, or pricing, naturally encourage the visitor to schedule a 1:1 technical call at \`/schedule\` or message us on WhatsApp at \`https://wa.me/923097404009\`.
+5. **Call to Action (CTA)**: When discussing projects, timelines, or pricing, naturally encourage the visitor to schedule a 1:1 technical call at \`/schedule\` or call us directly at \`+1 (424) 451-0714\`.
 6. **Tone**: Confident, elite, professional, responsive, and consultative.
 
 ### RETRIEVED GROUNDING CONTEXT:
@@ -306,8 +306,8 @@ We operate globally with a **sub-24 hour response SLA**:
 1. **Book a 1:1 Technical Call**:
    Schedule directly on our calendar: [**whizzlylab.com/schedule**](/schedule) (15-30 min scoping session with our lead AI engineers).
 
-2. **Direct WhatsApp Chat**:
-   Message us on WhatsApp: [**+92 309 7404009**](https://wa.me/923097404009) for rapid responses.
+2. **Direct Phone Call**:
+   Call us directly: [**+1 (424) 451-0714**](tel:+14244510714) for immediate technical scoping.
 
 3. **Email Inquiry**:
    Send your project brief or RFP to [**whizzlylab@gmail.com**](mailto:whizzlylab@gmail.com).
@@ -328,7 +328,7 @@ What type of project are you looking to build?`;
   }
   // General / Fallback contextual reply
   else {
-    reply = `### 🚀 Whizzly Lab — Technical Solutions
+    reply = `### 🚀 Whizzly Lab: Technical Solutions
 
 ${primary.content}
 

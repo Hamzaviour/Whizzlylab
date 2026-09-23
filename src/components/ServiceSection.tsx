@@ -104,7 +104,7 @@ export default function ServiceSection() {
           />
           <p className="mt-4 text-base leading-relaxed text-hero-sub/80 sm:text-lg">
             End-to-end AI engineering and product delivery for startups and
-            enterprises — from models to interfaces.
+            enterprises, from models to interfaces.
           </p>
         </div>
 

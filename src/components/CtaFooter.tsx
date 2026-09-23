@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight, Phone } from "lucide-react";
 import Hls from "hls.js";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import MagneticButton from "./MagneticButton";
 import {
-  WHATSAPP_URL,
+  PHONE_URL,
+  COMPANY_PHONE,
   COMPANY_EMAIL,
   LINKEDIN_URL,
   INSTAGRAM_URL,
@@ -66,17 +67,17 @@ export default function CtaFooter() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-semibold text-cyan-300 backdrop-blur-md"
+            className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs font-medium text-slate-300 backdrop-blur-md"
           >
-            <Sparkles className="h-3.5 w-3.5" />
-            Let&apos;s Build Together
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+            <span>Ready for Deployment</span>
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="font-heading mx-auto text-4xl leading-[1.05] font-normal tracking-tight text-white italic sm:text-5xl md:text-6xl lg:text-7xl"
+            className="font-heading mx-auto text-4xl leading-[1.05] font-bold tracking-tight text-white not-italic sm:text-5xl md:text-6xl lg:text-7xl"
           >
             Schedule a strategy consult.
           </motion.h2>
@@ -87,7 +88,7 @@ export default function CtaFooter() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-body mx-auto mt-6 max-w-xl text-base text-hero-sub/85"
           >
-            Book a 20–30 minute discovery call. Discuss technical feasibility, architecture, and scope clarity with no pressure.
+            Book a 20 to 30 minute discovery call. Discuss technical feasibility, architecture, and scope clarity with no pressure.
           </motion.p>
 
           <div className="mt-10 flex flex-col items-stretch justify-center gap-3 px-1 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4 md:gap-5">
@@ -97,10 +98,10 @@ export default function CtaFooter() {
                 <ArrowUpRight className="h-4 w-4" />
               </span>
             </MagneticButton>
-            <MagneticButton href={WHATSAPP_URL} strength={0.28}>
-              <span className="font-body flex w-full items-center justify-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/15 px-6 py-3.5 text-sm font-medium text-emerald-300 transition-colors hover:bg-emerald-500/25 sm:w-auto">
-                WhatsApp Direct
-                <ArrowUpRight className="h-4 w-4" />
+            <MagneticButton href={PHONE_URL} strength={0.28}>
+              <span className="font-body flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-6 py-3.5 text-sm font-medium text-slate-200 transition-colors hover:border-cyan-400/40 hover:text-cyan-300 sm:w-auto">
+                <Phone className="h-4 w-4 text-cyan-400" />
+                Call {COMPANY_PHONE}
               </span>
             </MagneticButton>
             <MagneticButton href="/pricing" strength={0.28}>
@@ -121,7 +122,7 @@ export default function CtaFooter() {
                 <div className="relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-white/15 bg-white/5">
                   <Image
                     src="/icon.png"
-                    alt="Whizzly Lab — Engineering Studio Logo Mark"
+                    alt="Whizzly Lab: Engineering Studio Logo Mark"
                     width={32}
                     height={32}
                     className="h-7 w-7 object-contain"
@@ -134,8 +135,9 @@ export default function CtaFooter() {
               <p className="text-sm leading-relaxed text-hero-sub/70 max-w-sm">
                 AI and full-stack engineering studio building intelligent systems, real-time data pipelines, and production products that scale.
               </p>
-              <div className="text-xs text-hero-sub/60">
+              <div className="text-xs text-hero-sub/60 space-y-1">
                 <p>Email: <a href={`mailto:${COMPANY_EMAIL}`} className="text-white hover:underline">{COMPANY_EMAIL}</a></p>
+                <p>Phone: <a href={PHONE_URL} className="text-white hover:underline">{COMPANY_PHONE}</a></p>
                 <p className="mt-1">Delivering globally across time zones</p>
               </div>
             </div>

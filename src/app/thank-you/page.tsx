@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CheckCircle2, ArrowRight, Home } from "lucide-react";
 
 export const metadata = {
-  title: "Thank You — Whizzly Lab",
+  title: "Thank You | Whizzly Lab",
   description:
     "Thank you for reaching out to Whizzly Lab. We&apos;ll get back to you within 24 hours.",
 };
@@ -21,8 +21,7 @@ export default function ThankYouPage() {
         </div>
 
         <h1
-          className="mt-6 text-[clamp(1.8rem,5vw,3.5rem)] font-extrabold tracking-tight text-white"
-          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+          className="mt-6 text-[clamp(1.8rem,5vw,3.5rem)] font-extrabold tracking-tight text-white font-heading"
         >
           Thank you
         </h1>

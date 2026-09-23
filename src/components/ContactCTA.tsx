@@ -7,7 +7,8 @@ import { Send } from "lucide-react";
 import { GitHubIcon, LinkedInIcon, InstagramIcon, FacebookIcon } from "./icons";
 import {
   COMPANY_EMAIL,
-  WHATSAPP_URL,
+  COMPANY_PHONE,
+  PHONE_URL,
   LINKEDIN_URL,
   INSTAGRAM_URL,
   FACEBOOK_URL,
@@ -27,7 +28,7 @@ export default function ContactCTA() {
     setStatus("sending");
     try {
       await submitWeb3Form({
-        subject: `Whizzly Lab Project — ${String(data.get("name") || "")}`,
+        subject: `Whizzly Lab Project: ${String(data.get("name") || "")}`,
         name: String(data.get("name") || ""),
         email: String(data.get("email") || ""),
         message: String(data.get("message") || ""),
@@ -116,12 +117,12 @@ export default function ContactCTA() {
                   </a>
                 </p>
                 <p>
-                  WhatsApp:{" "}
+                  Phone:{" "}
                   <a
-                    href={WHATSAPP_URL}
+                    href={PHONE_URL}
                     className="text-[var(--cyan)] hover:underline"
                   >
-                    Chat with us on WhatsApp
+                    {COMPANY_PHONE}
                   </a>
                 </p>
               </div>
@@ -184,9 +185,9 @@ export default function ContactCTA() {
                   {status === "sending"
                     ? "Sending…"
                     : status === "sent"
-                      ? "Sent — we’ll reply soon"
+                      ? "Sent. We'll reply soon"
                       : status === "error"
-                        ? "Failed — try again"
+                        ? "Failed. Please try again"
                         : "Send Message"}
                 </span>
               </MagneticButton>

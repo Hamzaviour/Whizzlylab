@@ -1,29 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --background: 260 87% 3%;
-  --foreground: 40 6% 95%;
-  --hero-sub: 40 6% 82%;
-  --muted: 260 20% 40%;
-  --bg-deep: hsl(var(--background));
-  --text-primary: hsl(var(--foreground));
-  --text-secondary: hsl(var(--hero-sub));
-  --text-muted: hsl(260 15% 55%);
+  --background: 245 45% 4%;
+  --foreground: 210 20% 98%;
+  --hero-sub: 215 15% 82%;
+  --muted: 240 10% 45%;
+  --bg-deep: #06060c;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
   --cyan: #00f0ff;
   --blue: #6366f1;
   --purple: #a855f7;
+  --emerald: #10b981;
 }
 
 @theme inline {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-hero-sub: hsl(var(--hero-sub));
-  --font-sans: var(--font-body), "Barlow", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "General Sans", var(--font-syne), var(--font-body), sans-serif;
-  --font-heading: var(--font-heading), "Instrument Serif", serif;
-  --font-body: var(--font-body), "Barlow", sans-serif;
-  --font-syne: var(--font-syne), "Syne", sans-serif;
-  --font-dm: var(--font-dm-sans), "DM Sans", sans-serif;
+  --font-sans: var(--font-sans-primary), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-primary), var(--font-sans-primary), sans-serif;
+  --font-heading: var(--font-display-primary), var(--font-space-grotesk), sans-serif;
+  --font-body: var(--font-sans-primary), sans-serif;
+  --font-syne: var(--font-display-primary), sans-serif;
+  --font-dm: var(--font-sans-primary), sans-serif;
   --font-mono: var(--font-mono), "JetBrains Mono", monospace;
   --font-space: var(--font-space-grotesk), "Space Grotesk", sans-serif;
 }
@@ -42,44 +43,49 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: hsl(var(--background));
-  color: hsl(var(--foreground));
-  font-family: var(--font-sans);
+  background: #06060c;
+  color: #f8fafc;
+  font-family: var(--font-sans-primary), ui-sans-serif, system-ui, sans-serif;
   overflow-x: hidden;
   max-width: 100%;
 }
 
 ::selection {
-  background: rgba(168, 85, 247, 0.35);
+  background: rgba(0, 240, 255, 0.3);
   color: #fff;
 }
 
-.font-general {
-  font-family: var(--font-display), "General Sans", sans-serif;
-}
-
-.font-syne {
-  font-family: var(--font-syne), "Syne", sans-serif;
-}
-
-.font-dm {
-  font-family: var(--font-dm-sans), "DM Sans", sans-serif;
+.font-general,
+.font-display {
+  font-family: var(--font-display-primary), var(--font-sans-primary), sans-serif;
+  letter-spacing: -0.025em;
 }
 
 .font-heading {
-  font-family: var(--font-heading), "Instrument Serif", serif;
+  font-family: var(--font-display-primary), sans-serif;
+  letter-spacing: -0.02em;
 }
 
-.font-body {
-  font-family: var(--font-body), "Barlow", sans-serif;
+.font-body,
+.font-sans {
+  font-family: var(--font-sans-primary), sans-serif;
+}
+
+.font-syne {
+  font-family: var(--font-display-primary), sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-dm {
+  font-family: var(--font-sans-primary), sans-serif;
 }
 
 .font-space {
-  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-family: var(--font-space-grotesk), sans-serif;
 }
 
 .font-mono {
-  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-family: var(--font-mono), monospace;
 }
 
 /* Modern Web Performance: Content-visibility for below-the-fold elements */

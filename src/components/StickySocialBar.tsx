@@ -2,19 +2,18 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, ChevronLeft, Share2 } from "lucide-react";
+import { ChevronRight, ChevronLeft, Share2, Phone } from "lucide-react";
 import {
   LinkedInIcon,
   InstagramIcon,
   FacebookIcon,
-  WhatsAppIcon,
   GitHubIcon,
 } from "./icons";
 import {
   LINKEDIN_URL,
   INSTAGRAM_URL,
   FACEBOOK_URL,
-  WHATSAPP_URL,
+  PHONE_URL,
   GITHUB_URL,
 } from "@/lib/contact";
 
@@ -41,11 +40,11 @@ const SOCIAL_ITEMS = [
     glowColor: "rgba(24, 119, 242, 0.4)",
   },
   {
-    name: "WhatsApp",
-    url: WHATSAPP_URL,
-    icon: WhatsAppIcon,
-    hoverColor: "hover:text-[#25D366] hover:border-[#25D366]/40 hover:shadow-[0_0_16px_rgba(37,211,102,0.35)]",
-    glowColor: "rgba(37, 211, 102, 0.4)",
+    name: "Call Us",
+    url: PHONE_URL,
+    icon: Phone,
+    hoverColor: "hover:text-[#00F0FF] hover:border-[#00F0FF]/40 hover:shadow-[0_0_16px_rgba(0,240,255,0.35)]",
+    glowColor: "rgba(0, 240, 255, 0.4)",
   },
   {
     name: "GitHub",

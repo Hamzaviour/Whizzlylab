@@ -1,4 +1,4 @@
-# Whizzly Lab — Complete Technical Documentation
+# Whizzly Lab: Complete Technical Documentation
 
 > Comprehensive knowledge base for Whizzly Lab: AI Engineering, Real-Time Data Streaming, and Full-Stack Product Studio.
 
@@ -9,7 +9,7 @@
 - **Website**: https://whizzlylab.com
 - **Lead AI Engineering Studio**: Whizzly Lab
 - **Primary Email**: whizzlylab@gmail.com
-- **WhatsApp Direct**: https://wa.me/923097404009
+- **Direct Phone**: +1 (424) 451-0714
 - **LinkedIn**: https://www.linkedin.com/company/whizzly-lab
 - **Instagram**: https://www.instagram.com/whizzlylab/
 - **Facebook**: https://www.facebook.com/profile.php?id=61592686831558
@@ -105,4 +105,4 @@
 - **Q: How does communication happen during a sprint?**
   A: Direct Slack/Discord channel integration, GitHub repository access, and weekly deployed demo builds.
 - **Q: How to book a consultation?**
-  A: Visit https://whizzlylab.com/schedule or message directly on WhatsApp at https://wa.me/923097404009.
+  A: Visit https://whizzlylab.com/schedule or call directly at +1 (424) 451-0714.

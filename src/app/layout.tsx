@@ -1,54 +1,34 @@
 import type { Metadata, Viewport } from "next";
 import {
-  Instrument_Serif,
-  Barlow,
+  Plus_Jakarta_Sans,
+  Outfit,
   JetBrains_Mono,
-  Syne,
-  DM_Sans,
   Space_Grotesk,
 } from "next/font/google";
 import "./globals.css";
 import InteractiveShell from "@/components/InteractiveShell";
 import { CurrencyProvider } from "@/lib/currency";
 
-const instrumentSerif = Instrument_Serif({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-heading",
+  variable: "--font-sans-primary",
   display: "swap",
 });
 
-const barlow = Barlow({
+const outfit = Outfit({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-body",
+  variable: "--font-display-primary",
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
   variable: "--font-mono",
-  display: "swap",
-});
-
-const syne = Syne({
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  variable: "--font-syne",
-  display: "swap",
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-dm-sans",
   display: "swap",
 });
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["500", "700"],
   variable: "--font-space-grotesk",
   display: "swap",
 });
@@ -63,7 +43,7 @@ const BASE_URL =
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Whizzly Lab — AI Studio, ML & Software Engineering Services",
+    default: "Whizzly Lab: AI Studio, ML & Software Engineering Services",
     template: "%s | Whizzly Lab",
   },
   description:
@@ -103,7 +83,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: BASE_URL,
-    title: "Whizzly Lab — AI Studio, ML & Software Engineering Services",
+    title: "Whizzly Lab: AI Studio, ML & Software Engineering Services",
     description:
       "Whizzly Lab is an elite AI studio delivering AI services, machine learning solutions, real-time Kafka data pipelines, and full-stack software engineering services globally.",
     siteName: "Whizzly Lab",
@@ -112,7 +92,7 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: "Whizzly Lab — AI Studio & Software Engineering Services",
+        alt: "Whizzly Lab: AI Studio & Software Engineering Services",
         type: "image/png",
       },
       {
@@ -126,7 +106,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Whizzly Lab — AI Studio, ML & Software Engineering Services",
+    title: "Whizzly Lab: AI Studio, ML & Software Engineering Services",
     description:
       "Whizzly Lab is an elite AI studio delivering AI services, machine learning solutions, real-time Kafka data pipelines, and full-stack software engineering services.",
     images: [`${BASE_URL}/twitter-image`, `${BASE_URL}/og-image.png`],
@@ -170,7 +150,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`h-full ${instrumentSerif.variable} ${barlow.variable} ${jetbrainsMono.variable} ${syne.variable} ${dmSans.variable} ${spaceGrotesk.variable}`}
+      className={`h-full ${plusJakartaSans.variable} ${outfit.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}
       data-scroll-behavior="smooth"
     >
       <head>
@@ -217,8 +197,9 @@ export default function RootLayout({
                   contactPoint: {
                     "@type": "ContactPoint",
                     contactType: "customer service",
+                    telephone: "+1-424-451-0714",
                     email: "whizzlylab@gmail.com",
-                    url: "https://wa.me/923097404009",
+                    url: "https://whizzlylab.com/contact",
                     availableLanguage: ["English"],
                   },
                   knowsAbout: [
@@ -294,7 +275,7 @@ export default function RootLayout({
                     "Whizzly Lab AI Studio",
                   ],
                   description:
-                    "Whizzly Lab — AI Studio, ML & Software Engineering Services",
+                    "Whizzly Lab: AI Studio, ML & Software Engineering Services",
                   publisher: {
                     "@id": `${BASE_URL}/#organization`,
                   },

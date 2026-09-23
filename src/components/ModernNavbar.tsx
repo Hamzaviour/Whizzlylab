@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, ArrowUpRight, Sparkles } from "lucide-react";
+import { Menu, X, ArrowUpRight, Phone } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import PAGE_NAV from "@/lib/nav";
 import {
-  WHATSAPP_URL,
+  COMPANY_PHONE,
+  PHONE_URL,
   LINKEDIN_URL,
   INSTAGRAM_URL,
   FACEBOOK_URL,
@@ -57,7 +58,7 @@ export default function ModernNavbar() {
           <div className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border border-white/15 bg-white/5 transition-transform duration-300 group-hover:scale-105 group-hover:border-cyan-400/40">
             <Image
               src="/icon.png"
-              alt="Whizzly Lab — AI & Full-Stack Engineering Studio Icon"
+              alt="Whizzly Lab: AI & Full-Stack Engineering Studio Icon"
               width={28}
               height={28}
               className="h-6 w-6 object-contain"
@@ -97,20 +98,17 @@ export default function ModernNavbar() {
         <div className="hidden items-center gap-3 lg:flex">
           <CurrencyToggle />
           <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1.5 text-xs font-medium text-emerald-400 transition-all hover:border-emerald-400/50 hover:bg-emerald-500/20"
+            href={PHONE_URL}
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-slate-300 transition-all hover:border-cyan-400/40 hover:text-cyan-300"
           >
-            WhatsApp
-            <ArrowUpRight className="h-3 w-3" />
+            <Phone className="h-3 w-3 text-cyan-400" />
+            <span>{COMPANY_PHONE}</span>
           </a>
           <Link
             href="/schedule"
             className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#6366f1] via-[#a855f7] to-[#00f0ff] px-4 py-1.5 text-xs font-semibold text-black transition-all hover:opacity-90 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)]"
           >
-            <Sparkles className="h-3 w-3" />
-            Schedule Consult
+            Book a Consult
           </Link>
         </div>
 
@@ -164,18 +162,15 @@ export default function ModernNavbar() {
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#6366f1] to-[#00f0ff] px-4 py-3 text-center text-sm font-semibold text-black"
                 >
-                  <Sparkles className="h-4 w-4" />
-                  Schedule a Consult
+                  Book a Consult
                 </Link>
                 <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noreferrer"
+                  href={PHONE_URL}
                   onClick={() => setOpen(false)}
-                  className="flex items-center justify-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-center text-sm font-medium text-emerald-400"
+                  className="flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-4 py-3 text-center text-sm font-medium text-slate-200"
                 >
-                  Chat on WhatsApp
-                  <ArrowUpRight className="h-4 w-4" />
+                  <Phone className="h-4 w-4 text-cyan-400" />
+                  Call {COMPANY_PHONE}
                 </a>
 
                 <div className="flex items-center justify-center gap-3 pt-2">

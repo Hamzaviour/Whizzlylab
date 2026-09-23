@@ -17,13 +17,12 @@ export default function BenefitsSection() {
               Why Whizzly Lab
             </p>
             <h2
-              className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
-              style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}
+              className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl font-heading"
             >
               Engineered for velocity and longevity
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-hero-sub/80 text-base">
-              We bridge the gap between academic machine learning research and resilient production software.
+              We turn research prototypes and raw machine learning concepts into resilient production software your team can actually run and scale.
             </p>
           </div>
         </Reveal>
@@ -40,7 +39,7 @@ export default function BenefitsSection() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-400">
                   <ShieldCheck className="h-6 w-6" />
                 </div>
-                <h3 className="mt-8 text-2xl font-semibold leading-snug text-white" style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}>
+                <h3 className="mt-8 text-2xl font-semibold leading-snug text-white font-heading">
                   Preemptive Risk &amp; Anomaly Detection
                 </h3>
                 <p className="mt-4 text-sm leading-relaxed text-hero-sub/75">
@@ -75,7 +74,7 @@ export default function BenefitsSection() {
                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-indigo-500/30 bg-indigo-500/10 text-indigo-400">
                     <Cpu className="h-6 w-6" />
                   </div>
-                  <h3 className="mt-6 text-2xl font-semibold leading-snug text-white" style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}>
+                  <h3 className="mt-6 text-2xl font-semibold leading-snug text-white font-heading">
                     Domain Rigor &amp; Sector Awareness
                   </h3>
                   <p className="mt-3 text-sm leading-relaxed text-hero-sub/75">
@@ -97,7 +96,7 @@ export default function BenefitsSection() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-purple-500/30 bg-purple-500/10 text-purple-400">
                   <Layers className="h-6 w-6" />
                 </div>
-                <h3 className="mt-8 text-2xl font-semibold leading-snug text-white" style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}>
+                <h3 className="mt-8 text-2xl font-semibold leading-snug text-white font-heading">
                   Production AI That Actually Ships
                 </h3>
                 <p className="mt-4 text-sm leading-relaxed text-hero-sub/75">

@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { Cpu } from "lucide-react";
 import { SERVICES as SERVICE_PAGES } from "@/lib/services";
 
 type Card = {
@@ -61,7 +62,7 @@ function ServiceCard({ card }: { card: Card }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={card.image}
-            alt={`${card.title} — Whizzly Lab`}
+            alt={`${card.title}: Whizzly Lab`}
             className="block h-full w-full object-cover"
             style={{
               transform: hovered ? "scale(1.08)" : "scale(1)",
@@ -83,7 +84,7 @@ function ServiceCard({ card }: { card: Card }) {
                 color: card.accentColor,
               }}
             >
-              ✦
+              <Cpu className="h-7 w-7" />
             </div>
           </div>
         )}
@@ -105,11 +106,7 @@ function ServiceCard({ card }: { card: Card }) {
 
       <div className="relative z-[3] flex shrink-0 flex-col p-5">
         <h3
-          className="m-0 mb-1.5 text-[19px] leading-[1.2] font-bold text-white"
-          style={{
-            fontFamily: "'Syne', sans-serif",
-            letterSpacing: "-0.01em",
-          }}
+          className="m-0 mb-1.5 text-[19px] leading-[1.2] font-bold text-white font-heading tracking-tight"
         >
           {card.title}
         </h3>
@@ -160,7 +157,7 @@ function MobileCard({ card }: { card: Card }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={card.image}
-            alt={`${card.title} — Whizzly Lab`}
+            alt={`${card.title}: Whizzly Lab`}
             className="block h-full w-full object-cover"
           />
         ) : (
@@ -171,7 +168,7 @@ function MobileCard({ card }: { card: Card }) {
               color: card.accentColor,
             }}
           >
-            ✦
+            <Cpu className="h-6 w-6" />
           </div>
         )}
       </div>
@@ -188,8 +185,7 @@ function MobileCard({ card }: { card: Card }) {
           </span>
         ) : null}
         <h3
-          className="m-0 mb-1.5 text-[17px] font-bold text-white"
-          style={{ fontFamily: "'Syne', sans-serif" }}
+          className="m-0 mb-1.5 text-[17px] font-bold text-white font-heading"
         >
           {card.title}
         </h3>
@@ -354,13 +350,12 @@ export default function ServiceCarousel3D() {
           Services
         </p>
         <h2
-          className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
-          style={{ fontFamily: "'Syne', sans-serif" }}
+          className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl font-heading"
         >
           What Whizzly Lab ships
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-sm text-white/50 sm:text-base">
-          Explore each capability — open a service page for deliverables, stack,
+          Explore each capability. Open a service page for deliverables, stack,
           and how we ship it.
         </p>
       </div>

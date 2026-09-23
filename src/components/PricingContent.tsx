@@ -5,6 +5,7 @@ import Link from "next/link";
 import ServiceSelector from "./ServiceSelector";
 import PricingCalculator from "./PricingCalculator";
 import Breadcrumbs from "./Breadcrumbs";
+import TrustBadges from "./TrustBadges";
 import { getServicePricing, INFRASTRUCTURE_FEES, type ServiceKey } from "@/lib/pricing";
 import { useCurrency, CurrencyToggle } from "@/lib/currency";
 
@@ -23,8 +24,7 @@ export default function PricingContent() {
           ]}
         />
         <h1
-          className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-5xl md:text-6xl text-white"
-          style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}
+          className="mt-3 max-w-3xl text-3xl font-bold tracking-tight sm:text-5xl md:text-6xl text-white font-heading"
         >
           Transparent AI &amp; Engineering Pricing
         </h1>
@@ -107,14 +107,12 @@ export default function PricingContent() {
         {serviceKey === "web" && (
           <div className="mt-14 sm:mt-16">
             <h2
-              className="mb-2 text-xl font-semibold sm:text-2xl md:text-3xl text-white"
-              style={{ fontFamily: "'Syne', sans-serif" }}
+              className="mb-2 text-xl font-semibold sm:text-2xl md:text-3xl text-white font-heading"
             >
               Mandatory infrastructure fees (annual)
             </h2>
             <p className="mb-6 max-w-2xl text-sm text-hero-sub/70">
-              Beyond development, budget for domain, hosting, and security —
-              billed yearly (or on a multi-year cycle depending on TLD and cloud tier).
+              Beyond development, budget for domain, hosting, and security billed yearly (or on a multi-year cycle depending on TLD and cloud tier).
             </p>
 
             <div className="space-y-3 md:hidden">
@@ -165,10 +163,9 @@ export default function PricingContent() {
 
         <div className="mt-16 sm:mt-20">
           <h2
-            className="mb-3 text-center text-2xl font-semibold sm:text-3xl md:text-4xl"
-            style={{ fontFamily: "'Syne', sans-serif" }}
+            className="mb-3 text-center text-2xl font-semibold sm:text-3xl md:text-4xl text-white font-heading"
           >
-            {service.label} — project estimation calculator
+            {service.label} Project Estimation Calculator
           </h2>
           <p className="mx-auto mb-6 max-w-xl px-1 text-center text-sm text-hero-sub/70 sm:mb-8">
             Estimates shown in {currency}. Final quotes confirmed after a short
@@ -182,6 +179,8 @@ export default function PricingContent() {
             </Link>
           </p>
         </div>
+
+        <TrustBadges className="mt-14" />
       </div>
     </section>
   );

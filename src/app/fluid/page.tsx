@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Fluid — Whizzly Lab",
+  title: "Fluid | Whizzly Lab",
   description: "Animated plasma fluid background experience by Whizzly Lab.",
 };
 
@@ -30,13 +30,12 @@ export default function FluidPage() {
       {/* Overlay content */}
       <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 text-center">
         <h1
-          className="text-[clamp(2rem,8vw,5rem)] font-extrabold tracking-tight text-white"
-          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+          className="text-[clamp(2rem,8vw,5rem)] font-extrabold tracking-tight text-white font-heading"
         >
           Fluid <span className="text-cyan-300">Canvas</span>
         </h1>
         <p className="mt-4 max-w-md text-lg text-white/60">
-          WebGL plasma shader — animated, full-bleed, cursor-reactive.
+          WebGL plasma shader: animated, full-bleed, cursor-reactive.
         </p>
         <Link
           href="/"

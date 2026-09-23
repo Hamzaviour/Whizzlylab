@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: `${BASE_URL}/services/${slug}/opengraph-image`,
           width: 1200,
           height: 630,
-          alt: `${service.title} — Whizzly Lab AI Studio`,
+          alt: `${service.title}: Whizzly Lab AI Studio`,
           type: "image/png",
         },
       ],

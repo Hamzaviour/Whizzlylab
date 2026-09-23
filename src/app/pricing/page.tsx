@@ -20,7 +20,7 @@ export const metadata: Metadata = {
         url: ogImage("/og-image.png"),
         width: 1200,
         height: 630,
-        alt: "Pricing — Whizzly Lab",
+        alt: "Pricing: Whizzly Lab",
       },
     ],
   },

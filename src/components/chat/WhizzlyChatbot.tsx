@@ -50,6 +50,100 @@ const STARTER_PROMPTS = [
   "📅 How do I schedule a technical call with Whizzly Lab?",
 ];
 
+/** Cybernetic Neural Core Hologram Shape for Whizzly AI */
+function NeuralCoreShape({
+  size = 32,
+  className = "",
+  glow = true,
+}: {
+  size?: number;
+  className?: string;
+  glow?: boolean;
+}) {
+  return (
+    <div
+      className={`relative flex items-center justify-center shrink-0 ${className}`}
+      style={{ width: size, height: size }}
+    >
+      {/* Ambient Pulsing Glow Halo */}
+      {glow && (
+        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#00F0FF] via-[#6366f1] to-[#a855f7] opacity-60 blur-md animate-pulse" />
+      )}
+
+      {/* Futuristic Cybernetic Quantum Core SVG */}
+      <svg
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="relative z-10 w-full h-full drop-shadow-[0_0_10px_rgba(0,240,255,0.7)]"
+      >
+        <defs>
+          <linearGradient id="neuralCoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#00F0FF" />
+            <stop offset="50%" stopColor="#6366f1" />
+            <stop offset="100%" stopColor="#a855f7" />
+          </linearGradient>
+          <linearGradient id="neuralRingGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#38bdf8" />
+            <stop offset="50%" stopColor="#818cf8" />
+            <stop offset="100%" stopColor="#c084fc" />
+          </linearGradient>
+        </defs>
+
+        {/* Outer Rotating Dotted Orbital Ring */}
+        <circle
+          cx="24"
+          cy="24"
+          r="21"
+          stroke="url(#neuralRingGrad)"
+          strokeWidth="1.5"
+          strokeDasharray="4 3"
+          className="animate-[spin_12s_linear_infinite]"
+        />
+
+        {/* Counter-rotating Inner Hexagonal Geometry */}
+        <polygon
+          points="24,6 39,15 39,33 24,42 9,33 9,15"
+          stroke="url(#neuralCoreGrad)"
+          strokeWidth="1.2"
+          strokeDasharray="6 4"
+          fill="url(#neuralCoreGrad)"
+          fillOpacity="0.12"
+          className="animate-[spin_18s_linear_infinite_reverse]"
+          style={{ transformOrigin: "24px 24px" }}
+        />
+
+        {/* Inner Diamond Core Shard */}
+        <polygon
+          points="24,11 36,24 24,37 12,24"
+          fill="url(#neuralCoreGrad)"
+          fillOpacity="0.45"
+          stroke="#00F0FF"
+          strokeWidth="1.5"
+        />
+
+        {/* Quantum Center Node */}
+        <circle cx="24" cy="24" r="4.5" fill="#ffffff" />
+        <circle
+          cx="24"
+          cy="24"
+          r="7"
+          stroke="#00F0FF"
+          strokeWidth="1.5"
+          className="animate-ping opacity-40"
+          style={{ transformOrigin: "24px 24px" }}
+        />
+
+        {/* Satellite Nodes */}
+        <circle cx="24" cy="6" r="2.5" fill="#00F0FF" />
+        <circle cx="39" cy="24" r="2.5" fill="#a855f7" />
+        <circle cx="24" cy="42" r="2.5" fill="#00F0FF" />
+        <circle cx="9" cy="24" r="2.5" fill="#38bdf8" />
+      </svg>
+    </div>
+  );
+}
+
 export default function WhizzlyChatbot() {
   const { currency } = useCurrency();
   const [isOpen, setIsOpen] = useState(false);
@@ -126,7 +220,7 @@ export default function WhizzlyChatbot() {
         id: `assistant-${Date.now()}`,
         role: "assistant",
         content:
-          "I apologize, but I'm currently unable to reach the neural gateway. You can schedule a call directly at **/schedule** or WhatsApp at **+92 309 7404009**.",
+          "I apologize, but I'm currently unable to reach the neural gateway. You can schedule a call directly at **/schedule** or call us at **+1 (424) 451-0714**.",
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         actionCta: {
           text: "Schedule directly with our Lead AI Engineer:",
@@ -264,15 +358,16 @@ export default function WhizzlyChatbot() {
               initial={{ opacity: 0, x: 20, scale: 0.85 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.85 }}
-              className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0a0518]/90 border border-purple-500/30 shadow-[0_0_20px_rgba(168,85,247,0.25)] backdrop-blur-md cursor-pointer hover:border-purple-400/60 transition-all"
+              className="hidden lg:flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-[#0a0518]/90 border border-cyan-400/30 shadow-[0_0_25px_rgba(0,240,255,0.25)] backdrop-blur-xl cursor-pointer hover:border-cyan-400/60 transition-all group"
               onClick={() => setIsOpen(true)}
             >
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+              <NeuralCoreShape size={16} glow={false} />
+              <span className="text-xs font-semibold text-slate-200 group-hover:text-white transition-colors">
+                Ask Whizzly AI
               </span>
-              <span className="text-xs font-semibold text-slate-200">
-                Ask Whizzly AI <span className="text-purple-400">⚡</span>
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
             </motion.div>
           )}
@@ -280,15 +375,20 @@ export default function WhizzlyChatbot() {
 
         <motion.button
           onClick={() => setIsOpen(!isOpen)}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className={`relative flex items-center justify-center w-14 h-14 rounded-2xl shadow-[0_0_25px_rgba(168,85,247,0.4)] transition-all duration-300 ${
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.94 }}
+          className={`relative flex items-center justify-center w-14 h-14 rounded-2xl shadow-[0_0_30px_rgba(0,240,255,0.35)] transition-all duration-300 ${
             isOpen
-              ? "bg-[#180b33] border border-purple-500/50 text-white"
-              : "bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-500 text-white border border-white/20"
+              ? "bg-[#140628] border border-cyan-400/50 text-white"
+              : "bg-gradient-to-br from-[#0c051a] via-[#150a2e] to-[#0a1832] text-white border border-cyan-400/40"
           }`}
           aria-label={isOpen ? "Close AI Assistant" : "Open AI Assistant"}
         >
+          {/* Ambient energy ring behind button */}
+          {!isOpen && (
+            <div className="pointer-events-none absolute -inset-1 rounded-2xl bg-gradient-to-tr from-[#00F0FF] via-[#6366f1] to-[#a855f7] opacity-40 blur-md animate-pulse" />
+          )}
+
           <AnimatePresence mode="wait">
             {isOpen ? (
               <motion.div
@@ -297,8 +397,9 @@ export default function WhizzlyChatbot() {
                 animate={{ rotate: 0, opacity: 1 }}
                 exit={{ rotate: 90, opacity: 0 }}
                 transition={{ duration: 0.2 }}
+                className="relative z-10 flex items-center justify-center"
               >
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6 text-cyan-300" />
               </motion.div>
             ) : (
               <motion.div
@@ -307,10 +408,9 @@ export default function WhizzlyChatbot() {
                 animate={{ rotate: 0, opacity: 1 }}
                 exit={{ rotate: -90, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="relative"
+                className="relative z-10 flex items-center justify-center"
               >
-                <Bot className="w-7 h-7" />
-                <Sparkles className="w-3.5 h-3.5 text-cyan-300 absolute -top-1 -right-1 animate-pulse" />
+                <NeuralCoreShape size={34} />
               </motion.div>
             )}
           </AnimatePresence>
@@ -330,8 +430,8 @@ export default function WhizzlyChatbot() {
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-purple-500/20 bg-gradient-to-r from-purple-950/40 via-transparent to-cyan-950/20">
               <div className="flex items-center gap-3">
-                <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 border border-purple-400/40 shadow-inner">
-                  <Bot className="w-5 h-5 text-white" />
+                <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-black/40 border border-cyan-400/30 shadow-inner">
+                  <NeuralCoreShape size={26} glow={false} />
                   <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500 border-2 border-[#090314]"></span>
@@ -340,7 +440,7 @@ export default function WhizzlyChatbot() {
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-white text-sm tracking-tight">Whizzly AI</span>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
                       RAG Active
                     </span>
                   </div>
@@ -544,12 +644,10 @@ export default function WhizzlyChatbot() {
                   </Link>
                   <span>•</span>
                   <a
-                    href="https://wa.me/923097404009"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-emerald-300 transition-colors flex items-center gap-1"
+                    href="tel:+14244510714"
+                    className="hover:text-cyan-300 transition-colors flex items-center gap-1"
                   >
-                    <span>WhatsApp</span>
+                    <span>+1 (424) 451-0714</span>
                   </a>
                 </div>
                 <span className="text-[10px] text-slate-400">Whizzly Lab Studio</span>

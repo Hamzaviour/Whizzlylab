@@ -63,7 +63,7 @@ export default function Services() {
             End-to-end delivery
           </h2>
           <p className="mt-4 text-[var(--text-secondary)]">
-            From model training to distributed backends and polished product UI —
+            From model training to distributed backends and polished product UI:
             one lab, full stack of intelligence.
           </p>
         </motion.div>

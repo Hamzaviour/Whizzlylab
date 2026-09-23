@@ -26,18 +26,20 @@ export default function HeroSection() {
         <ModernNavbar />
 
         <main className="flex flex-1 flex-col items-center justify-center px-4 py-8 text-center sm:py-12">
-          {/* Availability Status Badge */}
+          {/* Studio Status Badge */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-medium text-cyan-300 backdrop-blur-md shadow-[0_0_15px_rgba(0,240,255,0.15)]"
+            className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-xs text-slate-300 backdrop-blur-md transition-colors hover:border-white/20"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500" />
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
             </span>
-            Available for new AI & full-stack projects
+            <span className="font-medium tracking-wide">Production Engineering Studio</span>
+            <span className="text-white/20">/</span>
+            <span className="text-slate-400">Deploying Q2 2026</span>
           </motion.div>
 
           <motion.div
@@ -57,7 +59,7 @@ export default function HeroSection() {
             {/* Logo */}
             <Image
               src="/transparent-icon.png"
-              alt="Whizzly Lab — AI Systems, Real-Time Data Pipelines & Full-Stack Products"
+              alt="Whizzly Lab AI Systems, Real-Time Data Pipelines and Full-Stack Products"
               width={360}
               height={360}
               style={{ width: "auto" }}
@@ -70,24 +72,24 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="font-general text-[clamp(2.4rem,9vw,96px)] leading-[1.05] font-semibold tracking-[-0.03em]"
+            className="font-general text-[clamp(2.2rem,6.5vw,78px)] leading-[1.08] font-bold tracking-[-0.035em] max-w-5xl"
           >
-            <span className="text-white">Whizzly</span>{" "}
+            <span className="text-white">Ship Production AI Systems That</span>{" "}
             <span
-              className="bg-gradient-to-br from-[#00F0FF] via-[#6366f1] to-[#a855f7] bg-clip-text text-transparent"
-              style={{ filter: "drop-shadow(0 0 35px rgba(0,240,255,0.45))" }}
+              className="bg-gradient-to-r from-[#00F0FF] via-[#6366f1] to-[#a855f7] bg-clip-text text-transparent"
+              style={{ filter: "drop-shadow(0 0 35px rgba(0,240,255,0.4))" }}
             >
-              Lab
+              Save Time & Scale
             </span>
-            <span className="sr-only"> — AI Studio, Machine Learning & Software Engineering Services</span>
+            <span className="sr-only"> Whizzly Lab AI Studio and Software Engineering</span>
           </motion.h1>
 
-          <div className="mt-4 max-w-xl">
+          <div className="mt-4 max-w-2xl">
             <ProTextType
               as="p"
               className="text-hero-sub text-base leading-relaxed sm:text-lg sm:leading-8 font-normal"
-              text="Intelligent AI systems. Real-time data pipelines. Production-grade full-stack products."
-              speed={18}
+              text="We turn prototypes into production software, specializing in autonomous RAG agents, AI automation, web development, digital marketing, and full stack engineering products."
+              speed={16}
               delay={350}
             />
           </div>
@@ -100,7 +102,7 @@ export default function HeroSection() {
           >
             <MagneticButton href="/schedule">
               <span className="inline-flex w-full items-center justify-center rounded-full bg-gradient-to-r from-[#6366f1] via-[#a855f7] to-[#00f0ff] px-7 py-3.5 text-sm font-semibold text-black shadow-[0_0_25px_rgba(0,240,255,0.35)] transition-all hover:opacity-95 sm:w-auto sm:px-8 sm:py-4">
-                Schedule a Consult
+                Book a Consult →
               </span>
             </MagneticButton>
             <MagneticButton href="/#work" strength={0.25}>
@@ -110,17 +112,25 @@ export default function HeroSection() {
             </MagneticButton>
           </motion.div>
 
-          {/* Quick Capability Tags */}
+          {/* Quick Capability & Trust Tags */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.8 }}
-            className="mt-8 flex flex-wrap items-center justify-center gap-2 text-xs text-hero-sub/60"
+            className="mt-8 flex flex-wrap items-center justify-center gap-2 text-xs text-hero-sub/70"
           >
-            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1">✦ RAG & AI Agents</span>
-            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1">✦ Kafka & Spark Streams</span>
-            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1">✦ Full-Stack Next.js</span>
-            <span className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1">✦ 24h Response Guarantee</span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-slate-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" /> Zero Silent Pipeline Failures
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-slate-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" /> Sub 100ms Inference Latency
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-slate-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> HIPAA and SOC2 Compliant
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-slate-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" /> 24h Response SLA
+            </span>
           </motion.div>
         </main>
 

@@ -4,7 +4,8 @@ import { FormEvent, useState } from "react";
 import { Send } from "lucide-react";
 import {
   COMPANY_EMAIL,
-  WHATSAPP_URL,
+  COMPANY_PHONE,
+  PHONE_URL,
   LINKEDIN_URL,
   INSTAGRAM_URL,
   FACEBOOK_URL,
@@ -23,7 +24,7 @@ export default function ContactSection() {
     setStatus("sending");
     try {
       await submitWeb3Form({
-        subject: `Whizzly Lab Consult — ${String(data.get("name") || "")}`,
+        subject: `Whizzly Lab Consult: ${String(data.get("name") || "")}`,
         name: String(data.get("name") || ""),
         email: String(data.get("email") || ""),
         message: String(data.get("message") || ""),
@@ -61,14 +62,12 @@ export default function ContactSection() {
                 </a>
               </p>
               <p>
-                WhatsApp:{" "}
+                Phone:{" "}
                 <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noreferrer"
+                  href={PHONE_URL}
                   className="text-foreground/80 hover:underline"
                 >
-                  Chat with us on WhatsApp
+                  {COMPANY_PHONE}
                 </a>
               </p>
               <div className="flex flex-wrap items-center gap-3 pt-1">
@@ -132,9 +131,9 @@ export default function ContactSection() {
               {status === "sending"
                 ? "Sending…"
                 : status === "sent"
-                  ? "Sent — we'll reply soon"
+                  ? "Sent. We'll reply soon"
                   : status === "error"
-                    ? "Failed — try again"
+                    ? "Failed. Please try again"
                     : "Send Message"}
             </button>
           </form>

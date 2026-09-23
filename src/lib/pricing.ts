@@ -50,7 +50,7 @@ export const SERVICE_PRICING: ServicePricing[] = [
     key: "web",
     label: "Websites",
     blurb:
-      "Marketing sites, CMS and e-commerce — from a portfolio page to an enterprise web app.",
+      "Marketing sites, CMS and e-commerce: from a portfolio page to an enterprise web app.",
     addons: [
       { label: "Content writing support", uplift: 0.06 },
       { label: "SEO optimization package", uplift: 0.05 },
@@ -62,7 +62,7 @@ export const SERVICE_PRICING: ServicePricing[] = [
         min: 15_000,
         max: 60_000,
         features:
-          "3–6 pages, contact form, mobile responsive — ideal for freelancers and small service startups",
+          "3 to 6 pages, contact form, mobile responsive, ideal for freelancers and small service startups",
         delivery: "2–4 weeks",
       },
       {
@@ -79,7 +79,7 @@ export const SERVICE_PRICING: ServicePricing[] = [
         min: 80_000,
         max: 350_000,
         features:
-          "WooCommerce or Shopify — cart, Easypaisa / JazzCash / bank gateways, basic inventory",
+          "WooCommerce or Shopify: cart, Easypaisa / JazzCash / bank gateways, basic inventory",
         delivery: "6–14 weeks",
       },
       {
@@ -172,7 +172,7 @@ export const SERVICE_PRICING: ServicePricing[] = [
     key: "mobile",
     label: "Mobile Apps",
     blurb:
-      "iOS & Android apps — React Native / Flutter products with APIs and admin panels.",
+      "iOS & Android apps: React Native / Flutter products with APIs and admin panels.",
     addons: [
       { label: "Push notifications setup", uplift: 0.06 },
       { label: "App store optimization", uplift: 0.05 },

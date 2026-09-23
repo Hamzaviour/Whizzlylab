@@ -9,11 +9,17 @@ import ThreeNeuralField from "@/components/ThreeNeuralField";
 import CursorParticles from "@/components/CursorParticles";
 import { TextRevealWords } from "@/components/TextRevealOnScroll";
 import ReviewsSection from "@/components/ReviewsSection";
-import { Sparkles, Cpu, Brain, Database, Layers, CheckCircle2, ShieldAlert } from "lucide-react";
+import ClientLogoStrip from "@/components/ClientLogoStrip";
+import TrustBadges from "@/components/TrustBadges";
+import IndustriesSection from "@/components/IndustriesSection";
+import ComparisonMatrix from "@/components/ComparisonMatrix";
+import InsightsSection from "@/components/InsightsSection";
+import CaseStudies from "@/components/CaseStudies";
+import { Cpu, Brain, Database, Layers, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Whizzly Lab — AI Studio, ML & Software Engineering Services",
+    absolute: "Whizzly Lab: AI Studio, ML and Software Engineering Services",
   },
   description:
     "Whizzly Lab is an elite AI studio delivering AI services, machine learning solutions, real-time Kafka data pipelines, and full-stack software engineering services globally.",
@@ -21,7 +27,7 @@ export const metadata: Metadata = {
     canonical: `${BASE_URL}/`,
   },
   openGraph: {
-    title: "Whizzly Lab — AI Studio, ML & Software Engineering Services",
+    title: "Whizzly Lab: AI Studio, ML & Software Engineering Services",
     description:
       "Whizzly Lab is an elite AI studio delivering AI services, machine learning solutions, real-time Kafka data pipelines, and full-stack software engineering services globally.",
     url: `${BASE_URL}/`,
@@ -31,14 +37,14 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/opengraph-image`,
         width: 1200,
         height: 630,
-        alt: "Whizzly Lab — AI Studio & Software Engineering Services",
+        alt: "Whizzly Lab: AI Studio & Software Engineering Services",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Whizzly Lab — AI Studio, ML & Software Engineering Services",
+    title: "Whizzly Lab: AI Studio, ML & Software Engineering Services",
     description:
       "Whizzly Lab is an elite AI studio delivering AI services, machine learning solutions, real-time Kafka data pipelines, and full-stack software engineering services.",
     images: [`${BASE_URL}/twitter-image`],
@@ -50,18 +56,23 @@ export default function Home() {
     <main className="relative min-h-screen overflow-x-hidden bg-transparent text-foreground">
       <HeroSection />
 
+      {/* Social Proof & Trusted By Marquee */}
+      <ClientLogoStrip />
+
+      {/* Enterprise Security, SLA & Compliance Badges */}
+      <TrustBadges />
+
       {/* Primary Studio Identity & Entity Definition (Optimized for Google Understanding & Disambiguation) */}
-      <section className="relative z-10 px-4 pt-12 pb-6 sm:px-8 sm:pt-16">
+      <section className="relative z-10 px-4 pt-10 pb-6 sm:px-8 sm:pt-14">
         <div className="liquid-glass relative mx-auto max-w-6xl overflow-hidden rounded-3xl border border-white/15 bg-white/[0.02] p-8 sm:p-12 shadow-2xl">
           <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-semibold text-cyan-300">
-              <Sparkles className="h-3.5 w-3.5" />
-              Whizzly Lab · Bespoke AI &amp; Software Engineering Studio
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-slate-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+              <span>Studio Overview and Capabilities</span>
             </div>
 
             <h2
-              className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
-              style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}
+              className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl font-heading"
             >
               Whizzly Lab is an AI, machine learning, and full-stack engineering studio.
             </h2>
@@ -134,19 +145,24 @@ export default function Home() {
 
               <div className="rounded-2xl border border-white/10 bg-black/40 p-5">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400">
-                    <ShieldAlert className="h-5 w-5" />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400">
+                    <CheckCircle2 className="h-5 w-5" />
                   </div>
-                  <h3 className="font-semibold text-white text-sm">Independent Studio Identity</h3>
+                  <h3 className="font-semibold text-white text-sm">Enterprise Governance &amp; Security</h3>
                 </div>
                 <p className="mt-2.5 text-xs leading-relaxed text-hero-sub/75">
-                  Whizzly Lab is an independent software engineering studio. Whizzly Lab is NOT Whizzy Lab and is NOT Whizlabs (it is not an online certification training platform).
+                  Private VPC deployments, zero-data-leakage architecture, HIPAA &amp; SOC2 readiness, and deterministic guardrails preventing hallucinations.
                 </p>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Industry Solutions & Role Use-Cases */}
+      <div className="content-auto">
+        <IndustriesSection />
+      </div>
 
       {/* Cursor-reactive particles behind all content below the hero */}
       <div className="relative">
@@ -166,12 +182,27 @@ export default function Home() {
             <ServiceCarousel3D />
           </div>
 
+          {/* Work / Case Studies Portfolio */}
+          <div className="content-auto">
+            <CaseStudies />
+          </div>
+
+          {/* Competitive Differentiation Matrix */}
+          <div className="content-auto">
+            <ComparisonMatrix />
+          </div>
+
           <div className="content-auto">
             <BenefitsSection />
           </div>
 
           <div className="content-auto">
             <ReviewsSection />
+          </div>
+
+          {/* Technical Playbooks & Engineering Insights */}
+          <div className="content-auto">
+            <InsightsSection />
           </div>
 
           <section id="learning" className="content-auto relative px-4 py-20 sm:px-8 sm:py-32">
@@ -186,21 +217,21 @@ export default function Home() {
                   className="font-general mt-3 text-3xl font-bold tracking-tight text-white sm:text-5xl"
                 />
                 <p className="mt-4 text-base leading-relaxed text-hero-sub/80 sm:text-lg">
-                  Hands-on engineering workshops on production RAG systems, autonomous agent workflows, distributed Kafka/Spark streams, Hugging Face deployments, and MLOps best practices — delivered by Whizzly Lab's lead AI engineers (shipping globally).
+                  Hands-on engineering workshops on production RAG systems, autonomous agent workflows, distributed Kafka/Spark streams, Hugging Face deployments, and MLOps best practices, delivered by Whizzly Lab's lead AI engineers shipping globally.
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-2">
                   <span className="rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-hero-sub/80">
-                    ✦ Production RAG &amp; Vector Databases
+                    Production RAG &amp; Vector Databases
                   </span>
                   <span className="rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-hero-sub/80">
-                    ✦ Autonomous Multi-Agent Workflows
+                    Autonomous Multi-Agent Workflows
                   </span>
                   <span className="rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-hero-sub/80">
-                    ✦ High-Throughput Kafka/Spark Pipelines
+                    High-Throughput Kafka and Spark Pipelines
                   </span>
                   <span className="rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-hero-sub/80">
-                    ✦ Hugging Face &amp; MLOps Delivery
+                    Hugging Face &amp; MLOps Delivery
                   </span>
                 </div>
 

@@ -129,7 +129,12 @@ export default function HeroVideoBackground() {
       {/* Subtle overlay gradient to ensure high contrast */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(5,1,15,0.4)_0%,rgba(5,1,15,0.92)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(6,6,12,0.3)_0%,rgba(6,6,12,0.92)_100%)]"
+      />
+      {/* Bottom fade for seamless transition to subsequent sections */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-gradient-to-b from-transparent via-[#06060c]/70 to-[#06060c]"
       />
     </>
   );

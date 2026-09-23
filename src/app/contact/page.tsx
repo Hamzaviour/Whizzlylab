@@ -1,15 +1,17 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Phone } from "lucide-react";
 import Link from "next/link";
 import PageNavbar from "@/components/PageNavbar";
 import CtaFooter from "@/components/CtaFooter";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ResponseTimePromise from "@/components/ResponseTimePromise";
+import TrustBadges from "@/components/TrustBadges";
 import {
   COMPANY_EMAIL,
-  WHATSAPP_URL,
+  COMPANY_PHONE,
+  PHONE_URL,
   LINKEDIN_URL,
   INSTAGRAM_URL,
   FACEBOOK_URL,
@@ -29,7 +31,7 @@ export default function ContactPage() {
     setStatus("sending");
     try {
       await submitWeb3Form({
-        subject: `Whizzly Lab Contact — ${String(data.get("name") || "")}`,
+        subject: `Whizzly Lab Contact: ${String(data.get("name") || "")}`,
         name: String(data.get("name") || ""),
         email: String(data.get("email") || ""),
         message: String(data.get("message") || ""),
@@ -58,8 +60,7 @@ export default function ContactPage() {
             ]}
           />
           <h1
-            className="mx-auto mt-3 max-w-3xl text-3xl font-bold tracking-tight italic sm:text-5xl md:text-6xl"
-            style={{ fontFamily: "'Instrument Serif', Georgia, serif" }}
+            className="mx-auto mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl font-heading"
           >
             Let&apos;s build your next product.
           </h1>
@@ -83,13 +84,11 @@ export default function ContactPage() {
               <ArrowUpRight className="h-5 w-5" />
             </Link>
             <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="font-body inline-flex items-center justify-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-6 py-3 text-sm font-medium text-emerald-300 transition hover:bg-emerald-500/25"
+              href={PHONE_URL}
+              className="font-body inline-flex items-center justify-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-500/15 px-6 py-3 text-sm font-medium text-cyan-300 transition hover:bg-cyan-500/25"
             >
-              WhatsApp
-              <ArrowUpRight className="h-4 w-4" />
+              <Phone className="h-4 w-4" />
+              {COMPANY_PHONE}
             </a>
             <Link
               href="/pricing"
@@ -139,12 +138,12 @@ export default function ContactPage() {
           </button>
           {status === "sent" && (
             <p className="text-center text-sm text-emerald-400/90">
-              Message sent to Whizzly Lab — we&apos;ll reply soon.
+              Message sent to Whizzly Lab. We will reply soon.
             </p>
           )}
           {status === "error" && (
             <p className="text-center text-sm text-red-400/90">
-              Couldn&apos;t send. Try {COMPANY_EMAIL} or WhatsApp.
+              Couldn&apos;t send. Try {COMPANY_EMAIL} or call {COMPANY_PHONE}.
             </p>
           )}
           </form>
@@ -154,7 +153,7 @@ export default function ContactPage() {
             <div className="space-y-6">
               <div>
                 <p className="text-xs tracking-widest text-foreground/40 uppercase">Direct Channels</p>
-                <h2 className="mt-2 text-2xl font-bold tracking-tight text-white" style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}>
+                <h2 className="mt-2 text-2xl font-bold tracking-tight text-white font-heading">
                   Fastest ways to connect
                 </h2>
                 <p className="mt-2 text-sm text-hero-sub/75">
@@ -174,18 +173,16 @@ export default function ContactPage() {
                   <p className="mt-1 text-xs text-hero-sub/60">For RFPs, detailed briefs & NDAs</p>
                 </div>
 
-                <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4 transition hover:bg-emerald-500/10">
-                  <p className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">WhatsApp Direct</p>
+                <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-4 transition hover:bg-cyan-500/10">
+                  <p className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Direct Phone</p>
                   <a
-                    href={WHATSAPP_URL}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-2 inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-300 transition hover:bg-emerald-500/25"
+                    href={PHONE_URL}
+                    className="mt-2 inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-500/15 px-4 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-500/25"
                   >
-                    Chat on WhatsApp
-                    <ArrowUpRight className="h-4 w-4" />
+                    <Phone className="h-4 w-4" />
+                    Call {COMPANY_PHONE}
                   </a>
-                  <p className="mt-2 text-xs text-hero-sub/60">Instant messaging for quick questions & scoping</p>
+                  <p className="mt-2 text-xs text-hero-sub/60">Direct line to engineering leadership</p>
                 </div>
 
                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition hover:bg-white/[0.06]">
@@ -194,7 +191,7 @@ export default function ContactPage() {
                     href="/schedule"
                     className="mt-2 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/20"
                   >
-                    Book a 20–30 min consultation
+                    Book a 20 to 30 minute consultation
                     <ArrowUpRight className="h-4 w-4" />
                   </Link>
                   <p className="mt-2 text-xs text-hero-sub/60">Technical architecture and budget clarity</p>
@@ -240,6 +237,10 @@ export default function ContactPage() {
               <p>Operating across global time zones · NDA signed prior to discussion upon request</p>
             </div>
           </div>
+        </div>
+
+        <div className="mx-auto mt-16 max-w-5xl">
+          <TrustBadges />
         </div>
       </section>
 

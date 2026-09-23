@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { MessageCircle, Calendar, Send } from "lucide-react";
-import { WHATSAPP_URL } from "@/lib/contact";
+import { Phone, Calendar, Send } from "lucide-react";
+import { PHONE_URL, COMPANY_PHONE } from "@/lib/contact";
 
 export default function StickyMobileCTA() {
   const [visible, setVisible] = useState(false);
@@ -30,13 +30,11 @@ export default function StickyMobileCTA() {
         Schedule
       </Link>
       <a
-        href={WHATSAPP_URL}
-        target="_blank"
-        rel="noreferrer"
-        className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/15 py-2.5 text-center text-xs font-semibold text-emerald-300"
+        href={PHONE_URL}
+        className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-cyan-500/40 bg-cyan-500/15 py-2.5 text-center text-xs font-semibold text-cyan-300"
       >
-        <MessageCircle className="h-3.5 w-3.5" />
-        WhatsApp
+        <Phone className="h-3.5 w-3.5" />
+        Call Us
       </a>
       <Link
         href="/contact"

@@ -2,14 +2,17 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { Phone } from "lucide-react";
 import PageNavbar from "@/components/PageNavbar";
 import CtaFooter from "@/components/CtaFooter";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import BudgetSelect from "@/components/BudgetSelect";
+import TrustBadges from "@/components/TrustBadges";
 import { useCurrency } from "@/lib/currency";
 import {
   COMPANY_EMAIL,
-  WHATSAPP_URL,
+  COMPANY_PHONE,
+  PHONE_URL,
   submitWeb3Form,
 } from "@/lib/contact";
 
@@ -38,7 +41,7 @@ export default function SchedulePage() {
     setStatus("sending");
     try {
       await submitWeb3Form({
-        subject: `Whizzly Lab Schedule — ${String(data.get("service") || "Consult")}`,
+        subject: `Whizzly Lab Schedule: ${String(data.get("service") || "Consult")}`,
         name: String(data.get("name") || ""),
         email: String(data.get("email") || ""),
         phone: String(data.get("phone") || ""),
@@ -70,40 +73,39 @@ export default function SchedulePage() {
 
         <div className="mx-auto mt-6 grid max-w-6xl gap-10 lg:grid-cols-2 lg:gap-12">
           <div className="min-w-0">
-            <span className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-semibold text-cyan-300 backdrop-blur-md">
-              ✦ Discovery &amp; Strategy
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-slate-300 backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+              Discovery and Strategy
             </span>
             <h1
-              className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
-              style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}
+              className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl font-heading"
             >
               Book a Strategy Consult
             </h1>
             <p className="mt-4 text-base leading-relaxed text-hero-sub/80">
-              Tell us about your project — AI/RAG system, real-time data pipelines, or full-stack web platform. We reply within 24 hours with technical feasibility and clear next steps.
+              Tell us about your project, from AI systems and data pipelines to full stack platforms. We reply within 24 hours with technical feasibility and clear next steps.
             </p>
             <ul className="mt-8 space-y-3 text-sm text-hero-sub/75">
-              <li className="flex items-center gap-2">
-                <span className="text-cyan-400">✦</span> 20–30 minute technical discovery call
+              <li className="flex items-center gap-2.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0" /> 20 to 30 minute technical discovery call
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-cyan-400">✦</span> Scope, timeline, and architectural clarity in {currency}
+              <li className="flex items-center gap-2.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0" /> Scope, timeline, and architectural clarity in {currency}
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-cyan-400">✦</span> Direct discussion with engineering leads
+              <li className="flex items-center gap-2.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0" /> Direct discussion with engineering leads
               </li>
-              <li className="flex items-center gap-2">
-                <span className="text-cyan-400">✦</span> Mutual NDA signed prior to discussion upon request
+              <li className="flex items-center gap-2.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0" /> Mutual NDA signed prior to discussion upon request
               </li>
             </ul>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-5 py-2.5 text-sm font-medium text-emerald-300 transition hover:bg-emerald-500/20"
+                href={PHONE_URL}
+                className="inline-flex items-center gap-2 rounded-full border border-cyan-500/40 bg-cyan-500/10 px-5 py-2.5 text-sm font-medium text-cyan-300 transition hover:bg-cyan-500/20"
               >
-                Chat on WhatsApp
+                <Phone className="h-4 w-4" />
+                Call {COMPANY_PHONE}
               </a>
               <Link
                 href="/pricing"
@@ -133,7 +135,7 @@ export default function SchedulePage() {
             />
             <input
               name="phone"
-              placeholder="WhatsApp / phone"
+              placeholder="Direct phone number"
               className="w-full rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3.5 outline-none placeholder:text-foreground/30 focus:border-white/25"
             />
             <select
@@ -172,16 +174,19 @@ export default function SchedulePage() {
             </button>
             {status === "sent" && (
               <p className="text-center text-sm text-emerald-400/90">
-                Sent — we&apos;ll reply at {COMPANY_EMAIL} shortly.
+                Sent. We&apos;ll reply at {COMPANY_EMAIL} shortly.
               </p>
             )}
             {status === "error" && (
               <p className="text-center text-sm text-red-400/90">
-                Something went wrong. Email us at {COMPANY_EMAIL} or try
-                WhatsApp.
+                Something went wrong. Email us at {COMPANY_EMAIL} or call {COMPANY_PHONE}.
               </p>
             )}
           </form>
+        </div>
+
+        <div className="mx-auto mt-16 max-w-5xl">
+          <TrustBadges />
         </div>
       </section>
 

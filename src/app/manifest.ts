@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Whizzly Lab — AI & Full-Stack Engineering Studio",
+    name: "Whizzly Lab: AI & Full-Stack Engineering Studio",
     short_name: "Whizzly Lab",
     description:
       "AI, ML, and full-stack engineering studio building intelligent systems that ship.",

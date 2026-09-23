@@ -7,11 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 const faqs = [
   {
     q: "What services does Whizzly Lab offer?",
-    a: "We offer AI engineering, machine learning, RAG multi-agent pipelines, real-time data pipelines (Kafka/Spark), full-stack web platforms, automation, computer vision, and custom software systems — all production-grade and shipped to global clients.",
+    a: "We offer AI engineering, machine learning, RAG multi-agent pipelines, real-time data pipelines (Kafka/Spark), full-stack web platforms, automation, computer vision, and custom software systems, all production-grade and shipped to global clients.",
   },
   {
     q: "How long does a typical project take?",
-    a: "Project timelines vary by scope. A targeted feature or pipeline takes 2–4 weeks, an end-to-end AI system 4–8 weeks, and a full enterprise SaaS platform 2–4 months. We provide a detailed architectural roadmap after the discovery call.",
+    a: "Project timelines vary by scope. A targeted feature or pipeline takes 2 to 4 weeks, an end-to-end AI system 4 to 8 weeks, and a full enterprise SaaS platform 2 to 4 months. We provide a detailed architectural roadmap after the discovery call.",
   },
   {
     q: "Do you sign NDAs before discussing projects?",
@@ -34,13 +34,12 @@ export default function FAQSection() {
     <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-4xl">
         <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-semibold text-cyan-300 backdrop-blur-md">
-            <HelpCircle className="h-3.5 w-3.5" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1 text-xs font-medium tracking-wide text-zinc-300 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md">
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
             Clarity &amp; Transparency
           </div>
           <h2
-            className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
-            style={{ fontFamily: "'Syne', 'General Sans', sans-serif" }}
+            className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl font-heading"
           >
             Frequently Asked Questions
           </h2>
