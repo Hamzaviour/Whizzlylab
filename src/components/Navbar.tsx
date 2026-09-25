@@ -6,7 +6,7 @@ import { useState } from "react";
 import MagneticButton from "./MagneticButton";
 
 const links = [
-  { label: "Services", href: "#services" },
+  { label: "Services", href: "/services" },
   { label: "Tech Arsenal", href: "#tech" },
   { label: "Case Studies", href: "#cases" },
   { label: "Contact", href: "#contact" },

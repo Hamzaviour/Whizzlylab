@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import {
-  Sparkles,
   Send,
   X,
   Bot,
@@ -43,12 +43,6 @@ interface Message {
   timestamp: string;
 }
 
-const STARTER_PROMPTS = [
-  "⚡ What AI & RAG systems do you build?",
-  "💰 What is your project pricing (USD / PKR)?",
-  "🌐 How does your Kafka & Spark data pipeline work?",
-  "📅 How do I schedule a technical call with Whizzly Lab?",
-];
 
 /** Cybernetic Neural Core Hologram Shape for Whizzly AI */
 function NeuralCoreShape({
@@ -162,10 +156,9 @@ export default function WhizzlyChatbot() {
 
   useEffect(() => {
     if (isOpen) {
-      scrollToBottom();
       setTimeout(() => inputRef.current?.focus(), 150);
     }
-  }, [isOpen, messages, isLoading]);
+  }, [isOpen]);
 
   // Handle user submitting message
   const handleSend = async (textToSend?: string) => {
@@ -185,6 +178,11 @@ export default function WhizzlyChatbot() {
     const newHistory = [...messages, userMsg];
     setMessages(newHistory);
     setIsLoading(true);
+
+    // Scroll smoothly only when the user submits their message so the prompt is visible
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 50);
 
     try {
       const response = await fetch("/api/chat", {
@@ -351,23 +349,24 @@ export default function WhizzlyChatbot() {
   return (
     <>
       {/* ── Floating Launcher Trigger ────────────────────────────────────────── */}
-      <div className="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 flex items-center gap-3">
+      <div className="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 flex flex-col items-center gap-1.5 pointer-events-auto">
         <AnimatePresence>
           {!isOpen && (
             <motion.div
-              initial={{ opacity: 0, x: 20, scale: 0.85 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.85 }}
-              className="hidden lg:flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-[#0a0518]/90 border border-cyan-400/30 shadow-[0_0_25px_rgba(0,240,255,0.25)] backdrop-blur-xl cursor-pointer hover:border-cyan-400/60 transition-all group"
+              initial={{ opacity: 0, y: 8, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.9 }}
+              transition={{ duration: 0.2 }}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0a0518]/95 border border-cyan-400/30 shadow-[0_4px_20px_rgba(0,240,255,0.25)] backdrop-blur-xl cursor-pointer hover:border-cyan-400/60 transition-all group select-none whitespace-nowrap"
               onClick={() => setIsOpen(true)}
             >
-              <NeuralCoreShape size={16} glow={false} />
-              <span className="text-xs font-semibold text-slate-200 group-hover:text-white transition-colors">
+              <NeuralCoreShape size={12} glow={false} />
+              <span className="text-[10px] sm:text-[11px] font-medium text-slate-200 group-hover:text-white transition-colors tracking-wide">
                 Ask Whizzly AI
               </span>
-              <span className="flex h-2 w-2 relative">
+              <span className="flex h-1.5 w-1.5 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
               </span>
             </motion.div>
           )}
@@ -425,26 +424,33 @@ export default function WhizzlyChatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-3 bottom-24 md:inset-auto md:bottom-24 md:right-8 z-50 md:w-[440px] h-[580px] max-h-[82vh] flex flex-col rounded-3xl bg-[#090314]/95 border border-purple-500/30 shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_30px_rgba(168,85,247,0.2)] backdrop-blur-2xl overflow-hidden font-sans"
+            className="fixed inset-x-3 bottom-24 md:inset-auto md:bottom-24 md:right-8 z-50 md:w-[440px] h-[580px] max-h-[82vh] flex flex-col rounded-3xl bg-[#090714]/95 border border-white/15 shadow-[0_24px_70px_rgba(0,0,0,0.85),0_0_35px_rgba(99,102,241,0.18)] backdrop-blur-2xl overflow-hidden font-sans"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-purple-500/20 bg-gradient-to-r from-purple-950/40 via-transparent to-cyan-950/20">
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.08] bg-gradient-to-r from-purple-950/30 via-transparent to-cyan-950/20">
               <div className="flex items-center gap-3">
-                <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-black/40 border border-cyan-400/30 shadow-inner">
-                  <NeuralCoreShape size={26} glow={false} />
-                  <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3">
+                <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 shadow-inner">
+                  <Image
+                    src="/whizzly-icon-crisp.png"
+                    alt="Whizzly AI"
+                    width={24}
+                    height={24}
+                    unoptimized
+                    className="w-6 h-6 object-contain filter drop-shadow-[0_1px_6px_rgba(99,102,241,0.5)]"
+                  />
+                  <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500 border-2 border-[#090314]"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 border-2 border-[#090314]"></span>
                   </span>
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-white text-sm tracking-tight">Whizzly AI</span>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                    <span className="font-medium text-white text-sm tracking-tight font-sans">Whizzly AI</span>
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-mono uppercase bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
                       RAG Active
                     </span>
                   </div>
-                  <span className="text-xs text-slate-400">Senior AI Solutions Architect</span>
+                  <span className="text-[11px] text-slate-400 font-light">Solutions Architect</span>
                 </div>
               </div>
 
@@ -469,38 +475,28 @@ export default function WhizzlyChatbot() {
             </div>
 
             {/* Conversation Body */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-purple-900/50">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 scrollbar-thin scrollbar-thumb-white/10">
               {messages.length === 0 ? (
-                <div className="flex flex-col h-full justify-center space-y-4 py-2">
-                  <div className="p-4 rounded-2xl bg-white/[0.03] border border-purple-500/20 text-center space-y-2">
-                    <div className="inline-flex p-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
-                      <Sparkles className="w-5 h-5 text-cyan-400" />
+                <div className="flex flex-col h-full items-center justify-center text-center px-4 py-8 select-none">
+                  {/* Whizzly Lab Icon with Soft Ambient Glow */}
+                  <div className="relative mb-5 flex items-center justify-center">
+                    <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle,rgba(99,102,241,0.35)_0%,rgba(0,240,255,0.15)_50%,transparent_75%)] blur-2xl scale-150 pointer-events-none" />
+                    <div className="relative flex items-center justify-center w-16 h-16 rounded-2xl bg-white/[0.04] border border-white/15 shadow-[0_10px_35px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+                      <Image
+                        src="/whizzly-icon-crisp.png"
+                        alt="Whizzly AI"
+                        width={42}
+                        height={42}
+                        unoptimized
+                        className="w-10 h-10 object-contain filter drop-shadow-[0_2px_10px_rgba(99,102,241,0.6)]"
+                        priority
+                      />
                     </div>
-                    <h4 className="text-white font-semibold text-sm">
-                      Welcome to Whizzly Lab AI Consultation
-                    </h4>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      I can answer architecture questions, estimate project pricing in USD/PKR, detail our Kafka/Spark pipelines, and schedule a discovery call.
-                    </p>
                   </div>
 
-                  <div className="space-y-2 pt-2">
-                    <span className="text-[11px] font-semibold text-purple-300 tracking-wider uppercase px-1">
-                      Quick Questions:
-                    </span>
-                    <div className="flex flex-col gap-1.5">
-                      {STARTER_PROMPTS.map((prompt) => (
-                        <button
-                          key={prompt}
-                          onClick={() => handleSend(prompt)}
-                          className="w-full text-left px-3.5 py-2.5 rounded-xl bg-white/[0.02] hover:bg-purple-900/20 border border-white/[0.06] hover:border-purple-500/40 text-xs text-slate-200 font-medium transition-all duration-200 flex items-center justify-between group"
-                        >
-                          <span>{prompt}</span>
-                          <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 transition-colors" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                  <h3 className="text-white font-medium text-lg tracking-tight font-sans">
+                    Welcome to Whizzly AI
+                  </h3>
                 </div>
               ) : (
                 messages.map((msg) => (
@@ -607,14 +603,14 @@ export default function WhizzlyChatbot() {
             </div>
 
             {/* Input Bar */}
-            <div className="p-3 border-t border-purple-500/20 bg-[#06020e]/80">
-              <div className="flex items-end gap-2 bg-white/[0.04] border border-purple-500/30 focus-within:border-cyan-400/60 rounded-2xl p-1.5 transition-colors">
+            <div className="p-3 border-t border-white/[0.08] bg-[#060410]/90">
+              <div className="flex items-end gap-2 bg-white/[0.03] border border-white/10 focus-within:border-indigo-400/50 rounded-2xl p-1.5 transition-colors">
                 <textarea
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Ask about AI, RAG, Kafka, pricing..."
+                  placeholder="Ask about AI, systems architecture, or engineering..."
                   rows={1}
                   className="flex-1 bg-transparent border-0 text-white placeholder-slate-400 text-xs md:text-sm px-3 py-1.5 focus:outline-none resize-none max-h-24 min-h-[36px] scrollbar-none"
                 />
@@ -623,7 +619,7 @@ export default function WhizzlyChatbot() {
                   disabled={!input.trim() || isLoading}
                   className={`p-2 rounded-xl flex items-center justify-center transition-all ${
                     input.trim() && !isLoading
-                      ? "bg-gradient-to-r from-purple-600 to-cyan-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)] cursor-pointer"
+                      ? "bg-gradient-to-r from-indigo-500 to-cyan-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.5)] cursor-pointer hover:opacity-90"
                       : "bg-white/5 text-slate-500 cursor-not-allowed"
                   }`}
                   aria-label="Send message"

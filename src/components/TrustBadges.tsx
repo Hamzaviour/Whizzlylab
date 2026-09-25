@@ -26,7 +26,7 @@ const BADGES = [
   },
   {
     icon: CheckCircle2,
-    title: "24h Response",
+    title: "Senior Review",
     subtitle: "Direct Engineer SLA",
     iconColor: "text-purple-400",
     glow: "rgba(168, 85, 247, 0.15)",

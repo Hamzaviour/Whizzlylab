@@ -34,7 +34,7 @@ export function CurrencyProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [currency, setCurrency] = useState<Currency>("PKR");
+  const [currency, setCurrency] = useState<Currency>("USD");
   const [usdPerPkr, setUsdPerPkr] = useState<number>(FALLBACK_USD_PER_PKR);
   const [rateLoading, setRateLoading] = useState(true);
 

@@ -13,7 +13,7 @@ export default function ServiceSelector({
     <div
       role="tablist"
       aria-label="Service type"
-      className="flex flex-wrap justify-center gap-2"
+      className="flex flex-wrap justify-center gap-2 p-1.5 rounded-full border border-white/10 bg-[#090b12] backdrop-blur-md max-w-fit mx-auto"
     >
       {SERVICE_PRICING.map((s) => {
         const active = s.key === value;
@@ -24,10 +24,10 @@ export default function ServiceSelector({
             role="tab"
             aria-selected={active}
             onClick={() => onChange(s.key)}
-            className={`rounded-full border px-3.5 py-2 text-xs font-medium transition-colors sm:text-sm ${
+            className={`rounded-full px-4 py-2 text-xs sm:text-sm font-medium transition-all duration-200 ${
               active
-                ? "border-[#FF5656] bg-[#FF5656] text-white"
-                : "border-white/15 bg-white/[0.03] text-foreground/70 hover:border-white/30 hover:text-foreground"
+                ? "bg-white text-black font-semibold shadow-md"
+                : "text-gray-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
             {s.label}

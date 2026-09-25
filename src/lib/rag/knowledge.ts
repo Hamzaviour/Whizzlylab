@@ -1,11 +1,21 @@
 /**
  * Whizzly Lab RAG Knowledge Base
- * Structured domain knowledge chunks for grounded retrieval-augmented generation.
+ * Comprehensive domain knowledge chunks for grounded retrieval-augmented generation.
+ * Synchronized with the 8 official Whizzly Lab technical documents in src/lib/rag/docs/.
  */
 
 export interface KnowledgeChunk {
   id: string;
-  category: "service" | "pricing" | "case_study" | "company" | "technology" | "faq" | "contact";
+  category:
+    | "greeting"
+    | "company"
+    | "team"
+    | "service"
+    | "pricing"
+    | "project"
+    | "contact"
+    | "careers"
+    | "faq";
   title: string;
   content: string;
   keywords: string[];
@@ -14,51 +24,158 @@ export interface KnowledgeChunk {
 }
 
 export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
-  // ── Company & Founder ────────────────────────────────────────────────────────
+  // ── 1. Greetings & Conversational Identity ──────────────────────────────────
+  {
+    id: "general-greeting",
+    category: "greeting",
+    title: "Greeting & Welcome",
+    content: `Hello! I am Whizzly AI, the technical solutions architect assistant for Whizzly Lab. I'm doing great and ready to help you with our web development, workflow automation, RAG systems, SaaS products, apps, custom AI integration, pricing in USD, or scheduling a technical discovery call. How can I help you today?`,
+    keywords: ["hi", "hello", "hey", "how are you", "how are you doing", "greetings", "good morning", "good evening", "good afternoon", "what's up", "sup"],
+    url: "/services",
+    actionText: "Explore Capabilities",
+  },
+  {
+    id: "identity-who-are-you",
+    category: "greeting",
+    title: "Who is Whizzly AI",
+    content: `I am Whizzly AI, the AI technical assistant for Whizzly Lab. I provide instant, to-the-point answers about our web development, workflow automation, RAG systems, SaaS platforms, apps, custom AI integration, pricing in USD, team, projects, and direct meeting booking.`,
+    keywords: ["who are you", "what are you", "what can you do", "introduce yourself", "tell me about yourself", "your purpose"],
+    url: "/about",
+    actionText: "About Whizzly Lab",
+  },
+
+  // ── 2. Company & Mission ─────────────────────────────────────────────────────
   {
     id: "company-overview",
     category: "company",
-    title: "About Whizzly Lab",
-    content: `Whizzly Lab (also known as Whizzly or WhizzlyLab) is an elite AI engineering studio and full-stack software development agency. We architect intelligent AI systems, custom machine learning pipelines, real-time distributed Kafka data streams, and high-performance Next.js web applications for startups and enterprises worldwide. We operate globally across North America, Europe, Middle East, and Asia with a sub-24 hour response SLA.`,
-    keywords: ["whizzly", "whizzlylab", "whizzly lab", "ai studio", "software studio", "about", "agency", "company", "who are you"],
+    title: "About Whizzly Lab Studio",
+    content: `Whizzly Lab is an elite AI engineering studio and full-stack software development collective. We design, architect, and deploy intelligent AI systems, autonomous multi-agent pipelines, RAG systems, workflow automation, scalable SaaS platforms, full-stack web development, mobile & web apps, digital products, and custom AI integration. We operate globally with a remote-first engineering model and 100% IP ownership transferred to clients.`,
+    keywords: ["whizzly", "whizzlylab", "whizzly lab", "about", "company", "studio", "agency", "what is whizzly lab", "overview", "location", "where are you located"],
     url: "/about",
     actionText: "Read About Whizzly Lab",
   },
   {
-    id: "founder-profile",
+    id: "company-philosophy",
     category: "company",
-    title: "Lead AI Engineering Team: Whizzly Lab",
-    content: `Whizzly Lab is an elite AI & software engineering studio specializing in agentic RAG workflows, distributed Kafka event streaming, deep learning model deployment, and full-stack cloud architectures. The team personally oversees technical architecture, code quality, and delivery for every client engagement.`,
-    keywords: ["team", "engineers", "lead engineer", "who built", "who founded", "ceo", "creator"],
+    title: "Engineering Principles & Standards",
+    content: `Our engineering philosophy is built on 3 core pillars: Production-First Architecture (systems built from day 1 for real traffic and compliance), Observability & Guardrails (sub-second telemetry with zero hallucination drift), and Transparent Agile Cadence (weekly staging deployments with zero bureaucracy).`,
+    keywords: ["philosophy", "principles", "standards", "values", "how you build", "why whizzly"],
     url: "/about",
-    actionText: "Schedule a Technical Call",
+    actionText: "Our Engineering Principles",
   },
 
-  // ── Services ────────────────────────────────────────────────────────────────
+  // ── 3. Founder & Team ────────────────────────────────────────────────────────
+  {
+    id: "founder-hamza-younas",
+    category: "team",
+    title: "Founder: Hamza Younas",
+    content: `Whizzly Lab was founded by Hamza Younas, Lead Systems Architect specializing in Distributed AI, Neural Engines, Full-Stack Web Development, Workflow Automation, and Autonomous AI Integration. Hamza personally reviews architectural RFCs, code quality, and delivery for every client sprint. GitHub: https://github.com/Hamzaviour`,
+    keywords: ["hamza", "hamza younas", "founder", "ceo", "creator", "who founded", "who created", "who runs", "architect", "lead engineer"],
+    url: "/about",
+    actionText: "Meet the Founder",
+  },
+  {
+    id: "team-squad",
+    category: "team",
+    title: "The Whizzly Lab Engineering Squad",
+    content: `Our team is an elite, distributed collective of specialists:
+- Hamza Younas: Founder & Lead Systems Architect (Distributed AI & Neural Engines)
+- Sarah Chen: Principal ML Researcher (Transformer Fine-Tuning & RAG)
+- Marcus Webb: Distributed Systems Lead (Kafka Streaming & Telemetry)
+- Jennifer Liu: Lead Full-Stack Architect (Next.js 15 & Cloud Infrastructure)
+- David Park: DevOps & Cloud Architect (Kubernetes & AWS)
+- Ayesha Rahman: AI Safety & Guardrails Lead (Hallucination Evals)
+- Alexandre Moreau: Real-Time Systems Specialist (Low-Latency Vector Indexing)
+- Elena Rostova: WebGL & 3D Graphics Engineer (Three.js & GLSL Shaders)
+- Karan Mehta: Automation & Workflow Lead (n8n & Voice AI)`,
+    keywords: ["team", "engineers", "squad", "staff", "who works here", "developers", "researchers", "sarah chen", "marcus webb", "jennifer liu", "david park"],
+    url: "/about",
+    actionText: "View Team Orbit",
+  },
+
+  // ── 4. Contact, Meetings & Socials ───────────────────────────────────────────
+  {
+    id: "contact-meeting-booking",
+    category: "contact",
+    title: "Schedule a Meeting & Direct Contact",
+    content: `To book a technical scoping call or speak directly with our lead architects:
+- Book Call Online: https://www.whizzlylab.com/schedule (15–30 min 1:1 discovery call)
+- Phone: +1 (424) 451-0714 (tel:+14244510714)
+- Email: whizzlylab@gmail.com
+- Response Time: We respond with technical scoping feedback within 4 to 12 hours.`,
+    keywords: ["schedule", "meeting", "book", "book a call", "consultation", "demo", "contact", "phone", "number", "email", "call", "talk", "hire"],
+    url: "/schedule",
+    actionText: "Book Discovery Call",
+  },
+  {
+    id: "social-channels",
+    category: "contact",
+    title: "Official Socials & Repositories",
+    content: `Connect with Whizzly Lab across our official verified channels:
+- Phone: +1 (424) 451-0714
+- Email: whizzlylab@gmail.com
+- LinkedIn: https://www.linkedin.com/company/whizzly-lab
+- GitHub: https://github.com/Hamzaviour/whizzlylab
+- Instagram: https://www.instagram.com/whizzlylab/
+- Facebook: https://www.facebook.com/profile.php?id=61592686831558`,
+    keywords: ["socials", "social media", "linkedin", "github", "instagram", "facebook", "links", "repo"],
+    url: "/contact",
+    actionText: "Get in Touch",
+  },
+
+  // ── 5. Pricing & Packages (USD Only) ─────────────────────────────────────────
+  {
+    id: "pricing-overview",
+    category: "pricing",
+    title: "Engineering Pricing & Sprint Rates (USD)",
+    content: `Whizzly Lab offers transparent engineering sprint pricing strictly in USD with 100% IP ownership and 50/50 milestone billing:
+- Web Development: Starter ($300–$600), Growth ($750–$1,200), Enterprise ($2,500–$5,000+)
+- AI & Multi-Agent RAG: Starter ($600–$1,200), Growth ($1,400–$2,500), Enterprise ($2,800–$5,000+)
+- Real-Time Kafka/Spark Pipelines: Starter ($800–$1,500), Growth ($1,800–$3,000), Enterprise ($3,500–$6,000+)
+- Machine Learning & MLOps: Starter ($700–$1,300), Growth ($1,600–$2,800), Enterprise ($3,200–$5,500+)
+- Workflow Automation & Voice AI: Starter ($250–$500), Growth ($600–$1,200), Enterprise ($1,200–$2,500+)
+- Data Analytics & BI: Starter ($300–$600), Growth ($700–$1,400), Enterprise ($1,400–$3,000+)
+- Computer Vision: Starter ($750–$1,400), Growth ($1,700–$3,000), Enterprise ($3,400–$6,000+)
+- Business Solutions: Starter ($1,000–$2,000), Growth ($2,500–$4,500), Enterprise ($5,000+)`,
+    keywords: ["pricing", "cost", "how much", "rate", "usd", "price", "packages", "quote", "budget", "fees", "tiers"],
+    url: "/pricing",
+    actionText: "View Interactive Pricing Table",
+  },
+  {
+    id: "pricing-ip-milestones",
+    category: "pricing",
+    title: "Payment Structure & IP Ownership",
+    content: `Engagements are structured on milestone terms (50% upfront sprint kickoff, 50% upon staging review and sign-off). Clients receive 100% intellectual property ownership of all source code, neural network weights, database schemas, and cloud configs with zero vendor retainers.`,
+    keywords: ["payment terms", "milestone", "ip", "intellectual property", "ownership", "who owns code", "retainer"],
+    url: "/pricing",
+    actionText: "Review Pricing Terms",
+  },
+
+  // ── 6. Services & Technical Capabilities ─────────────────────────────────────
   {
     id: "service-ai-rag",
     category: "service",
-    title: "AI & RAG Systems Service",
-    content: `Whizzly Lab designs and deploys production-grade Retrieval-Augmented Generation (RAG) systems and autonomous agentic workflows. We build multi-stage retrieval pipelines with hybrid search (dense embeddings + BM25 keyword search), vector database indexing (Qdrant, Pinecone, ChromaDB, Weaviate), hallucination guardrails, and LLM evaluation benchmarks. Stack: Python, LangChain, LlamaIndex, OpenAI, Hugging Face, FastAPI, PyTorch.`,
-    keywords: ["ai", "rag", "retrieval augmented generation", "autonomous agents", "langchain", "llamaindex", "chromadb", "qdrant", "vector database", "llm", "gpt", "embeddings"],
+    title: "AI Transformation & Multi-Agent RAG",
+    content: `We build production-grade Retrieval-Augmented Generation (RAG) systems and autonomous multi-agent loops with dense vector embeddings, BM25 sparse keyword ranking, and vector DB indexing (Qdrant, Pinecone, ChromaDB). Features hallucination guardrails, LLM evaluation benchmarks, and tool-augmented agents using LangChain, LangGraph, and LlamaIndex.`,
+    keywords: ["ai", "rag", "retrieval augmented generation", "agents", "multi-agent", "langchain", "langgraph", "llamaindex", "qdrant", "pinecone", "chromadb", "embeddings", "vector db", "llm"],
     url: "/services/ai",
     actionText: "Explore AI & RAG Services",
   },
   {
     id: "service-data-pipelines",
     category: "service",
-    title: "Real-Time Data Pipelines & Event Streaming",
-    content: `We build distributed high-velocity event streaming architectures using Apache Kafka, Apache Spark, and PySpark. Deliverables include Kafka cluster broker design, streaming consumer groups, anomaly detection engines, schema registries, and pipeline observability. Capable of handling millions of real-time events with sub-second latency for live analytics and downstream AI models.`,
-    keywords: ["kafka", "spark", "pyspark", "data pipelines", "event streaming", "data engineering", "real-time data", "streaming", "etl", "kinesis"],
+    title: "Real-Time Data Pipelines & Apache Kafka",
+    content: `Distributed, high-throughput event streaming systems engineered with Apache Kafka, Spark, and PySpark. Deliverables include multi-broker clusters, partitioned topics, consumer group scaling, windowed stream transformations, and lag observability handling 50k+ events/sec with sub-second SLAs.`,
+    keywords: ["kafka", "spark", "pyspark", "streaming", "data pipelines", "event streaming", "real-time data", "etl", "kinesis", "high throughput"],
     url: "/services/data-pipelines",
-    actionText: "View Data Pipeline Architecture",
+    actionText: "Explore Kafka Pipelines",
   },
   {
     id: "service-web-development",
     category: "service",
     title: "Full-Stack Web Development & Next.js Platforms",
-    content: `Whizzly Lab develops product-grade, high-performance web applications using React, Next.js (App Router), TypeScript, and Tailwind CSS, backed by robust Python (FastAPI/Flask) or Node.js microservices. We build authenticated SaaS portals, high-converting marketing sites, interactive dashboards, and Dockerized cloud deployments on AWS and Vercel.`,
-    keywords: ["web development", "next.js", "react", "typescript", "full-stack", "frontend", "backend", "fastapi", "flask", "docker", "saas portal"],
+    content: `High-performance web applications built with Next.js 15 (App Router), React 19, TypeScript, and Tailwind CSS. Backed by high-speed Python (FastAPI/Flask) or Node.js microservices with Dockerized deployments on AWS and Vercel. Average page loads under 0.8s.`,
+    keywords: ["web development", "next.js", "react", "typescript", "frontend", "backend", "fastapi", "docker", "full-stack", "saas platform", "websites"],
     url: "/services/web-development",
     actionText: "Explore Web Engineering",
   },
@@ -66,137 +183,177 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
     id: "service-machine-learning",
     category: "service",
     title: "Machine Learning & MLOps",
-    content: `Custom machine learning model development, dataset curation, neural network training, evaluation loops, and MLOps deployment. We use PyTorch, TensorFlow, scikit-learn, and MLflow, deploying inference APIs with automated drift monitoring on Hugging Face Spaces and cloud infrastructure.`,
-    keywords: ["machine learning", "ml", "mlops", "pytorch", "tensorflow", "scikit-learn", "model training", "hugging face", "mlflow", "deep learning"],
+    content: `Custom deep neural network training, transformer fine-tuning (LoRA/QLoRA), automated dataset curation, and MLOps deployment with drift monitoring. Stack: PyTorch, TensorFlow, Hugging Face, scikit-learn, and MLflow.`,
+    keywords: ["machine learning", "ml", "mlops", "pytorch", "model training", "fine-tuning", "hugging face", "deep learning", "tensorflow"],
     url: "/services/machine-learning",
     actionText: "Explore Machine Learning",
   },
   {
-    id: "service-automation",
+    id: "service-automation-voice",
     category: "service",
     title: "Workflow Automation & Voice AI",
-    content: `Autonomous workflow automation connecting CRMs, databases, messaging, and AI services using n8n and AWS orchestration. We also engineer voice AI pipelines using Whisper, Deepgram, and ElevenLabs to convert speech into structured actions and automated customer responses.`,
-    keywords: ["automation", "n8n", "workflows", "voice ai", "whisper", "deepgram", "elevenlabs", "zapier", "integrations", "crm automation"],
+    content: `Autonomous workflow automation connecting CRMs, databases, and LLMs using n8n and AWS orchestration. Real-time conversational voice AI pipelines using Whisper, Deepgram, and ElevenLabs speech synthesis.`,
+    keywords: ["automation", "n8n", "voice ai", "whisper", "deepgram", "elevenlabs", "workflows", "integrations"],
     url: "/services/automation",
-    actionText: "View Automation Services",
-  },
-  {
-    id: "service-data-analytics",
-    category: "service",
-    title: "Data Analytics & Executive Dashboards",
-    content: `Business intelligence dashboards and KPI reporting layers in Power BI, Tableau, and Looker Studio. We establish clean metric definitions, automated ETL connectors, and executive data visualizations so leadership can make decisions without digging for answers.`,
-    keywords: ["data analytics", "power bi", "tableau", "looker studio", "bi", "dashboards", "business intelligence", "sql", "reporting"],
-    url: "/services/data-analytics",
-    actionText: "View Data Analytics",
+    actionText: "Explore Automation & Voice",
   },
   {
     id: "service-computer-vision",
     category: "service",
-    title: "Computer Vision & Visual Intelligence",
-    content: `Object detection, classification, segmentation, and video stream analysis using YOLO, OpenCV, PyTorch, and TorchVision. We build vision models for industrial inspection, drone/satellite imagery, and real-time inference alerts.`,
+    title: "Computer Vision & Industrial Visual Intelligence",
+    content: `Object detection, classification, segmentation, and live video analysis using YOLO, OpenCV, PyTorch, and TorchVision for industrial inspection, security systems, and automated bounding box alerts.`,
     keywords: ["computer vision", "cv", "yolo", "opencv", "object detection", "image classification", "video analysis"],
     url: "/services/computer-vision",
-    actionText: "View Computer Vision",
+    actionText: "Explore Computer Vision",
+  },
+  {
+    id: "service-analytics-dashboards",
+    category: "service",
+    title: "Data Analytics & Executive BI Dashboards",
+    content: `Executive business intelligence dashboards in Power BI, Tableau, and Looker Studio. Includes automated multi-source ETL pipelines, data warehouse modeling, and real-time metric tracking.`,
+    keywords: ["data analytics", "power bi", "tableau", "looker studio", "bi", "dashboards", "business intelligence", "sql"],
+    url: "/services/data-analytics",
+    actionText: "Explore BI Dashboards",
   },
   {
     id: "service-business-solutions",
     category: "service",
-    title: "Custom Business Solutions & SaaS Platforms",
-    content: `Domain-specific platform engineering for healthcare, compliance, and commerce. We build unified platforms with role-based access, automated workflows, and billing integrations, tailored to privacy regulations (HIPAA/GDPR) and business operational constraints.`,
-    keywords: ["business solutions", "saas", "custom software", "healthcare cms", "compliance", "e-commerce platform"],
+    title: "Enterprise Business Solutions & Healthcare Platforms",
+    content: `Vertical product engineering for healthcare (HIPAA compliance), enterprise compliance (SOC 2, ISO 27001), and custom e-commerce platforms with multi-tenant roles, audit trails, and billing integrations.`,
+    keywords: ["business solutions", "saas", "healthcare", "compliance", "hipaa", "soc 2", "enterprise platform"],
     url: "/services/business-solutions",
-    actionText: "View Business Solutions",
+    actionText: "Explore Business Solutions",
   },
 
-  // ── Pricing & Budget ────────────────────────────────────────────────────────
+  // ── 7. Projects & Case Studies ───────────────────────────────────────────────
   {
-    id: "pricing-overview",
-    category: "pricing",
-    title: "Transparent Project Pricing (PKR & USD)",
-    content: `Whizzly Lab offers transparent pricing with no hidden fees. Pricing is available in both USD and PKR:
-- **Web Development**: Starter ($300 / PKR 85k), Growth ($750 / PKR 210k), Enterprise ($1,500+ / PKR 420k+)
-- **AI & RAG Systems**: Starter ($600 / PKR 168k), Growth ($1,400 / PKR 390k), Enterprise ($2,800+ / PKR 780k+)
-- **Real-Time Data Pipelines (Kafka/Spark)**: Starter ($800 / PKR 225k), Growth ($1,800 / PKR 500k), Enterprise ($3,500+ / PKR 980k+)
-- **Machine Learning & MLOps**: Starter ($700 / PKR 195k), Growth ($1,600 / PKR 450k), Enterprise ($3,200+ / PKR 900k+)
-- **Workflow Automation**: Starter ($250 / PKR 70k), Growth ($600 / PKR 170k), Enterprise ($1,200+ / PKR 340k+)
-- **Data Analytics Dashboards**: Starter ($300 / PKR 85k), Growth ($700 / PKR 195k), Enterprise ($1,400+ / PKR 390k+)
-- **Computer Vision**: Starter ($750 / PKR 210k), Growth ($1,700 / PKR 475k), Enterprise ($3,400+ / PKR 950k+)
-- **Business Solutions**: Starter ($1,000 / PKR 280k), Growth ($2,500 / PKR 700k), Enterprise ($5,000+ / PKR 1.4M+)
-We offer milestone-based payment schedules (50% upfront, 50% upon delivery and staging sign-off).`,
-    keywords: ["pricing", "cost", "how much", "rate", "usd", "pkr", "budget", "quotes", "packages", "tiers", "estimate", "fees"],
-    url: "/pricing",
-    actionText: "View Interactive Pricing Table",
+    id: "project-aldeewan",
+    category: "project",
+    title: "Al-Deewan Collection (E-Commerce Storefront)",
+    content: `High-converting luxury fashion retail platform. Built with headless Next.js, Edge CDN, and Stripe checkout. Impact: +42% conversion lift, 0.7s average page load, handles 30k peak concurrent shoppers. Live URL: https://aldeewancollection.com/ | GitHub: https://github.com/Hamzaviour/Al-Deewan-Website`,
+    keywords: ["aldeewan", "al-deewan", "fashion", "e-commerce", "ecommerce website", "retail", "case study"],
+    url: "/work",
+    actionText: "View Al-Deewan Case Study",
+  },
+  {
+    id: "project-optionpackaging",
+    category: "project",
+    title: "Option Packaging (3D WebGL Configurator)",
+    content: `B2B manufacturing platform with interactive browser-based WebGL 3D box configurator and automated dieline quoting. Impact: 10x quoting acceleration, 100% pricing precision, $2M+ pipeline automated. Live URL: https://optionpackaging.com/ | GitHub: https://github.com/Hamzaviour/optionpackaging`,
+    keywords: ["option packaging", "optionpackaging", "packaging", "3d configurator", "webgl", "quoting engine", "case study"],
+    url: "/work",
+    actionText: "View Option Packaging Case Study",
+  },
+  {
+    id: "project-xecureai",
+    category: "project",
+    title: "XecureAI (Cybersecurity & AI Risk Governance)",
+    content: `Enterprise AI governance and threat telemetry portal. Built with Kafka streaming, Next.js Edge Runtime, and SOC2 compliance monitoring. Impact: <12ms alert latency, 5M+ daily event throughput, 99.99% availability. Live URL: https://xecureai.com/ | GitHub: https://github.com/Hamzaviour/XecureAi`,
+    keywords: ["xecureai", "xecure", "cybersecurity", "grc", "ai governance", "soc 2", "case study"],
+    url: "/work",
+    actionText: "View XecureAI Case Study",
+  },
+  {
+    id: "project-curecmsolution",
+    category: "project",
+    title: "CureCMS Solution (Healthcare & Medical Billing)",
+    content: `AI-powered revenue cycle management (RCM) and clinic operations platform. HIPAA-compliant with automated medical coding validation. Impact: 99.2% claim accuracy, 14-day reimbursement cycle, 22 hrs/week saved. Live URL: https://curercmsolution.com/ | GitHub: https://github.com/Hamzaviour/Curecmsolution`,
+    keywords: ["curecms", "curecmsolution", "healthcare", "medical billing", "rcm", "hipaa", "case study"],
+    url: "/work",
+    actionText: "View CureCMS Case Study",
+  },
+  {
+    id: "project-echosense",
+    category: "project",
+    title: "EchoSense AI (Real-Time Crisis NLP Streaming)",
+    content: `Distributed real-time crisis NLP streaming pipeline built with Apache Kafka, Spark NLP, Flask, PyTorch, and ChromaDB. Processes 50,000 events/sec with <18ms latency and 97.8% triage accuracy. Live Demo: https://hamzavelous-echosense-ai.hf.space/login`,
+    keywords: ["echosense", "echosense ai", "kafka project", "crisis nlp", "spark streaming", "ml project"],
+    url: "/work",
+    actionText: "View EchoSense Demo",
+  },
+  {
+    id: "project-marginalia",
+    category: "project",
+    title: "Marginalia (arXiv AI Paper Synthesis Companion)",
+    content: `AI research companion that searches, synthesizes, and grounds scientific literature from 2M+ arXiv papers with verified inline citations and vector trees. Live Demo: https://marginalia-ochre-nu.vercel.app/chat | GitHub: https://github.com/Hamzaviour/Marginalia`,
+    keywords: ["marginalia", "arxiv", "paper synthesis", "scientific literature", "research assistant", "rag project"],
+    url: "/work",
+    actionText: "View Marginalia Demo",
+  },
+  {
+    id: "project-sentiment-analyzer",
+    category: "project",
+    title: "Sentiment Analyzer (Multimodal Opinion Mining)",
+    content: `AI text classification and opinion mining platform using fine-tuned transformers on FastAPI. Features <25ms inference latency and 0.96 classification F1 score. Live Demo: https://huaweisentiment.vercel.app/ | GitHub: https://github.com/Hamzaviour/Sentiment-Analyzer`,
+    keywords: ["sentiment analyzer", "opinion mining", "nlp classification", "fastapi", "hugging face"],
+    url: "/work",
+    actionText: "View Sentiment Analyzer",
+  },
+  {
+    id: "project-cyberbrainids",
+    category: "project",
+    title: "CyberBrain IDS (Network Anomaly Detection & SOC RAG)",
+    content: `Intrusion Detection System with live packet capture (PyShark), hybrid Random Forest + XGBoost anomaly classification, and ChromaDB RAG for MITRE playbooks. 99.4% detection rate, 100k packets/sec. Live Demo: https://cybervenoms.netlify.app/ | GitHub: https://github.com/Hamzaviour/CyberBrainIDS`,
+    keywords: ["cyberbrain", "cyberbrainids", "intrusion detection", "ids", "anomaly detection", "soc dashboard"],
+    url: "/work",
+    actionText: "View CyberBrain IDS",
+  },
+  {
+    id: "project-intelligent-support",
+    category: "project",
+    title: "Intelligent Support Engine (LangGraph Multi-Agent)",
+    content: `Autonomous multi-agent customer support engine using LangGraph and FastAPI. Delivers real-time ticket triage, intent routing, and 68% autonomous issue resolution. GitHub: https://github.com/Hamzaviour/Intelligent_Support_Engine`,
+    keywords: ["intelligent support engine", "langgraph", "support agent", "multi-agent support", "customer support ai"],
+    url: "/work",
+    actionText: "View Support Engine",
+  },
+  {
+    id: "project-knowly",
+    category: "project",
+    title: "Knowly (Enterprise Document AI & Research)",
+    content: `Hybrid semantic document search and multi-agent research platform. Hierarchical document chunking, layout-aware OCR, and Qdrant/ChromaDB RAG ingesting 100+ pages/min with 99.1% precision. GitHub: https://github.com/Hamzaviour/Knowly`,
+    keywords: ["knowly", "document ai", "semantic search", "pdf analysis", "ocr rag"],
+    url: "/work",
+    actionText: "View Knowly",
+  },
+  {
+    id: "project-deewan-pos",
+    category: "project",
+    title: "Al-Deewan POS & ERP System",
+    content: `AI enterprise point-of-sale ERP with offline-first SQLite WAL mode, real-time barcode scanning, double-entry accounting, and Cloudflare tunnel remote sync. GitHub: https://github.com/Hamzaviour/Deewan-POS-System`,
+    keywords: ["deewan pos", "pos system", "erp", "electron", "accounting software"],
+    url: "/work",
+    actionText: "View POS System",
   },
 
-  // ── Case Studies ────────────────────────────────────────────────────────────
+  // ── 8. Careers & Culture ─────────────────────────────────────────────────────
   {
-    id: "case-echosense",
-    category: "case_study",
-    title: "EchoSense AI: Real-Time Streaming NLP Architecture",
-    content: `EchoSense AI is a high-throughput streaming NLP intelligence system architected with Apache Kafka, PySpark, and transformer-based sentiment/entity models. It processes real-time social and market data streams, generates instant semantic insights, and renders dynamic analytics dashboards with sub-second response times. Live demo: https://hamzavelous-echosense-ai.hf.space/login`,
-    keywords: ["echosense", "echosense ai", "case study", "portfolio item", "kafka project", "streaming nlp"],
-    url: "/#case-studies",
-    actionText: "Explore EchoSense AI",
-  },
-  {
-    id: "case-curecms",
-    category: "case_study",
-    title: "CureCMS: Healthcare Content & Clinic Operations",
-    content: `CureCMS is a specialized healthcare management platform with patient appointment scheduling, HIPAA-conscious medical records, doctor directory workflows, and dynamic CMS capabilities built on Next.js and secure cloud infrastructure.`,
-    keywords: ["curecms", "healthcare", "case study", "clinic platform"],
-    url: "/#case-studies",
-    actionText: "Explore CureCMS",
-  },
-  {
-    id: "case-complysecops",
-    category: "case_study",
-    title: "COMPLYSECOPS: Automated Compliance Audit Suite",
-    content: `COMPLYSECOPS is an enterprise compliance automation engine that scans cloud infrastructure, verifies security benchmarks (SOC2, ISO27001), and generates audit-ready reports with automated remediation triggers.`,
-    keywords: ["complysecops", "compliance", "security", "case study"],
-    url: "/#case-studies",
-    actionText: "Explore COMPLYSECOPS",
+    id: "careers-hiring",
+    category: "careers",
+    title: "Careers & Open Engineering Roles",
+    content: `We are hiring remote engineers who take pride in their craft:
+- Senior AI & LLM Systems Engineer (LangGraph, Qdrant, vLLM)
+- Distributed Systems & Kafka Architect (Kafka clusters, Spark streaming)
+- Full-Stack Next.js 15 Engineer (React 19, TypeScript, Edge)
+- Lead Machine Learning Researcher (Model fine-tuning, LoRA)
+Apply at https://www.whizzlylab.com/careers or email whizzlylab@gmail.com.`,
+    keywords: ["careers", "jobs", "hiring", "work at whizzly", "open roles", "apply", "engineer jobs"],
+    url: "/careers",
+    actionText: "Explore Open Roles",
   },
 
-  // ── Booking & Contact ───────────────────────────────────────────────────────
+  // ── 9. FAQs & Engagement Process ─────────────────────────────────────────────
   {
-    id: "contact-booking",
-    category: "contact",
-    title: "Schedule a Consultation & Contact Whizzly Lab",
-    content: `Ready to start a project or need architectural advice?
-- **Schedule Call**: Book directly on our calendar at https://whizzlylab.com/schedule (Cal.com integration, 15-30 min intro call).
-- **Phone**: Call directly at +1 (424) 451-0714 (tel:+14244510714).
-- **Email**: Reach out at whizzlylab@gmail.com.
-- **LinkedIn**: https://www.linkedin.com/company/whizzly-lab
-- **Instagram**: https://www.instagram.com/whizzlylab/
-- **Facebook**: https://www.facebook.com/profile.php?id=61592686831558
-- **GitHub**: https://github.com/Hamzaviour/whizzlylab
-- **Response Time**: We respond to all inquiries within 24 hours.`,
-    keywords: ["contact", "schedule", "book a call", "meeting", "call", "phone", "email", "hire", "consultation", "calendar", "socials", "linkedin", "instagram", "facebook", "github"],
-    url: "/schedule",
-    actionText: "Book a Free 1:1 Technical Call",
-  },
-
-  // ── FAQs ────────────────────────────────────────────────────────────────────
-  {
-    id: "faq-workflow",
+    id: "faq-engagement-process",
     category: "faq",
-    title: "How Engagements Work & Delivery Process",
-    content: `Our engagement workflow follows 4 distinct phases:
-1. **Discovery & Architecture**: 30-min discovery call to define exact requirements, data flows, tech stack, and deliverable milestones.
-2. **Rapid Prototyping & Iteration**: We ship working staging previews within 3 to 7 business days with weekly sprint reviews.
-3. **Hardening & Quality Assurance**: Stress testing, security audits, evaluation benchmarks, and documentation.
-4. **Production Deployment & Handover**: Complete source code transfer, CI/CD pipeline setup, Docker configuration, and 30-day post-launch support.`,
-    keywords: ["process", "workflow", "how it works", "delivery", "timeline", "how long", "milestones", "handover", "support"],
+    title: "Engagement Process & Timelines",
+    content: `Our engagement workflow moves fast in 4 phases:
+1. Architecture Scoping Call: 15–30 min technical review and fixed-milestone blueprint.
+2. Rapid Sprint Delivery: Working staging previews delivered within 3–7 business days.
+3. Hardening & Testing: Security audits, latency optimization, and automated eval benchmarks.
+4. Production Handover: 100% code transfer, Docker/CI-CD setup, and 30 days post-launch support.`,
+    keywords: ["process", "how it works", "timeline", "how long", "steps", "onboarding", "delivery"],
     url: "/about",
-    actionText: "Learn About Our Process",
-  },
-  {
-    id: "faq-ip-ownership",
-    category: "faq",
-    title: "Intellectual Property & Code Ownership",
-    content: `You own 100% of all intellectual property, source code, neural network weights, configuration scripts, and documentation created during the project. We do not retain vendor lock-in or proprietary licensing over your custom code.`,
-    keywords: ["ip", "intellectual property", "ownership", "code ownership", "license", "copyright"],
-    url: "/pricing",
-    actionText: "Check Terms & Ownership",
+    actionText: "How We Build",
   },
 ];

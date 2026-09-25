@@ -18,8 +18,8 @@ const faqs = [
     a: "Absolutely. We sign mutual NDAs before any sensitive project discussions. Your intellectual property, proprietary algorithms, and datasets remain 100% confidential and secure.",
   },
   {
-    q: "What is your response time and communication model?",
-    a: "We commit to a sub-24-hour response SLA across all global time zones. For active sprint delivery, we integrate directly into your preferred tools (Slack, Discord, GitHub, Jira) with weekly live demos.",
+    q: "What is your communication model during development?",
+    a: "For active sprint delivery, we integrate directly into your preferred workspace (Slack, Discord, GitHub, Jira) with weekly live milestone demos and continuous direct communication with lead engineers.",
   },
   {
     q: "Can you augment or collaborate with our existing in-house team?",

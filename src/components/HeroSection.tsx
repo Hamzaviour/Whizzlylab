@@ -59,7 +59,7 @@ export default function HeroSection() {
             {/* Logo */}
             <Image
               src="/transparent-icon.png"
-              alt="Whizzly Lab AI Systems, Real-Time Data Pipelines and Full-Stack Products"
+              alt="Whizzly Lab AI Systems, Web Development, Automation, RAG, SaaS and Apps"
               width={360}
               height={360}
               style={{ width: "auto" }}
@@ -129,7 +129,7 @@ export default function HeroSection() {
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> HIPAA and SOC2 Compliant
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-slate-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" /> 24h Response SLA
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" /> Direct Architect Review
             </span>
           </motion.div>
         </main>

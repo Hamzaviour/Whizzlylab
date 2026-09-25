@@ -1,6 +1,6 @@
 # Whizzly Lab: Complete Technical Documentation
 
-> Comprehensive knowledge base for Whizzly Lab: AI Engineering, Real-Time Data Streaming, and Full-Stack Product Studio.
+> Comprehensive knowledge base for Whizzly Lab: Elite AI Engineering Studio, Full-Stack Web Development, Workflow Automation, RAG Systems, SaaS Platforms, Mobile Apps, and Custom AI Integration.
 
 ---
 
@@ -99,7 +99,7 @@
 ## 4. Frequently Asked Questions (FAQ)
 
 - **Q: How does client engagement work?**
-  A: It begins with a 20–30 minute discovery call to discuss requirements, data schemas, and technical feasibility. We provide a transparent scope and roadmap in USD or PKR.
+  A: It begins with a 20–30 minute discovery call to discuss requirements, data schemas, and technical feasibility. We provide a transparent scope and roadmap in USD.
 - **Q: Are NDAs supported?**
   A: Yes, mutual NDAs are executed prior to detailed technical discussions.
 - **Q: How does communication happen during a sprint?**

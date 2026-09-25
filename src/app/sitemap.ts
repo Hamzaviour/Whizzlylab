@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { BASE_URL } from "@/lib/seo";
 import { SERVICES } from "@/lib/services";
+import { BLOG_POSTS } from "@/lib/blogData";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -13,10 +14,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: `${BASE_URL}/about`,
+      url: `${BASE_URL}/work`,
       lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.85,
+      changeFrequency: "weekly",
+      priority: 0.95,
     },
     {
       url: `${BASE_URL}/services`,
@@ -25,10 +26,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.95,
     },
     {
-      url: `${BASE_URL}/work`,
+      url: `${BASE_URL}/blog`,
       lastModified: now,
-      changeFrequency: "weekly",
+      changeFrequency: "daily",
       priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/about`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.85,
     },
     {
       url: `${BASE_URL}/pricing`,
@@ -69,5 +76,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  return [...staticRoutes, ...serviceRoutes];
+  const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
+    url: `${BASE_URL}/blog/${post.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.85,
+  }));
+
+  return [...staticRoutes, ...serviceRoutes, ...blogRoutes];
 }

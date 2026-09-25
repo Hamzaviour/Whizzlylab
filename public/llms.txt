@@ -1,6 +1,6 @@
 # Whizzly Lab
 
-> Whizzly Lab is an AI, machine learning, and full-stack engineering studio. We build production-grade intelligent systems, real-time data pipelines, and scalable web applications for organizations worldwide.
+> Whizzly Lab is an elite AI engineering studio and full-stack software development collective. We design, architect, and deploy intelligent AI systems, autonomous multi-agent pipelines, RAG systems, workflow automation, scalable SaaS platforms, full-stack web development, mobile & web apps, digital products, and custom AI integration.
 
 ## Overview
 - **Domain**: https://whizzlylab.com
@@ -44,6 +44,6 @@
 
 ## Client Engagement Model
 - 20–30 minute technical discovery call with direct software architects.
-- Transparent project scoping in USD or PKR.
+- Transparent project scoping in USD.
 - Mutual NDAs signed prior to detailed technical discussions.
 - Weekly deployed demo builds, direct Slack/GitHub integration, and comprehensive documentation handover.

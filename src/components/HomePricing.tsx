@@ -5,10 +5,10 @@ import Link from "next/link";
 import ServiceSelector from "./ServiceSelector";
 import PricingCalculator from "./PricingCalculator";
 import { getServicePricing, type ServiceKey } from "@/lib/pricing";
-import { useCurrency, CurrencyToggle } from "@/lib/currency";
+import { useCurrency } from "@/lib/currency";
 
 export default function HomePricing() {
-  const { format, currency } = useCurrency();
+  const { format } = useCurrency();
   const [serviceKey, setServiceKey] = useState<ServiceKey>("web");
   const service = getServicePricing(serviceKey);
   const from = Math.min(...service.tiers.map((t) => t.min));
@@ -38,13 +38,10 @@ export default function HomePricing() {
           <div className="mt-8 flex justify-center">
             <ServiceSelector value={serviceKey} onChange={setServiceKey} />
           </div>
-          <div className="mt-4 flex justify-center">
-            <CurrencyToggle />
-          </div>
         </div>
         <PricingCalculator service={service} />
         <p className="mt-6 text-center text-xs text-foreground/40">
-          Estimated project investment shown in {currency}. Switch currency at any time.
+          Estimated project investment shown in USD.
         </p>
       </div>
     </section>

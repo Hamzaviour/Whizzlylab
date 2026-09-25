@@ -141,7 +141,7 @@ const INDUSTRIES: IndustryTab[] = [
     metrics: [
       { label: "Production Sprint Time", value: "14 Days" },
       { label: "Full Code Ownership", value: "100%" },
-      { label: "Response SLA", value: "24h Guaranteed" },
+      { label: "Engineering Review", value: "Direct SLA" },
     ],
     techStack: ["Next.js / TypeScript", "Tailwind CSS", "FastAPI", "Python", "Kubernetes"],
     roleTarget: "Seed-to-Series-B Founders, CTOs & Engineering Managers",
@@ -305,7 +305,7 @@ export default function IndustriesSection() {
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <p className="mt-2 text-center text-[11px] text-slate-400">
-                    24-hour response guarantee · Direct review with engineering leads
+                    Direct review with senior engineering leads · Zero sales pressure
                   </p>
                 </div>
               </div>

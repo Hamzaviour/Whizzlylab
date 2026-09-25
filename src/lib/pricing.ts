@@ -367,33 +367,21 @@ export function getServicePricing(key: ServiceKey) {
 /** Annual operational infrastructure (primarily applies to website projects). */
 export const INFRASTRUCTURE_FEES: InfraFee[] = [
   {
-    name: "Local domain (.pk)",
-    min: 1_800,
-    max: 2_500,
-    note: "Often billed ~PKR 3,350–3,600 for a fixed 2-year cycle",
+    name: "Domain Registration (.com / .io / .ai)",
+    min: 4_000,
+    max: 14_000,
+    note: "Annual registry registration with DNS security and whois privacy",
   },
   {
-    name: "Global domain (.com)",
-    min: 3_500,
-    max: 5_000,
-    note: "Standard international registration",
+    name: "Cloud Edge Hosting (Vercel / AWS)",
+    min: 6_000,
+    max: 28_000,
+    note: "Global edge CDN, automated CI/CD and serverless compute",
   },
   {
-    name: "Shared business hosting",
-    min: 4_500,
-    max: 12_000,
-    note: "Roughly PKR 375–1,000 / month for low-traffic sites",
-  },
-  {
-    name: "Cloud / VPS hosting",
-    min: 25_000,
+    name: "Enterprise Cloud & Database",
+    min: 28_000,
     max: 120_000,
-    note: "Heavy traffic / e-commerce on AWS, DigitalOcean, etc.",
-  },
-  {
-    name: "SSL certificate",
-    min: 2_500,
-    max: 5_000,
-    note: "Frequently bundled free by higher-tier hosts",
+    note: "Dedicated microservices, PostgreSQL / Redis clustering and SSL",
   },
 ];

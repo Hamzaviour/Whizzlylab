@@ -15,10 +15,6 @@ const WhizzlyChatbot = dynamic(() => import("./chat/WhizzlyChatbot"), {
   ssr: false,
 });
 
-/**
- * Site-wide: scroll progress, soft cursor glow (desktop), and ambient sparkles background.
- * On home page, sparkles are excluded from the hero section and fade in across all other sections.
- */
 export default function InteractiveShell({
   children,
 }: {
@@ -37,16 +33,8 @@ export default function InteractiveShell({
       setShowSparkles(true);
       return;
     }
-
-    const checkScroll = () => {
-      // Exclude hero section on home page; fade in as soon as user scrolls past hero
-      const heroThreshold = Math.min(window.innerHeight * 0.6, 450);
-      setShowSparkles(window.scrollY > heroThreshold);
-    };
-
-    checkScroll();
-    window.addEventListener("scroll", checkScroll, { passive: true });
-    return () => window.removeEventListener("scroll", checkScroll);
+    // Keep home page clean dark background for 3D particle canvas
+    setShowSparkles(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -99,7 +87,7 @@ export default function InteractiveShell({
         />
       )}
       <div className="relative z-[2]">{children}</div>
-      <StickyMobileCTA />
+      {pathname !== "/" && <StickyMobileCTA />}
       <StickySocialBar />
       <WhizzlyChatbot />
       <CookieConsent />

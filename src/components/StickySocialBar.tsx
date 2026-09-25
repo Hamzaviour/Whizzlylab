@@ -68,9 +68,9 @@ export default function StickySocialBar() {
         transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className="fixed left-3 sm:left-4 md:left-5 top-1/2 -translate-y-1/2 z-40 hidden sm:flex flex-col items-center"
       >
-        <div className="relative flex flex-col items-center gap-2 p-2 rounded-2xl border border-white/10 bg-[#05010f]/85 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
+        <div className="relative flex flex-col items-center gap-2 p-2 rounded-2xl border border-white/10 bg-black/80 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.8)]">
           {/* Subtle top indicator pip */}
-          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/80 mb-0.5 shadow-[0_0_8px_rgba(0,240,255,0.8)]" />
+          <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 mb-0.5 shadow-[0_0_8px_rgba(99,102,241,0.8)]" />
 
           {SOCIAL_ITEMS.map((item) => {
             const Icon = item.icon;
@@ -91,17 +91,17 @@ export default function StickySocialBar() {
                 {/* Floating tooltip */}
                 <span
                   role="tooltip"
-                  className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 hidden group-hover:inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-medium tracking-wide bg-[#0a0518]/95 border border-white/15 text-white whitespace-nowrap shadow-2xl backdrop-blur-md transition-all z-50"
+                  className="pointer-events-none absolute left-full ml-3 top-1/2 -translate-y-1/2 hidden group-hover:inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-medium tracking-wide bg-[#090b12] border border-white/15 text-white whitespace-nowrap shadow-2xl backdrop-blur-md transition-all z-50 font-sans"
                 >
                   {item.name}
-                  <span className="absolute right-full top-1/2 -translate-y-1/2 -mr-1 border-4 border-transparent border-r-[#0a0518]/95" />
+                  <span className="absolute right-full top-1/2 -translate-y-1/2 -mr-1 border-4 border-transparent border-r-[#090b12]" />
                 </span>
               </div>
             );
           })}
 
           {/* Subtle bottom indicator pip */}
-          <div className="w-1 h-1 rounded-full bg-purple-400/60 mt-0.5" />
+          <div className="w-1 h-1 rounded-full bg-indigo-400/50 mt-0.5" />
         </div>
       </motion.aside>
 

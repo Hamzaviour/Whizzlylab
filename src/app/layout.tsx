@@ -6,6 +6,7 @@ import {
   Space_Grotesk,
 } from "next/font/google";
 import "./globals.css";
+import SmoothScroll from "@/components/SmoothScroll";
 import InteractiveShell from "@/components/InteractiveShell";
 import { CurrencyProvider } from "@/lib/currency";
 
@@ -47,22 +48,26 @@ export const metadata: Metadata = {
     template: "%s | Whizzly Lab",
   },
   description:
-    "Whizzly Lab is an elite AI studio delivering AI services, machine learning solutions, real-time Kafka data pipelines, and full-stack software engineering services globally.",
+    "Whizzly Lab is an elite AI engineering studio and full-stack software development collective. We design, architect, and deploy intelligent AI systems, autonomous multi-agent pipelines, RAG systems, workflow automation, scalable SaaS platforms, full-stack web development, mobile & web apps, digital products, and custom AI integration.",
   keywords: [
     "whizzly",
     "whizzlylab",
     "whizzly lab",
     "whizzly labs",
     "ai studio",
+    "ai engineering studio",
     "ai services",
     "software engineering services",
-    "ai engineering studio",
+    "web development",
+    "workflow automation",
+    "rag systems",
+    "saas development",
+    "mobile apps",
+    "digital products",
+    "ai integration",
     "machine learning services",
     "custom software development",
-    "rag agents",
-    "kafka data pipelines",
     "full-stack development",
-    "software consultancy",
     "Next.js development",
   ],
   authors: [{ name: "Whizzly Lab" }],
@@ -85,7 +90,7 @@ export const metadata: Metadata = {
     url: BASE_URL,
     title: "Whizzly Lab: AI Studio, ML & Software Engineering Services",
     description:
-      "Whizzly Lab is an elite AI studio delivering AI services, machine learning solutions, real-time Kafka data pipelines, and full-stack software engineering services globally.",
+      "Whizzly Lab is an elite AI engineering studio and full-stack software development collective. We design, architect, and deploy intelligent AI systems, autonomous multi-agent pipelines, RAG systems, workflow automation, scalable SaaS platforms, full-stack web development, mobile & web apps, digital products, and custom AI integration.",
     siteName: "Whizzly Lab",
     images: [
       {
@@ -108,7 +113,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Whizzly Lab: AI Studio, ML & Software Engineering Services",
     description:
-      "Whizzly Lab is an elite AI studio delivering AI services, machine learning solutions, real-time Kafka data pipelines, and full-stack software engineering services.",
+      "Whizzly Lab is an elite AI engineering studio delivering web development, workflow automation, RAG systems, SaaS products, apps, and custom AI integration.",
     images: [`${BASE_URL}/twitter-image`, `${BASE_URL}/og-image.png`],
     creator: "@whizzlylab",
   },
@@ -182,7 +187,7 @@ export default function RootLayout({
                   },
                   image: `${BASE_URL}/og-image.png`,
                   description:
-                    "Whizzly Lab is an elite AI studio and software engineering studio building intelligent AI systems, real-time Kafka data pipelines, RAG agents, and production-grade full-stack software.",
+                    "Whizzly Lab is an elite AI engineering studio and full-stack software development collective. We design, architect, and deploy intelligent AI systems, autonomous multi-agent pipelines, RAG systems, workflow automation, scalable SaaS platforms, full-stack web development, mobile & web apps, digital products, and custom AI integration.",
                   founder: {
                     "@type": "Person",
                     name: "Whizzly Lab Team",
@@ -204,15 +209,19 @@ export default function RootLayout({
                   },
                   knowsAbout: [
                     "AI Studio",
+                    "AI Engineering Studio",
                     "AI Services",
                     "Software Engineering Services",
                     "Artificial Intelligence",
                     "Machine Learning",
                     "RAG Systems",
                     "Retrieval-Augmented Generation",
-                    "Data Engineering",
-                    "Apache Kafka",
-                    "Apache Spark",
+                    "Workflow Automation",
+                    "SaaS Platforms",
+                    "Web Development",
+                    "Mobile Apps",
+                    "Digital Products",
+                    "Custom AI Integration",
                     "Next.js",
                     "Full-Stack Development",
                     "Custom Software Development",
@@ -245,10 +254,10 @@ export default function RootLayout({
                         "@type": "Offer",
                         itemOffered: {
                           "@type": "Service",
-                          name: "Real-Time Data Pipelines",
+                          name: "Workflow Automation & SaaS Products",
                           description:
-                            "Distributed real-time streaming architectures using Apache Kafka, Apache Spark, and PySpark.",
-                          serviceType: "Data Engineering",
+                            "Autonomous workflow automations, SaaS platforms, API integrations, and scalable digital products.",
+                          serviceType: "Workflow Automation",
                         },
                       },
                       {
@@ -303,9 +312,11 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="min-h-full antialiased">
-        <CurrencyProvider>
-          <InteractiveShell>{children}</InteractiveShell>
-        </CurrencyProvider>
+        <SmoothScroll>
+          <CurrencyProvider>
+            <InteractiveShell>{children}</InteractiveShell>
+          </CurrencyProvider>
+        </SmoothScroll>
       </body>
     </html>
   );

@@ -2,13 +2,10 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { ArrowUpRight, Check } from "lucide-react";
 import type { ServiceAddon, ServicePricing } from "@/lib/pricing";
 import { useCurrency } from "@/lib/currency";
 
-/**
- * Project estimator for a single service. Prices are computed in PKR from the
- * service's tier ranges and rendered in the user's chosen currency (PKR/USD).
- */
 export default function PricingCalculator({
   service,
 }: {
@@ -19,19 +16,17 @@ export default function PricingCalculator({
   const tier = service.tiers[Math.min(tierIndex, service.tiers.length - 1)];
   const [checked, setChecked] = useState<Record<string, boolean>>({});
 
-  // Default add-ons used as fallback if a service has none defined.
   const addons: ServiceAddon[] =
     service.addons ?? [
-      { label: "Content writing support", uplift: 0.06 },
-      { label: "SEO optimization package", uplift: 0.05 },
-      { label: "Priority / accelerated delivery", uplift: 0.15 },
+      { label: "Content writing & prompt engineering support", uplift: 0.06 },
+      { label: "Technical SEO & Edge caching package", uplift: 0.05 },
+      { label: "Priority / accelerated sprint delivery", uplift: 0.15 },
     ];
 
   const toggleAddon = (label: string) =>
     setChecked((prev) => ({ ...prev, [label]: !prev[label] }));
 
   const estimate = useMemo(() => {
-    // Low anchor stays at the tier floor; high lifts with add-ons but caps at tier max.
     const low = tier.min;
     const totalUplift = addons
       .filter((a) => checked[a.label])
@@ -48,130 +43,172 @@ export default function PricingCalculator({
   return (
     <div
       id="calculator-section"
-      className="grid w-full min-w-0 overflow-hidden rounded-2xl lg:grid-cols-2"
+      className="grid w-full min-w-0 overflow-hidden rounded-[32px] border border-white/[0.08] lg:grid-cols-2 shadow-[0_20px_60px_rgba(0,0,0,0.8)]"
     >
-      <div className="divide-y divide-[#1E1E1E] bg-[#0D0D0D] p-5 sm:p-8 lg:p-12">
+      {/* Left Column: Tiers and Addons */}
+      <div className="divide-y divide-white/[0.08] bg-[#090b12] p-6 sm:p-8 lg:p-10">
         <div className="pb-6">
-          <h3 className="mb-3 text-base font-medium">Package tier</h3>
-          {service.tiers.map((t, i) => {
-            const active = tierIndex === i;
-            return (
-              <button
-                key={t.name}
-                type="button"
-                onClick={() => setTierIndex(i)}
-                className="flex w-full items-start gap-3 py-3 text-left"
-              >
-                <span
-                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-                    active ? "border-[#FF5656]" : "border-white/25"
+          <h3 className="mb-4 text-xs font-mono uppercase tracking-wider text-indigo-300">
+            1. Select Package Tier
+          </h3>
+          <div className="space-y-3">
+            {service.tiers.map((t, i) => {
+              const active = tierIndex === i;
+              return (
+                <button
+                  key={t.name}
+                  type="button"
+                  onClick={() => setTierIndex(i)}
+                  className={`flex w-full items-start gap-4 p-4 rounded-2xl border text-left transition-all duration-200 ${
+                    active
+                      ? "border-indigo-400/50 bg-[#0d101c]"
+                      : "border-white/[0.05] bg-white/[0.02] hover:border-white/15 hover:bg-white/[0.04]"
                   }`}
                 >
-                  {active && (
-                    <span className="h-2 w-2 rounded-full bg-[#FF5656]" />
-                  )}
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-sm text-foreground/90">
-                    {t.name}
+                  <span
+                    className={`mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border ${
+                      active ? "border-indigo-400 bg-indigo-500" : "border-white/30"
+                    }`}
+                  >
+                    {active && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                   </span>
-                  <span className="mt-0.5 block text-xs text-foreground/40">
-                    {format(t.min)} – {format(t.max)} · {t.delivery}
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-white">{t.name}</span>
+                      <span className="text-xs font-mono text-indigo-300">{t.delivery}</span>
+                    </span>
+                    <span className="mt-1 block text-xs text-gray-400 font-light">
+                      {format(t.min)} – {format(t.max)}
+                    </span>
                   </span>
-                </span>
-              </button>
-            );
-          })}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="py-6">
-          <h3 className="mb-3 text-base font-medium">Add-ons</h3>
-          {addons.map((addon) => {
-            const active = !!checked[addon.label];
-            return (
-              <button
-                key={addon.label}
-                type="button"
-                onClick={() => toggleAddon(addon.label)}
-                className="flex w-full items-center gap-3 py-3 text-left text-sm"
-              >
-                <span
-                  className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border-2 ${
+        <div className="pt-6">
+          <h3 className="mb-4 text-xs font-mono uppercase tracking-wider text-indigo-300">
+            2. Scope Add-ons
+          </h3>
+          <div className="space-y-2.5">
+            {addons.map((addon) => {
+              const active = !!checked[addon.label];
+              return (
+                <button
+                  key={addon.label}
+                  type="button"
+                  onClick={() => toggleAddon(addon.label)}
+                  className={`flex w-full items-center gap-3.5 p-3.5 rounded-xl border text-left text-sm transition-all duration-200 ${
                     active
-                      ? "border-[#FF5656] bg-[#FF5656]"
-                      : "border-white/25"
+                      ? "border-indigo-400/40 bg-indigo-500/10 text-white"
+                      : "border-white/[0.05] bg-white/[0.02] text-gray-400 hover:border-white/10 hover:text-white"
                   }`}
                 >
-                  {active && (
-                    <svg
-                      viewBox="0 0 12 12"
-                      className="h-3 w-3 text-white"
-                    >
-                      <path
-                        d="M2 6.5L4.5 9L10 3"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      />
-                    </svg>
-                  )}
-                </span>
-                <span className="min-w-0">{addon.label}</span>
-                <span className="ml-auto text-xs text-foreground/45">
-                  +{Math.round(addon.uplift * 100)}%
-                </span>
-              </button>
-            );
-          })}
+                  <span
+                    className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
+                      active
+                        ? "border-indigo-400 bg-indigo-500 text-white"
+                        : "border-white/30"
+                    }`}
+                  >
+                    {active && <Check className="h-3 w-3" />}
+                  </span>
+                  <span className="min-w-0 flex-1 text-xs sm:text-sm font-light">
+                    {addon.label}
+                  </span>
+                  <span className="text-xs font-mono text-indigo-300 shrink-0">
+                    +{Math.round(addon.uplift * 100)}%
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      <div
-        className="min-w-0 space-y-4 border border-white/10 border-t-0 p-5 sm:p-8 lg:min-h-[560px] lg:rounded-r-2xl lg:border-t lg:p-12"
-        style={{ background: "hsl(260 87% 4%)" }}
-      >
-        <h3 className="text-lg font-medium sm:text-xl">Estimated cost</h3>
-        <p className="text-sm text-foreground/55">
-          Development only (shown in {currency}). Infrastructure billed
-          separately. Typical delivery:{" "}
-          <span className="text-foreground/80">{estimate.delivery}</span>
+      {/* Right Column: Comparative Benchmark */}
+      <div className="min-w-0 space-y-5 bg-[#06070a] p-6 sm:p-8 lg:p-10 flex flex-col justify-between relative overflow-hidden">
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-xs font-mono uppercase tracking-wider text-gray-400">
+              Estimated Investment
+            </h3>
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-white/10 text-indigo-300">
+              USD
+            </span>
+          </div>
+
+          <div className="space-y-3">
+            {/* Traditional Agency */}
+            <div className="rounded-2xl bg-white/[0.02] border border-white/[0.05] p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-gray-400">Traditional Agency</span>
+                <span className="text-sm font-mono text-gray-400">
+                  {format(estimate.agency)}+
+                </span>
+              </div>
+              <p className="text-[11px] text-gray-500 font-light mt-1">
+                High overhead, 3-6 month timeline
+              </p>
+            </div>
+
+            {/* Freelancer */}
+            <div className="rounded-2xl bg-white/[0.02] border border-white/[0.05] p-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-gray-400">Freelancer Marketplace</span>
+                <span className="text-sm font-mono text-gray-400">
+                  {format(estimate.freelancer)}+
+                </span>
+              </div>
+              <p className="text-[11px] text-gray-500 font-light mt-1">
+                Variable SLA, no architecture guarantee
+              </p>
+            </div>
+
+            {/* Whizzly Lab Active Feature Card */}
+            <div className="rounded-2xl bg-[#434a8c] p-6 text-white shadow-[0_12px_40px_rgba(67,74,140,0.4)] relative overflow-hidden">
+              <div className="text-xs font-mono uppercase tracking-wider text-indigo-200 mb-1">
+                Whizzly Lab Studio Sprint
+              </div>
+              <div className="text-3xl sm:text-4xl font-medium tracking-tight font-sans mt-2">
+                {format(estimate.low)} – {format(estimate.high)}
+              </div>
+              <div className="text-xs text-indigo-200 font-light mt-2">
+                Median estimate ~ {format(estimate.typical)} · Delivery: {tier.delivery}
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-white/20">
+                <Link
+                  href="/schedule"
+                  className="group flex items-center justify-between w-full px-5 py-3 rounded-full bg-white text-black text-sm font-medium hover:bg-gray-100 transition-all duration-300"
+                >
+                  <span>Book Scoped Discovery</span>
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-black text-white transition-transform duration-300 group-hover:scale-110">
+                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  </div>
+                </Link>
+              </div>
+
+              {/* Corner dot matrix */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute bottom-2 right-2 w-20 h-20 opacity-20"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(circle, rgba(255, 255, 255, 0.75) 1.2px, transparent 1.2px)",
+                  backgroundSize: "6px 6px",
+                  maskImage: "linear-gradient(to top left, black 25%, transparent 75%)",
+                  WebkitMaskImage: "linear-gradient(to top left, black 25%, transparent 75%)",
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <p className="text-xs text-gray-500 font-light text-center">
+          Transparent rates. No surprise hidden charges. 100% IP ownership transfers upon completion.
         </p>
-
-        <div className="space-y-2 rounded-2xl bg-white/5 p-4 sm:space-y-3 sm:p-6">
-          <p className="text-sm text-foreground/60">Typical agency range</p>
-          <p className="break-words text-2xl font-bold sm:text-4xl">
-            {format(estimate.agency)}+
-          </p>
-          <p className="text-sm text-foreground/45">
-            Higher cost, longer coordination overhead
-          </p>
-        </div>
-
-        <div className="space-y-2 rounded-2xl bg-white/5 p-4 sm:space-y-3 sm:p-6">
-          <p className="text-sm text-foreground/60">Typical freelancer range</p>
-          <p className="break-words text-2xl font-bold sm:text-4xl">
-            {format(estimate.freelancer)}+
-          </p>
-          <p className="text-sm text-foreground/45">
-            Variable quality and more back-and-forth
-          </p>
-        </div>
-
-        <div className="space-y-2 rounded-2xl bg-gradient-to-r from-pink-500 to-orange-500 p-4 text-white sm:space-y-3 sm:p-6">
-          <p className="text-sm text-white/90">With Whizzly Lab</p>
-          <p className="break-words text-2xl font-bold leading-tight sm:text-4xl md:text-5xl">
-            {format(estimate.low)} – {format(estimate.high)}
-          </p>
-          <p className="text-sm break-words text-white/85">
-            Mid estimate ~ {format(estimate.typical)} · {tier.name}
-          </p>
-          <Link
-            href="/schedule"
-            className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90 sm:mt-4 sm:w-auto"
-          >
-            Schedule a Consult
-          </Link>
-        </div>
       </div>
     </div>
   );

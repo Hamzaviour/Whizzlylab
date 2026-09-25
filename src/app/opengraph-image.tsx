@@ -8,10 +8,10 @@ export const contentType = "image/png";
 
 export default async function OpenGraphImage() {
   const tags = [
-    "Autonomous RAG Agents",
-    "Kafka Real-Time Streaming",
-    "Custom Machine Learning",
-    "Production Next.js Systems",
+    "Autonomous RAG Systems",
+    "Workflow Automation & SaaS",
+    "Full-Stack Web Development",
+    "Custom AI Integration",
   ];
 
   return new ImageResponse(
@@ -175,7 +175,7 @@ export default async function OpenGraphImage() {
               display: "flex",
             }}
           >
-            Architecting production-grade multi-stage RAG agents, distributed real-time Kafka pipelines, custom ML models, and scalable Next.js applications.
+            Architecting production AI systems, RAG workflows, workflow automation, SaaS platforms, web development, mobile apps, and custom AI integration.
           </p>
         </div>
 

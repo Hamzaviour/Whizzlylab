@@ -27,6 +27,7 @@
   --font-dm: var(--font-sans-primary), sans-serif;
   --font-mono: var(--font-mono), "JetBrains Mono", monospace;
   --font-space: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  --font-serif: var(--font-serif), "Playfair Display", Georgia, serif;
 }
 
 * {
@@ -34,10 +35,25 @@
 }
 
 html {
-  scroll-behavior: smooth;
   color-scheme: dark;
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
@@ -46,7 +62,7 @@ body {
   background: #06060c;
   color: #f8fafc;
   font-family: var(--font-sans-primary), ui-sans-serif, system-ui, sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
 }
 
@@ -293,4 +309,27 @@ button {
 .animate-border-flow {
   background-size: 220% 220%;
   animation: borderGlowFlow 6s ease-in-out infinite;
+}
+
+@keyframes border-beam {
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+.animate-border-beam {
+  animation: border-beam var(--duration, 12s) infinite linear;
+}
+
+@keyframes shimmer {
+  0%, 90%, 100% {
+    background-position: calc(-100% - var(--shimmer-width, 100px)) 0;
+  }
+  30%, 60% {
+    background-position: calc(100% + var(--shimmer-width, 100px)) 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 8s infinite;
 }

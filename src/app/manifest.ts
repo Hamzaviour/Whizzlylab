@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Whizzly Lab: AI & Full-Stack Engineering Studio",
     short_name: "Whizzly Lab",
     description:
-      "AI, ML, and full-stack engineering studio building intelligent systems that ship.",
+      "Elite AI engineering studio and software collective delivering web development, workflow automation, RAG systems, SaaS products, apps, and custom AI integration.",
     start_url: "/",
     display: "standalone",
     background_color: "#05010f",

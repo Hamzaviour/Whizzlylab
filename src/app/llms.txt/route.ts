@@ -13,7 +13,7 @@ export async function GET() {
       },
     });
   } catch (error) {
-    return new NextResponse("Whizzly Lab: AI, ML & Full-Stack Engineering Studio (https://whizzlylab.com)", {
+    return new NextResponse("Whizzly Lab: Elite AI Engineering Studio — Web Development, Automation, RAG, SaaS, Apps & AI Integration (https://whizzlylab.com)", {
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }

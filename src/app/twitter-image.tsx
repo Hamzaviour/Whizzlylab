@@ -151,7 +151,7 @@ export default async function TwitterImage() {
               display: "flex",
             }}
           >
-            RAG agents, real-time Kafka data streaming, machine learning, and full-stack software engineered by Whizzly Lab's elite engineering team.
+            Web development, workflow automation, RAG systems, SaaS platforms, mobile apps, and custom AI integration engineered by Whizzly Lab's elite team.
           </p>
         </div>
 

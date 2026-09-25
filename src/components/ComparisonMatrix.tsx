@@ -28,11 +28,11 @@ const COMPARISON_DATA = [
     highlight: true,
   },
   {
-    dimension: "Guaranteed Response SLA",
-    whizzly: "24-Hour Strict Response Guarantee",
-    freelancers: "No contract SLA (Ghosting risk)",
-    genericAgencies: "48–72 hour ticket turnaround",
-    inHouse: "Depends on internal bandwidth",
+    dimension: "Direct Technical Leadership",
+    whizzly: "Direct Lead Architect Access",
+    freelancers: "Variable availability (Ghosting risk)",
+    genericAgencies: "Filtered through non-technical PMs",
+    inHouse: "Dependent on internal bandwidth",
   },
   {
     dimension: "Hallucination & Error Guardrails",

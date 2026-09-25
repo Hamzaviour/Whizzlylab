@@ -4,13 +4,14 @@ import { BASE_URL, ogImage } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Contact & Consultation",
   description:
-    "Reach Whizzly Lab for AI, machine learning, and full stack software engineering projects. Direct phone and email with sub 24h response SLA shipping globally.",
+    "Connect with Whizzly Lab for web development, workflow automation, RAG systems, SaaS products, apps, and custom AI integration.",
   alternates: {
     canonical: `${BASE_URL}/contact`,
   },
   openGraph: {
     title: "Contact & Consultation | Whizzly Lab",
-    description: "Connect with Whizzly Lab, AI, ML and full stack engineering studio.",
+    description:
+      "Connect with Whizzly Lab for web development, workflow automation, RAG systems, SaaS products, apps, and custom AI integration.",
     url: `${BASE_URL}/contact`,
     images: [
       {

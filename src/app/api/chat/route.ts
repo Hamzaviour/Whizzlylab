@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
           Authorization: `Bearer ${groqKey}`,
         },
         body: JSON.stringify({
-          model: "openai/gpt-oss-120b",
+          model: "llama-3.1-8b-instant",
           messages: [{ role: "user", content: "ping" }],
           max_tokens: 5,
         }),
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
           success: true,
           status: pingResp.status,
           message: "Groq API connected and operational!",
-          model: "openai/gpt-oss-120b",
+          model: "llama-3.1-8b-instant",
         };
       } else {
         groqTestResult = {
@@ -130,9 +130,9 @@ export async function POST(req: NextRequest) {
     let engineUsed = "local-rag-neural-synthesis";
     let groqError: string | null = null;
 
-    // ── Primary Engine: Groq API (Default Model: openai/gpt-oss-120b) ───────
+    // ── Primary Engine: Groq API (High-Velocity Llama 3.3 & 3.1) ───────────
     if (groqKey) {
-      const groqModels = ["openai/gpt-oss-120b", "llama-3.3-70b-versatile", "llama-3.1-8b-instant"];
+      const groqModels = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768"];
       for (const model of groqModels) {
         if (llmReply) break;
         try {
@@ -146,11 +146,11 @@ export async function POST(req: NextRequest) {
               model,
               messages: [
                 { role: "system", content: systemPrompt },
-                ...history.slice(-6).map((h) => ({ role: h.role, content: h.content })),
+                ...history.slice(-4).map((h) => ({ role: h.role, content: h.content })),
                 { role: "user", content: message },
               ],
-              temperature: 0.35,
-              max_tokens: 1024,
+              temperature: 0.3,
+              max_tokens: 350,
             }),
           });
 

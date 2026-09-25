@@ -1,357 +1,322 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
 import Image from "next/image";
-import { ExternalLink, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import {
+  Globe,
+  Smartphone,
+  Sparkles,
+  TrendingUp,
+  Code2,
+  Cpu,
+  Shield,
+  ArrowUpRight,
+  Lock,
+  Wifi,
+} from "lucide-react";
 
-interface ProjectItem {
-  id: string;
-  category: "Websites I Built" | "ML & AI Projects";
-  projectNumber?: string;
-  title: string;
-  description: string;
-  image: string;
-  tags: string[];
-  live?: string | null;
-  liveLabel?: string;
-  github?: string | null;
+interface TagItem {
+  label: string;
+  icon: "globe" | "phone" | "ai" | "gtm" | "code" | "cpu" | "shield";
 }
 
-const allProjects: ProjectItem[] = [
-  // Websites I Built
-  {
-    id: "aldeewan",
-    category: "Websites I Built",
-    title: "Al-Deewan Collection",
-    description:
-      "High-converting modern e-commerce storefront for designer apparel, seasonal lawn collections, and luxury fashion retail with automated cataloging.",
-    image: "/images/websites/aldeewan.webp",
-    tags: ["E-commerce", "Fashion Retail", "Modern Web"],
-    live: "https://aldeewancollection.com/",
-    liveLabel: "Live Website",
-    github: "https://github.com/Hamzaviour/Al-Deewan-Website",
-  },
-  {
-    id: "optionpackaging",
-    category: "Websites I Built",
-    title: "Option Packaging",
-    description:
-      "Full-scale custom packaging e-commerce platform offering wholesale boxes, automated quote estimation, category filtering, and client order workflows.",
-    image: "/images/websites/optionpackaging.webp",
-    tags: ["Custom Packaging", "B2B E-commerce", "Full-Stack"],
-    live: "https://optionpackaging.com/",
-    liveLabel: "Live Website",
-    github: "https://github.com/Hamzaviour/optionpackaging",
-  },
-  {
-    id: "xecureai",
-    category: "Websites I Built",
-    title: "XecureAI",
-    description:
-      "Enterprise cybersecurity, GRC compliance, and AI governance portal featuring penetration testing services and global SOC advisory integrations.",
-    image: "/images/websites/xecureai.webp",
-    tags: ["Cybersecurity", "GRC & Compliance", "AI Governance"],
-    live: "https://xecureai.com/",
-    liveLabel: "Live Website",
-    github: "https://github.com/Hamzaviour/XecureAi",
-  },
-  {
-    id: "whizzlylab",
-    category: "Websites I Built",
-    title: "Whizzly Lab",
-    description:
-      "Digital engineering agency platform showcasing intelligent AI systems, real-time data streaming pipelines, and production-grade client apps.",
-    image: "/images/websites/whizzlylab.webp",
-    tags: ["Agency", "AI Systems", "Engineering Studio"],
-    live: "https://www.whizzlylab.com/",
-    liveLabel: "Live Website",
-    github: "https://github.com/Hamzaviour/Whizzlylab",
-  },
-  {
-    id: "curecmsolution",
-    category: "Websites I Built",
-    title: "CureCMS Solution",
-    description:
-      "AI-powered medical billing and revenue cycle management platform built for healthcare providers, HIPAA compliant with intelligent RCM workflows.",
-    image: "/images/websites/curecmsolution.webp",
-    tags: ["Healthcare", "Medical Billing", "AI Agents"],
-    live: "https://curercmsolution.com/",
-    liveLabel: "Live Website",
-    github: "https://github.com/Hamzaviour/Curecmsolution",
-  },
+interface CaseStudyItem {
+  id: string;
+  name: string;
+  subtitle: string;
+  tags: TagItem[];
+  image: string;
+  mobileImage: string;
+  link?: string;
+  domainUrl: string;
+}
 
-  // ML & AI Projects
+// 100% Real Whizzly Lab Client Projects with Real Names & Real Mobile Previews from Mobile View folder
+const CASE_STUDIES: CaseStudyItem[] = [
   {
-    id: "echosense",
-    category: "ML & AI Projects",
-    projectNumber: "Project 01",
-    title: "EchoSense",
-    description:
-      "Real-time crisis intervention pipeline using Kafka and Spark NLP to detect and flag high-priority crisis indicators with clinical AI assistant.",
-    image: "/images/projects/echosense.webp",
-    tags: ["Kafka", "Spark NLP", "Flask", "ChromaDB", "Python"],
-    live: "https://hamzavelous-echosense-ai.hf.space/login",
-    liveLabel: "Live Demo",
-    github: "https://github.com/Hamzaviour",
+    id: "01",
+    name: "Al-Deewan Collection",
+    subtitle: "High-Performance Fashion Commerce Storefront & ERP",
+    tags: [
+      { label: "App Design", icon: "phone" },
+      { label: "GTM", icon: "gtm" },
+      { label: "ERP / POS", icon: "cpu" },
+    ],
+    image: "/images/websites/aldeewan.webp",
+    mobileImage: "/images/websites/aldeewan-mobile.png",
+    link: "https://aldeewancollection.com/",
+    domainUrl: "aldeewancollection.com",
   },
   {
-    id: "marginalia",
-    category: "ML & AI Projects",
-    projectNumber: "Project 02",
-    title: "Marginalia",
-    description:
-      "Intelligent AI research companion that dives deep into scientific literature: searches arXiv, synthesizes papers, cites sources inline, and tracks research journeys.",
-    image: "/images/projects/marginalia.webp",
-    tags: ["Next.js", "TypeScript", "arXiv API", "LLMs", "RAG"],
-    live: "https://marginalia-ochre-nu.vercel.app/chat",
-    liveLabel: "Live Demo",
-    github: "https://github.com/Hamzaviour/Marginalia",
+    id: "02",
+    name: "Option Packaging",
+    subtitle: "Automated Packaging Estimation Engine",
+    tags: [
+      { label: "Web Design", icon: "globe" },
+      { label: "Development", icon: "code" },
+      { label: "B2B E-Commerce", icon: "gtm" },
+    ],
+    image: "/images/websites/optionpackaging.webp",
+    mobileImage: "/images/websites/optionpackaging-mobile.png",
+    link: "https://optionpackaging.com/",
+    domainUrl: "optionpackaging.com",
   },
   {
-    id: "sentiment-analyzer",
-    category: "ML & AI Projects",
-    projectNumber: "Project 03",
-    title: "Sentiment Analyzer",
-    description:
-      "AI-powered text classification and sentiment analytics web application for customer feedback, brand perception, and real-time opinion mining.",
-    image: "/images/projects/sentiment-analyzer.webp",
-    tags: ["NLP", "Transformers", "React", "Python", "FastAPI"],
-    live: "https://huaweisentiment.vercel.app/",
-    liveLabel: "Live Demo",
-    github: "https://github.com/Hamzaviour/Sentiment-Analyzer",
+    id: "03",
+    name: "Whizzly Lab",
+    subtitle: "Autonomous Multi-Agent Systems & Engineering Studio",
+    tags: [
+      { label: "AI Systems", icon: "ai" },
+      { label: "Web Design", icon: "globe" },
+      { label: "Engineering", icon: "code" },
+    ],
+    image: "/images/websites/whizzlylab.webp",
+    mobileImage: "/images/websites/whizzlylab-mobile.png",
+    link: "https://www.whizzlylab.com/",
+    domainUrl: "whizzlylab.com",
   },
   {
-    id: "deewan-pos",
-    category: "ML & AI Projects",
-    projectNumber: "Project 04",
-    title: "Al-Deewan POS System",
-    description:
-      "Advanced AI-based enterprise point-of-sale ERP software with wholesale & retail inventory, double-entry accounting, SQLite, and Cloudflare Tunnel remote portal.",
-    image: "/images/projects/deewan-pos.webp",
-    tags: ["Electron", "React 18", "TypeScript", "Vite", "SQLite"],
-    live: null,
-    github: "https://github.com/Hamzaviour/Deewan-POS-System",
+    id: "04",
+    name: "XecureAI",
+    subtitle: "Enterprise Cybersecurity & Autonomous SOC Platform",
+    tags: [
+      { label: "Web Design", icon: "globe" },
+      { label: "Development", icon: "code" },
+      { label: "Cybersecurity", icon: "shield" },
+    ],
+    image: "/images/websites/xecureai.webp",
+    mobileImage: "/images/websites/xecureai-mobile.png",
+    link: "https://xecureai.com/",
+    domainUrl: "xecureai.com",
   },
   {
-    id: "intelligent-support-engine",
-    category: "ML & AI Projects",
-    projectNumber: "Project 05",
-    title: "Intelligent Support Engine",
-    description:
-      "Autonomous multi-agent customer support engine powered by LangGraph, FastAPI, and Next.js for real-time ticket triage, intent routing, and self-service resolution.",
-    image: "/images/projects/intelligent-support-engine.webp",
-    tags: ["LangGraph", "Multi-Agent AI", "FastAPI", "Python", "Next.js"],
-    live: null,
-    github: "https://github.com/Hamzaviour/Intelligent_Support_Engine",
-  },
-  {
-    id: "knowly",
-    category: "ML & AI Projects",
-    projectNumber: "Project 06",
-    title: "Knowly",
-    description:
-      "Enterprise document AI workspace offering hybrid semantic search, multi-agent orchestration, deep research synthesis, and automated document analysis.",
-    image: "/images/projects/knowly.webp",
-    tags: ["Next.js 16", "FastAPI", "Document AI", "Semantic Search", "RAG"],
-    live: null,
-    github: "https://github.com/Hamzaviour/Knowly",
-  },
-  {
-    id: "cyberbrainids",
-    category: "ML & AI Projects",
-    projectNumber: "Project 07",
-    title: "CyberBrain IDS",
-    description:
-      "AI-powered Intrusion Detection System featuring live packet capture, Random Forest + XGBoost hybrid anomaly detection, ChromaDB RAG, and SOC dashboard.",
-    image: "/images/projects/cyberbrainids.webp",
-    tags: ["Python", "PyShark", "XGBoost", "ChromaDB", "React"],
-    live: "https://cybervenoms.netlify.app/",
-    liveLabel: "Live Demo",
-    github: "https://github.com/Hamzaviour/CyberBrainIDS",
+    id: "05",
+    name: "CureCMS Solution",
+    subtitle: "AI Healthcare & RCM Billing Platform",
+    tags: [
+      { label: "Web Design", icon: "globe" },
+      { label: "App Design", icon: "phone" },
+      { label: "AI Development", icon: "ai" },
+      { label: "GTM", icon: "gtm" },
+    ],
+    image: "/images/websites/curecmsolution.webp",
+    mobileImage: "/images/websites/curecmsolution-mobile.png",
+    link: "https://curercmsolution.com/",
+    domainUrl: "curercmsolution.com",
   },
 ];
 
-type FilterCategory = "All" | "Websites I Built" | "ML & AI Projects";
-
-export default function CaseStudies() {
-  const [activeFilter, setActiveFilter] = useState<FilterCategory>("All");
-
-  const filteredProjects =
-    activeFilter === "All"
-      ? allProjects
-      : allProjects.filter((p) => p.category === activeFilter);
-
-  const websiteProjects = allProjects.filter((p) => p.category === "Websites I Built");
-  const mlProjects = allProjects.filter((p) => p.category === "ML & AI Projects");
-
-  return (
-    <section id="work" className="relative z-10 px-4 py-20 sm:px-8 sm:py-32">
-      <div className="mx-auto max-w-7xl">
-        {/* Header */}
-        <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <p className="text-xs font-semibold tracking-[0.2em] text-cyan-400 uppercase">
-              Portfolio
-            </p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl font-heading">
-              Featured Projects
-            </h2>
-            <p className="mt-3 max-w-2xl text-hero-sub/80 text-base">
-              Explore production applications, high-performance web platforms, and autonomous ML systems engineered for real-world reliability.
-            </p>
-          </div>
-
-          {/* Filter Pills */}
-          <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.03] p-1.5 backdrop-blur-md self-start md:self-auto">
-            {(["All", "Websites I Built", "ML & AI Projects"] as FilterCategory[]).map((tab) => (
-              <button
-                key={tab}
-                type="button"
-                onClick={() => setActiveFilter(tab)}
-                className={`rounded-xl px-4 py-2 text-xs font-medium transition-all ${
-                  activeFilter === tab
-                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 shadow-[0_0_15px_rgba(0,240,255,0.2)]"
-                    : "text-slate-400 hover:text-white hover:bg-white/5 border border-transparent"
-                }`}
-              >
-                {tab === "All"
-                  ? `All (${allProjects.length})`
-                  : tab === "Websites I Built"
-                  ? `Websites (${websiteProjects.length})`
-                  : `ML & AI (${mlProjects.length})`}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Section 1: Websites I Built (when All or Websites selected) */}
-        {(activeFilter === "All" || activeFilter === "Websites I Built") && (
-          <div className="mb-16">
-            {activeFilter === "All" && (
-              <div className="mb-8 flex items-center gap-3">
-                <h3 className="text-2xl font-bold tracking-tight text-white font-heading">
-                  Websites I Built
-                </h3>
-                <span className="rounded-full border border-cyan-400/20 bg-cyan-500/10 px-2.5 py-0.5 text-xs font-medium text-cyan-300">
-                  {websiteProjects.length} Projects
-                </span>
-                <div className="h-px flex-1 bg-gradient-to-r from-white/15 to-transparent" />
-              </div>
-            )}
-
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {(activeFilter === "All" ? websiteProjects : filteredProjects).map((item, i) => (
-                <ProjectCard key={item.id} item={item} index={i} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Section 2: ML & AI Projects (when All or ML & AI selected) */}
-        {(activeFilter === "All" || activeFilter === "ML & AI Projects") && (
-          <div>
-            {activeFilter === "All" && (
-              <div className="mb-8 flex items-center gap-3">
-                <h3 className="text-2xl font-bold tracking-tight text-white font-heading">
-                  ML & AI Projects
-                </h3>
-                <span className="rounded-full border border-cyan-400/20 bg-cyan-500/10 px-2.5 py-0.5 text-xs font-medium text-cyan-300">
-                  {mlProjects.length} Projects
-                </span>
-                <div className="h-px flex-1 bg-gradient-to-r from-white/15 to-transparent" />
-              </div>
-            )}
-
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {(activeFilter === "All" ? mlProjects : filteredProjects).map((item, i) => (
-                <ProjectCard key={item.id} item={item} index={i} />
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </section>
-  );
+function renderTagIcon(icon: TagItem["icon"]) {
+  switch (icon) {
+    case "globe":
+      return <Globe className="w-3 h-3 text-gray-400" />;
+    case "phone":
+      return <Smartphone className="w-3 h-3 text-gray-400" />;
+    case "ai":
+      return <Sparkles className="w-3 h-3 text-indigo-400" />;
+    case "gtm":
+      return <TrendingUp className="w-3 h-3 text-amber-400" />;
+    case "code":
+      return <Code2 className="w-3 h-3 text-cyan-400" />;
+    case "cpu":
+      return <Cpu className="w-3 h-3 text-purple-400" />;
+    case "shield":
+      return <Shield className="w-3 h-3 text-emerald-400" />;
+    default:
+      return <Code2 className="w-3 h-3 text-gray-400" />;
+  }
 }
 
-function ProjectCard({ item, index }: { item: ProjectItem; index: number }) {
+export default function CaseStudies() {
+  // Default to item 01 (Al-Deewan Collection)
+  const [activeIndex, setActiveIndex] = useState(0);
+
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5, delay: (index % 3) * 0.08 }}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-md transition-all duration-300 hover:border-cyan-400/50 hover:shadow-[0_8px_32px_rgba(0,240,255,0.15)]"
-    >
-      {/* Preview Image in exact 16/10 aspect ratio matching hamzayounas.netlify.app */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-white/10 bg-black/60">
-        <Image
-          src={item.image}
-          alt={item.title}
-          fill
-          className="object-cover object-top transition duration-500 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          loading="lazy"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#05010f]/80 via-transparent to-transparent" />
-      </div>
-
-      {/* Card Content */}
-      <div className="flex flex-1 flex-col p-6 sm:p-7">
-        {item.projectNumber && (
-          <p className="mb-2 font-mono text-xs tracking-[0.25em] text-cyan-400 uppercase">
-            {item.projectNumber}
+    <section id="work" className="bg-black text-white py-24 sm:py-32 relative z-40 overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 sm:mb-20 gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs font-mono uppercase tracking-wider text-indigo-300 mb-4">
+              Featured Case Studies
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-white font-sans">
+              Case Studies
+            </h2>
+          </div>
+          <p className="text-gray-400 max-w-xs md:text-right text-xs sm:text-sm leading-relaxed font-light">
+            Proven results, measurable impact—explore <br className="hidden sm:inline" />
+            the transformations we&apos;ve delivered.
           </p>
-        )}
-        <h4 className="mb-2 text-xl font-bold text-white transition group-hover:text-cyan-300">
-          {item.title}
-        </h4>
-        <p className="mb-5 flex-1 text-sm leading-relaxed text-slate-300/80">
-          {item.description}
-        </p>
-
-        {/* Tags */}
-        <div className="mb-5 flex flex-wrap gap-1.5">
-          {item.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs font-medium text-slate-300"
-            >
-              {tag}
-            </span>
-          ))}
         </div>
 
-        {/* Action Links */}
-        <div className="flex flex-wrap items-center gap-4 pt-3 border-t border-white/10">
-          {item.live && (
-            <a
-              href={item.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-cyan-400 hover:text-cyan-300 transition"
-            >
-              {item.liveLabel || "Live Website"}
-              <ExternalLink className="h-3.5 w-3.5" />
-            </a>
-          )}
-          {item.github && (
-            <a
-              href={item.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition"
-            >
-              GitHub
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </a>
-          )}
-          {!item.live && !item.github && (
-            <span className="text-xs text-slate-500">Internal Tool</span>
-          )}
+        {/* 2-Column Split: Left List, Right Accurate Phone Mockup Showcase */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          {/* LEFT COLUMN: Interactive Project List */}
+          <div className="lg:col-span-7 flex flex-col gap-3">
+            {CASE_STUDIES.map((study, index) => {
+              const isActive = activeIndex === index;
+              return (
+                <div
+                  key={study.id}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  onClick={() => setActiveIndex(index)}
+                  className={`group relative flex flex-col md:flex-row md:items-center justify-between py-4 sm:py-5 px-5 sm:px-6 cursor-pointer transition-all duration-300 ${
+                    isActive
+                      ? "bg-[#10121a] border border-indigo-400/40 rounded-2xl shadow-[0_8px_32px_rgba(30,35,80,0.35)] opacity-100"
+                      : "border-b border-white/[0.08] rounded-2xl hover:bg-white/[0.02] opacity-65 hover:opacity-100"
+                  }`}
+                >
+                  {/* Left: ID & Project Name */}
+                  <div className="flex items-center gap-4 sm:gap-6 min-w-[210px]">
+                    <span className="text-sm font-mono text-indigo-300/80 font-medium w-6 shrink-0">
+                      {study.id}
+                    </span>
+                    <h3 className="text-lg sm:text-xl font-medium text-white tracking-tight group-hover:text-indigo-200 transition-colors whitespace-nowrap">
+                      {study.name}
+                    </h3>
+                  </div>
+
+                  {/* Right: Tag Pills */}
+                  <div className="mt-3 md:mt-0 flex flex-wrap items-center gap-2">
+                    {study.tags.map((tag, i) => (
+                      <span
+                        key={i}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-light transition-all ${
+                          isActive
+                            ? "border-indigo-400/30 bg-indigo-500/10 text-white"
+                            : "border-white/10 bg-white/[0.03] text-gray-400 group-hover:border-white/20 group-hover:text-gray-200"
+                        }`}
+                      >
+                        {renderTagIcon(tag.icon)}
+                        <span>{tag.label}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* RIGHT COLUMN: Photorealistic Smartphone Showcase with Accurate Mobile Preview */}
+          <div className="lg:col-span-5 relative w-full h-[520px] sm:h-[580px] lg:h-[620px] rounded-3xl overflow-hidden bg-[#0a0b10] border border-white/10 shadow-2xl flex items-center justify-center p-6">
+            {/* Ambient Volumetric Backdrop Glow */}
+            <div
+              aria-hidden
+              className="absolute -top-16 -right-16 w-[360px] h-[360px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.25)_0%,rgba(168,85,247,0.12)_40%,transparent_70%)] blur-3xl pointer-events-none"
+            />
+            <div
+              aria-hidden
+              className="absolute -bottom-16 -left-16 w-[320px] h-[320px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.2)_0%,transparent_65%)] blur-3xl pointer-events-none"
+            />
+
+            {/* Subtle Vignette Gradient */}
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none z-10"
+            />
+
+            {/* Active Project Mock Mobile Device with Cross-Fade */}
+            {CASE_STUDIES.map((study, index) => {
+              const isActive = activeIndex === index;
+              return (
+                <div
+                  key={study.id}
+                  className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-700 ease-out ${
+                    isActive
+                      ? "opacity-100 scale-100 pointer-events-auto z-20"
+                      : "opacity-0 scale-95 pointer-events-none z-0"
+                  }`}
+                >
+                  <div className="relative flex flex-col items-center justify-center w-full h-full">
+                    {/* Accurate iPhone 16 Pro Frame with 414x896 Screen Ratio */}
+                    <div
+                      className="relative w-[235px] sm:w-[260px] md:w-[275px] h-[450px] sm:h-[490px] md:h-[515px] rounded-[42px] sm:rounded-[46px] bg-[#12131c] border-[6px] sm:border-[7px] border-[#252839] shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(99,102,241,0.2)] overflow-hidden transition-all duration-700 flex flex-col"
+                      style={{
+                        transform: "rotateY(-4deg) rotateX(2deg)",
+                      }}
+                    >
+                      {/* Top Bezel: Dynamic Island Notch & Status Bar */}
+                      <div className="relative w-full h-9 sm:h-10 bg-black/90 backdrop-blur-md px-5 flex items-center justify-between shrink-0 z-30 border-b border-white/5">
+                        {/* Clock */}
+                        <span className="text-[11px] font-semibold text-white/90 font-mono tracking-tight">
+                          9:41
+                        </span>
+
+                        {/* Dynamic Island Pill Notch */}
+                        <div className="w-18 sm:w-20 h-4 bg-black rounded-full border border-white/10 flex items-center justify-end px-1.5 gap-1">
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#101018]" />
+                          <div className="w-2 h-2 rounded-full bg-[#181824] border border-indigo-400/40" />
+                        </div>
+
+                        {/* Status Icons */}
+                        <div className="flex items-center gap-1.5 text-white/80">
+                          <Wifi className="w-3 h-3" />
+                          <div className="w-4 h-2 rounded-[2px] border border-white/70 p-[1px] flex items-center">
+                            <div className="w-full h-full bg-white rounded-[1px]" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Screen Content: Authentic Pixel-Perfect Mobile Screenshot */}
+                      <div className="relative w-full flex-1 overflow-hidden bg-[#05060a]">
+                        <Image
+                          src={study.mobileImage}
+                          alt={`${study.name} mobile preview`}
+                          fill
+                          sizes="(max-width: 768px) 260px, 300px"
+                          className="object-cover object-top"
+                          priority={index === 0}
+                        />
+
+                        {/* Glass Gloss Sheen */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.05] to-transparent pointer-events-none z-20" />
+                      </div>
+
+                      {/* Bottom Mobile Browser Address Pill (Safari / Chrome Mobile) */}
+                      <div className="w-full bg-black/95 backdrop-blur-lg px-4 py-2 flex flex-col items-center shrink-0 border-t border-white/10 z-30">
+                        <div className="w-full py-1 px-3 rounded-full bg-white/[0.08] border border-white/10 flex items-center justify-center gap-1.5">
+                          <Lock className="w-2.5 h-2.5 text-emerald-400" />
+                          <span className="text-[10px] text-white/80 font-mono tracking-tight truncate max-w-[170px]">
+                            {study.domainUrl}
+                          </span>
+                        </div>
+                        {/* iOS Home Indicator Bar */}
+                        <div className="w-24 h-1 bg-white/35 rounded-full mt-1.5" />
+                      </div>
+                    </div>
+
+                    {/* Bottom Floating Card: Project Name & Live Link */}
+                    <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-4 sm:right-4 z-40 flex items-center justify-between p-3 sm:p-3.5 rounded-2xl bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl">
+                      <div className="min-w-0 pr-2">
+                        <p className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-indigo-300 truncate">
+                          {study.subtitle}
+                        </p>
+                        <h4 className="text-sm sm:text-base font-semibold text-white tracking-tight truncate">
+                          {study.name}
+                        </h4>
+                      </div>
+                      {study.link && (
+                        <Link
+                          href={study.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-indigo-300 transition-colors shrink-0 shadow-md"
+                          aria-label={`Visit live site for ${study.name}`}
+                        >
+                          <span>Live Site</span>
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
-    </motion.article>
+    </section>
   );
 }

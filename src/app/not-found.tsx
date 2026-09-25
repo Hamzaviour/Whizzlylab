@@ -1,87 +1,77 @@
 import Link from "next/link";
-import { ArrowRight, Home, Search, Calendar } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import PageNavbar from "@/components/PageNavbar";
-import CtaFooter from "@/components/CtaFooter";
+import Footer from "@/components/Footer";
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-transparent text-foreground flex flex-col justify-between">
+    <main className="relative min-h-screen bg-black text-white selection:bg-indigo-500 selection:text-white font-sans overflow-x-hidden flex flex-col justify-between">
       <PageNavbar />
 
-      <section className="relative flex flex-1 flex-col items-center justify-center px-4 py-20 text-center sm:py-28">
-        {/* Ambient Glow */}
-        <div className="pointer-events-none absolute top-1/2 left-1/2 h-[450px] w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.25)_0%,rgba(0,240,255,0.15)_40%,transparent_70%)] blur-3xl" />
+      {/* Volumetric Top Spotlight Beam */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-32 -left-28 w-[600px] sm:w-[750px] h-[900px] origin-top-left -rotate-[35deg] z-0 overflow-hidden"
+      >
+        <div
+          className="w-full h-full"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(165,180,252,0.35) 0%, rgba(99,102,241,0.18) 28%, rgba(79,70,229,0.04) 60%, transparent 100%)",
+            filter: "blur(45px)",
+            clipPath: "polygon(18% 0%, 58% 0%, 100% 100%, 0% 100%)",
+          }}
+        />
+      </div>
 
-        <div className="liquid-glass relative z-10 mx-auto max-w-2xl rounded-3xl border border-white/10 p-8 sm:p-14 shadow-2xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-semibold text-cyan-300">
-            <Search className="h-3.5 w-3.5" />
-            404 Error · Page Not Found
-          </div>
+      {/* Giant Watermark Background Text: "404" */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-40 left-1/2 -translate-x-1/2 w-screen flex justify-center items-center select-none z-0"
+      >
+        <span className="text-[20vw] font-bold uppercase tracking-[0.24em] text-white/[0.035] leading-none font-sans whitespace-nowrap">
+          404
+        </span>
+      </div>
 
-          <h1
-            className="mt-6 text-7xl font-extrabold tracking-tighter text-white sm:text-8xl"
-            style={{ fontFamily: "'Space Grotesk', 'Syne', sans-serif" }}
-          >
-            <span className="bg-gradient-to-r from-[#00F0FF] via-[#6366f1] to-[#a855f7] bg-clip-text text-transparent">
-              404
-            </span>
-          </h1>
-
-          <h2
-            className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl"
-            style={{ fontFamily: "'Syne', sans-serif" }}
-          >
-            Lost in the Latent Space
-          </h2>
-
-          <p className="mt-4 text-base leading-relaxed text-hero-sub/80">
-            The page you are looking for has been moved, renamed, or does not exist. Let&apos;s get you back to engineering reality.
-          </p>
-
-          {/* Action buttons */}
-          <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-            <Link
-              href="/"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90"
-            >
-              <Home className="h-4 w-4" />
-              Back to Homepage
-            </Link>
-            <Link
-              href="/schedule"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#6366f1] via-[#a855f7] to-[#00f0ff] px-7 py-3.5 text-sm font-semibold text-black transition hover:opacity-90"
-            >
-              <Calendar className="h-4 w-4" />
-              Schedule a Consult
-            </Link>
-          </div>
-
-          {/* Quick links */}
-          <div className="mt-10 border-t border-white/10 pt-6">
-            <p className="mb-3 text-xs font-semibold tracking-widest text-hero-sub/50 uppercase">
-              Explore Whizzly Lab
-            </p>
-            <div className="flex flex-wrap justify-center gap-2">
-              {[
-                { href: "/services", label: "Capabilities" },
-                { href: "/pricing", label: "Pricing & Estimator" },
-                { href: "/about", label: "About Studio" },
-                { href: "/contact", label: "Direct Channels" },
-              ].map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs text-hero-sub/80 transition hover:border-white/25 hover:text-white"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </div>
+      <div className="relative z-10 flex flex-col items-center justify-center px-6 py-24 sm:py-32 text-center max-w-2xl mx-auto my-auto">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/15 bg-white/[0.04] text-xs font-medium text-indigo-300 mb-6 backdrop-blur-md">
+          <span>Error 404</span>
+          <span className="text-white/40">·</span>
+          <span>Route Not Found</span>
         </div>
-      </section>
 
-      <CtaFooter />
+        <h1 className="text-4xl sm:text-6xl font-normal tracking-tight text-white leading-[1.15]">
+          Latent Space <br />
+          <span className="italic font-light text-white">Undefined</span>.
+        </h1>
+
+        <p className="mt-6 text-base sm:text-lg text-gray-400 font-light leading-relaxed max-w-lg">
+          The requested coordinate does not resolve to an active service endpoint. Let&apos;s redirect back to production reality.
+        </p>
+
+        {/* Action button */}
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <Link
+            href="/"
+            className="group inline-flex items-center gap-2.5 px-7 py-3 rounded-full border border-white/20 bg-white text-black font-medium text-sm hover:bg-gray-200 transition-all duration-300"
+          >
+            <span>Return to Studio</span>
+            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-black text-white transition-transform duration-300 group-hover:scale-110">
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </div>
+          </Link>
+
+          <Link
+            href="/case-studies"
+            className="px-6 py-3 rounded-full border border-white/10 bg-white/5 text-sm font-medium text-gray-300 hover:text-white hover:border-white/20 transition-all"
+          >
+            View Case Studies →
+          </Link>
+        </div>
+      </div>
+
+      <Footer />
     </main>
   );
 }

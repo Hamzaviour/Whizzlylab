@@ -188,6 +188,138 @@ export const SERVICES: ServicePage[] = [
     ],
     stack: ["Kafka", "Spark", "PySpark", "Python", "Cloud"],
   },
+  {
+    slug: "product-design",
+    title: "Product Design",
+    short:
+      "End-to-end product design, UX architecture, design systems, and rapid interactive prototyping for modern AI and enterprise SaaS.",
+    tag: "Design Systems",
+    accentColor: "#ec4899",
+    image:
+      "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=1400&q=80",
+    headline: "Intuitive, high-converting product experiences engineered for complex digital workflows.",
+    body: [
+      "Whizzly Lab delivers full-lifecycle product design: from user research and journey mapping to design tokens and component libraries in Figma.",
+      "We bridge the gap between design and engineering, delivering production-grade design systems with zero ambiguity during frontend implementation.",
+    ],
+    deliverables: [
+      "Figma design systems & tokens",
+      "UX journey maps & wireframes",
+      "Interactive high-fidelity prototypes",
+      "Component handoff & developer specs",
+    ],
+    stack: ["Figma", "Design Tokens", "Tailwind CSS", "Storybook", "Principle", "Framer"],
+  },
+  {
+    slug: "development",
+    title: "Development",
+    short:
+      "Robust, scalable products across web and mobile—from elegant Next.js frontends to reliable microservices and automated DevOps.",
+    tag: "Full Stack",
+    accentColor: "#3b82f6",
+    image:
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1400&q=80",
+    headline: "Robust, production-grade applications that load fast, scale cleanly, and stay maintainable.",
+    body: [
+      "We engineer end-to-end web and mobile applications using modern frameworks like React, Next.js, TypeScript, and Python.",
+      "From sub-second API layers and real-time WebSockets to Dockerized microservices, our code is tested, documented, and built to scale.",
+    ],
+    deliverables: [
+      "Next.js / React web applications",
+      "Scalable REST & GraphQL APIs",
+      "Mobile apps (Flutter & React Native)",
+      "Docker & CI/CD deployment pipelines",
+    ],
+    stack: ["React", "Next.js", "TypeScript", "Node.js", "Python", "Docker", "AWS"],
+  },
+  {
+    slug: "gtm-strategy",
+    title: "GTM Strategy",
+    short:
+      "Data-driven go-to-market for SaaS and AI—clear positioning, competitive moats, pricing architecture, and repeatable growth loops.",
+    tag: "Strategy & Growth",
+    accentColor: "#f59e0b",
+    image:
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1400&q=80",
+    headline: "Repeatable go-to-market loops designed to turn technical innovation into market leadership.",
+    body: [
+      "We formulate data-backed GTM playbooks that align product capabilities with high-value ICP segments, defensible pricing tiers, and distribution channels.",
+      "From launch messaging and developer relations to post-launch analytics and churn reduction, our roadmaps drive sustained ARR expansion.",
+    ],
+    deliverables: [
+      "ICP definition & market segmentation",
+      "Value proposition & technical messaging",
+      "Tiered pricing & packaging models",
+      "Launch playbooks & funnel analytics",
+    ],
+    stack: ["HubSpot", "Segment", "PostHog", "Mixpanel", "Stripe", "Google Analytics"],
+  },
+  {
+    slug: "ai-transformation",
+    title: "AI Transformation",
+    short:
+      "Operationalize generative AI across your organization—autonomous agent workflows, custom fine-tuned LLMs, and enterprise RAG with compliance guardrails.",
+    tag: "Enterprise AI",
+    accentColor: "#00F0FF",
+    image:
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1400&q=80",
+    headline: "Enterprise-grade AI systems that integrate directly into existing workflows with zero hallucination drift.",
+    body: [
+      "Whizzly Lab helps enterprise teams move beyond basic chat prompts into mission-critical autonomous agents, domain RAG pipelines, and fine-tuned models.",
+      "We enforce strict observability, token cost controls, data privacy boundaries, and eval benchmarks so AI delivers measurable operational efficiency.",
+    ],
+    deliverables: [
+      "Autonomous multi-agent systems",
+      "Domain-specific RAG knowledge bases",
+      "Model fine-tuning & evaluation suites",
+      "Enterprise guardrails & compliance audits",
+    ],
+    stack: ["PyTorch", "LangChain", "Qdrant", "Hugging Face", "OpenAI", "LlamaIndex"],
+  },
+  {
+    slug: "growth-marketing",
+    title: "Growth Marketing",
+    short:
+      "High-velocity acquisition engines combining programmatic SEO, paid performance channels, and conversion rate optimization.",
+    tag: "Performance",
+    accentColor: "#10b981",
+    image:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=80",
+    headline: "Engineering-led growth engines that acquire high-intent users with predictable unit economics.",
+    body: [
+      "We build programmatic SEO architectures that index thousands of targeted landing pages, coupled with high-conversion landing page funnels.",
+      "Our data-driven growth framework tests messaging, optimizes CAC/LTV ratios, and automates multi-channel retargeting.",
+    ],
+    deliverables: [
+      "Programmatic SEO architecture",
+      "Conversion rate optimization (CRO)",
+      "Multi-channel paid ads funnels",
+      "Attribution modeling & analytics",
+    ],
+    stack: ["Ahrefs", "Semrush", "Meta Ads", "Google Ads", "VWO", "Next.js"],
+  },
+  {
+    slug: "security-compliance",
+    title: "Security & Compliance",
+    short:
+      "Enterprise hardening and continuous governance—SOC 2 Type II readiness, zero-trust cloud perimeters, and automated penetration testing.",
+    tag: "Security & SOC2",
+    accentColor: "#6366f1",
+    image:
+      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1400&q=80",
+    headline: "Institutional-grade cloud perimeters and compliance automation built for enterprise scale.",
+    body: [
+      "We audit, harden, and continuously monitor cloud infrastructure to achieve SOC 2, HIPAA, and ISO 27001 readiness.",
+      "From role-based access control (RBAC) and data encryption at rest/transit to automated secrets rotation and zero-trust VPC topology.",
+    ],
+    deliverables: [
+      "SOC 2 Type II & HIPAA readiness audits",
+      "Zero-trust cloud network architecture",
+      "Automated penetration & vulnerability scans",
+      "Secrets management & IAM hardening",
+    ],
+    stack: ["AWS IAM", "HashiCorp Vault", "Wiz", "Datadog", "Cloudflare", "Drata"],
+  },
 ];
 
 export function getService(slug: string) {

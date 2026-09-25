@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, Users, Laptop } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import PageNavbar from "@/components/PageNavbar";
-import CtaFooter from "@/components/CtaFooter";
-import Breadcrumbs from "@/components/Breadcrumbs";
+import AuroraCTASection from "@/components/AuroraCTASection";
+import Footer from "@/components/Footer";
 import CareersView from "@/components/CareersView";
 import { BASE_URL, ogImage } from "@/lib/seo";
 import { OPEN_POSITIONS } from "@/lib/careers";
@@ -39,8 +39,7 @@ export const metadata: Metadata = {
 };
 
 export default function CareersPage() {
-  // Schema.org JobPosting LD+JSON for search indexing
-  const jobPostingSchemas = OPEN_POSITIONS.filter(p => p.department !== "General").map((job) => ({
+  const jobPostingSchemas = OPEN_POSITIONS.filter((p) => p.department !== "General").map((job) => ({
     "@context": "https://schema.org",
     "@type": "JobPosting",
     title: job.title,
@@ -64,7 +63,7 @@ export default function CareersPage() {
   }));
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-transparent text-foreground">
+    <main className="relative min-h-screen bg-black text-white selection:bg-indigo-500 selection:text-white font-sans overflow-x-hidden">
       {/* Search Engine Structured Data */}
       {jobPostingSchemas.map((schema, idx) => (
         <script
@@ -76,69 +75,78 @@ export default function CareersPage() {
 
       <PageNavbar />
 
-      <section className="relative px-4 pt-12 pb-24 sm:px-8 sm:pt-20 sm:pb-32">
-        {/* Background glow orbs */}
-        <div className="pointer-events-none absolute top-0 left-1/2 h-[500px] w-full max-w-7xl -translate-x-1/2 opacity-30 blur-[130px] [background:radial-gradient(ellipse_at_top,rgba(0,240,255,0.25)_0%,rgba(168,85,247,0.2)_40%,transparent_70%)]" />
+      {/* Volumetric Top Spotlight Beam */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-32 -left-28 w-[600px] sm:w-[750px] h-[900px] origin-top-left -rotate-[35deg] z-0 overflow-hidden"
+      >
+        <div
+          className="w-full h-full"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(165,180,252,0.35) 0%, rgba(99,102,241,0.18) 28%, rgba(79,70,229,0.04) 60%, transparent 100%)",
+            filter: "blur(45px)",
+            clipPath: "polygon(18% 0%, 58% 0%, 100% 100%, 0% 100%)",
+          }}
+        />
+      </div>
 
-        <div className="relative mx-auto max-w-6xl">
-          {/* Breadcrumbs */}
-          <div className="mb-6 flex items-center justify-center sm:justify-start">
-            <Breadcrumbs
-              items={[
-                { label: "Home", href: "/" },
-                { label: "Careers" },
-              ]}
-            />
+      {/* Giant Watermark Background Text: "CAREERS" */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-36 left-1/2 -translate-x-1/2 w-screen flex justify-center items-center select-none z-0"
+      >
+        <span className="text-[14vw] font-bold uppercase tracking-[0.24em] text-white/[0.035] leading-none font-sans whitespace-nowrap">
+          CAREERS
+        </span>
+      </div>
+
+      {/* Hero Section */}
+      <section className="relative z-10 pt-20 sm:pt-28 pb-16 px-6 sm:px-10 lg:px-16 max-w-7xl mx-auto">
+        <div className="max-w-4xl">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/15 bg-white/[0.04] text-xs font-medium text-indigo-300 mb-8 backdrop-blur-md">
+            <span>Engineering Studio</span>
+            <span className="text-white/40">·</span>
+            <span>Talent Network</span>
           </div>
 
-          {/* Hero Header */}
-          <div className="mx-auto max-w-4xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-slate-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
-              <span>CAREERS AT WHIZZLY LAB</span>
-            </div>
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-normal tracking-tight text-white leading-[1.12]">
+            Engineering Freedom. <br />
+            <span className="italic font-light text-white">High-Density</span> Collective.
+          </h1>
 
-            <h1
-              className="mt-6 text-4xl font-bold tracking-tight text-white sm:text-6xl md:text-7xl font-heading"
+          <p className="mt-8 text-base sm:text-lg lg:text-xl text-gray-300/85 font-light leading-relaxed max-w-2xl">
+            We are an autonomous, remote-first studio of passionate builders, AI researchers, and distributed systems architects. No corporate bureaucracy, no busywork, just high-caliber engineering solving tough real-world problems.
+          </p>
+
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href="#open-roles"
+              className="group inline-flex items-center gap-2.5 px-6 py-3 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-sm font-medium text-white hover:border-white transition-all duration-300"
             >
-              Build High-Impact{" "}
-              <span className="bg-gradient-to-r from-[#00F0FF] via-[#a855f7] to-[#ec4899] bg-clip-text text-transparent">
-                AI &amp; Production Systems
-              </span>{" "}
-              With Us
-            </h1>
-
-            <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-hero-sub/90 sm:text-lg">
-              We are a high-density, remote-first studio of passionate builders, AI researchers, and
-              full-stack architects. No corporate bureaucracy, no busywork, just high-caliber
-              engineering solving tough real-world problems.
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <a
-                href="#open-roles"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-black transition hover:bg-cyan-300 shadow-[0_0_25px_rgba(0,240,255,0.25)]"
-              >
-                View Open Positions
-                <ArrowUpRight className="h-4 w-4" />
-              </a>
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10 hover:border-white/30"
-              >
-                About Our Studio
-              </Link>
-            </div>
+              <span>Explore Open Roles</span>
+              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-black transition-transform duration-300 group-hover:scale-110">
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </div>
+            </a>
+            <Link
+              href="/about"
+              className="text-sm font-medium text-gray-400 hover:text-white transition-colors px-4 py-2"
+            >
+              Studio Philosophy →
+            </Link>
           </div>
+        </div>
 
-          {/* Main Interactive Careers Content */}
-          <div className="mt-20">
-            <CareersView />
-          </div>
+        {/* Main Careers Interactive Content */}
+        <div className="mt-20">
+          <CareersView />
         </div>
       </section>
 
-      <CtaFooter />
+      {/* Unified Antimatter Aurora CTA & Live Clock Footer */}
+      <AuroraCTASection />
+      <Footer />
     </main>
   );
 }
