@@ -26,7 +26,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-black text-white pt-24 pb-12 relative overflow-hidden">
+    <footer className="bg-black text-white pt-14 sm:pt-24 pb-10 sm:pb-12 relative overflow-hidden">
       {/* 1. Purple Bottom Glow */}
       <div
         aria-hidden
@@ -34,9 +34,9 @@ export default function Footer() {
       />
 
       <div className="container mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl relative z-10">
-        <div className="flex flex-col lg:flex-row justify-between gap-16 lg:gap-12">
+        <div className="flex flex-col lg:flex-row justify-between gap-12 lg:gap-12">
           {/* LEFT COLUMN: Contact & Live Digital Clock */}
-          <div className="flex flex-col justify-between h-full min-h-[340px]">
+          <div className="flex flex-col justify-between h-full min-h-[300px] sm:min-h-[340px]">
             <div>
               <a
                 href="mailto:contact@whizzlylab.com"
@@ -65,14 +65,14 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="mt-14 lg:mt-auto">
-              <p className="text-gray-400 text-xs sm:text-sm mb-3 font-light">
+            <div className="mt-10 sm:mt-14 lg:mt-auto">
+              <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-3 font-light">
                 Serving clients globally ·{" "}
                 <span className="text-white/80">Production AI &amp; Engineering</span>
               </p>
 
               {/* Huge Real-Time Digital Clock */}
-              <div className="text-4xl xs:text-5xl sm:text-7xl lg:text-8xl font-medium tracking-tight font-mono text-white select-none">
+              <div className="text-3xl xs:text-5xl sm:text-7xl lg:text-8xl font-medium tracking-tight font-mono text-white select-none">
                 {time || "12:00:00 AM"}
               </div>
             </div>
@@ -123,36 +123,11 @@ export default function Footer() {
                 </Link>
               ))}
             </div>
-
-            {/* Column 3: Resources */}
-            <div className="flex flex-col gap-3.5">
-              <h4 className="text-gray-500 text-xs sm:text-sm font-mono uppercase tracking-wider mb-2">
-                Resources
-              </h4>
-              {[
-                { name: "Work & Case Studies", href: "/work" },
-                { name: "Engineering Blog", href: "/blog" },
-                { name: "XecureAI Platform", href: "/work" },
-                { name: "Option Packaging 3D", href: "/work" },
-                { name: "EchoSense Pipeline", href: "/work" },
-                { name: "Company", href: "/about" },
-                { name: "Book Consult", href: "/schedule" },
-              ].map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-xs sm:text-sm text-gray-300 hover:text-white transition-colors font-light"
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
           </div>
         </div>
 
-        {/* Bottom Copyright */}
-        <div className="mt-20 pt-8 border-t border-white/10 text-gray-500 text-xs sm:text-sm flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p>Whizzly Lab, © {new Date().getFullYear()}. All rights reserved.</p>
+        {/* Bottom Bar */}
+        <div className="mt-14 sm:mt-20 pt-8 border-t border-white/10 text-gray-500 text-xs sm:text-sm flex flex-col sm:flex-row justify-end items-center gap-4">
           <div className="flex gap-6 text-gray-500">
             <Link href="/privacy" className="hover:text-gray-300 transition-colors">
               Privacy Policy

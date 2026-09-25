@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import dynamic from "next/dynamic";
-import ScrollProgress from "./ScrollProgress";
 import StickyMobileCTA from "./StickyMobileCTA";
 import StickySocialBar from "./StickySocialBar";
 import CookieConsent from "./CookieConsent";
@@ -73,7 +72,6 @@ export default function InteractiveShell({
         />
       </div>
 
-      <ScrollProgress />
       {enabled && (
         <motion.div
           aria-hidden

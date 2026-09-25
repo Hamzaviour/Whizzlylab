@@ -149,9 +149,9 @@ export default function AuroraCTASection({
   };
 
   return (
-    <section className="bg-black py-20 sm:py-32 px-4 sm:px-6 lg:px-8 flex justify-center items-center">
+    <section className="bg-black py-12 sm:py-24 px-4 sm:px-6 lg:px-8 flex justify-center items-center">
       {/* 1. Main Container */}
-      <div className="relative w-full max-w-6xl rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden bg-[#05050a] border border-white/10 flex flex-col justify-center px-8 sm:px-16 lg:px-20 py-16 sm:py-24 shadow-2xl">
+      <div className="relative w-full max-w-6xl rounded-[2rem] sm:rounded-[3rem] overflow-hidden bg-[#05050a] border border-white/10 flex flex-col justify-center px-6 py-12 sm:px-16 sm:py-20 lg:px-20 lg:py-24 shadow-2xl">
         {/* 2. Aurora Background Waves */}
         <div
           aria-hidden
@@ -168,7 +168,7 @@ export default function AuroraCTASection({
 
         {/* 3. Content */}
         <div className="relative z-10 max-w-3xl">
-          <h2 suppressHydrationWarning className="text-3xl sm:text-5xl lg:text-6xl font-medium text-white leading-tight tracking-tight mb-10 font-sans">
+          <h2 suppressHydrationWarning className="text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-medium text-white leading-tight tracking-tight mb-8 sm:mb-10 font-sans">
             {resolvedPrefix} <br />
             {/* Animated Words */}
             <span className="inline-flex gap-x-2.5 sm:gap-x-4 flex-wrap mt-1">

@@ -798,6 +798,7 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
       geometryRef.current = geometry;
 
       // GLSL Custom Shader Material with Additive Blending
+      const isMobileInit = typeof window !== "undefined" && window.innerWidth < 768;
       const shaderMaterial = new THREE.ShaderMaterial({
         vertexShader,
         fragmentShader,
@@ -808,9 +809,9 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
           uMouse: { value: new THREE.Vector2(9999, 9999) },
           uRadius: { value: 0.68 },
           uMouseStrength: { value: 0.0 },
-          uPointSize: { value: 22.0 },
+          uPointSize: { value: isMobileInit ? 16.0 : 22.0 },
           uPixelRatio: { value: pixelRatio },
-          uOpacity: { value: 1.0 },
+          uOpacity: { value: 0.0 },
         },
         transparent: true,
         blending: THREE.AdditiveBlending,
@@ -822,12 +823,49 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
       pointsRef.current = points;
       scene.add(points);
 
+      // Responsive sizing helper: scales down globe on mobile so it fits gracefully without crowding screen
+      const getResponsiveSettings = () => {
+        const width = typeof window !== "undefined" ? window.innerWidth : 1200;
+        const isMobile = width < 768;
+        const isTablet = width >= 768 && width < 1024;
+        const isDesktop = width >= 1024;
+
+        // Mobile scale: 0.65 (prominently sized ~85% screen width while maintaining breathing room)
+        const heroScale = isMobile ? 0.65 : isTablet ? 0.78 : 1.0;
+        const servicesScale = isMobile ? 0.40 : isTablet ? 0.52 : 0.62;
+        // On mobile, lift the globe slightly (+0.22 world units) so it centers behind the headline and away from bottom buttons
+        const heroPosY = isMobile ? 0.22 : isTablet ? 0.12 : 0.0;
+
+        return { isMobile, isTablet, isDesktop, heroScale, servicesScale, heroPosY };
+      };
+
+      // Set initial scale and position
+      const initialResponsive = getResponsiveSettings();
+      points.scale.set(initialResponsive.heroScale, initialResponsive.heroScale, initialResponsive.heroScale);
+      points.position.set(0, initialResponsive.heroPosY, 0);
+
+      // Cinematic loading transition: materialization of celestial globe from stardust
+      gsap.to(shaderMaterial.uniforms.uOpacity, {
+        value: 1.0,
+        duration: 1.4,
+        delay: 0.15,
+        ease: "power2.out",
+      });
+      gsap.from(points.scale, {
+        x: initialResponsive.heroScale * 0.88,
+        y: initialResponsive.heroScale * 0.88,
+        z: initialResponsive.heroScale * 0.88,
+        duration: 1.6,
+        delay: 0.15,
+        ease: "power2.out",
+      });
+
       // Helper function: Compute exact 3D world coordinates for the left dock element
       const computeDockWorldPos = () => {
         const isDesktop = window.innerWidth >= 1024;
         const dock = document.getElementById("services-3d-dock");
         if (!dock || !isDesktop) {
-          return { x: isDesktop ? -3.4 : 0, y: isDesktop ? 0 : 0.6 };
+          return { x: isDesktop ? -3.4 : 0, y: isDesktop ? 0 : 0.55 };
         }
         const rect = dock.getBoundingClientRect();
         const screenX = rect.left + rect.width / 2;
@@ -853,33 +891,33 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
         scrub: 2,
         onUpdate: (self) => {
           const p = self.progress;
-          const isDesktop = window.innerWidth >= 1024;
+          const { heroScale, servicesScale, heroPosY } = getResponsiveSettings();
 
           // 1. Morph progress (0 = Globe, 1 = Services Shape)
           shaderMaterial.uniforms.uProgress.value = p;
 
-          // 2. Scale: 1.0x in Hero down to 0.62x in Services
-          const targetScale = isDesktop ? 1.0 - 0.38 * p : 1.0 - 0.40 * p;
-          points.scale.set(targetScale, targetScale, targetScale);
+          // 2. Responsive scale interpolation
+          const currentScale = heroScale + (servicesScale - heroScale) * p;
+          points.scale.set(currentScale, currentScale, currentScale);
 
-          // 3. Position: Centered (0, 0, 0) in Hero to exact Left Docking Bay in Services
+          // 3. Responsive position interpolation
           const dockPos = computeDockWorldPos();
           points.position.x = dockPos.x * p;
-          points.position.y = dockPos.y * p;
+          points.position.y = heroPosY + (dockPos.y - heroPosY) * p;
         },
         onLeaveBack: () => {
-          // Absolute guarantee of 100% Globe reset when scrolling back into Hero
+          const { heroScale, heroPosY } = getResponsiveSettings();
           shaderMaterial.uniforms.uProgress.value = 0.0;
-          points.scale.set(1.0, 1.0, 1.0);
-          points.position.set(0, 0, 0);
+          points.scale.set(heroScale, heroScale, heroScale);
+          points.position.set(0, heroPosY, 0);
         },
       });
 
-      // Teardown past services section so no ghost particles appear below
+      // Teardown past services section so no ghost particles appear below (no premature blank screen!)
       const exitTrigger = ScrollTrigger.create({
         trigger: ".services-section",
-        start: "bottom-=120px top",
-        end: "bottom top",
+        start: "bottom top",
+        end: "bottom+=120px top",
         scrub: true,
         onUpdate: (self) => {
           const remaining = 1.0 - self.progress;
@@ -1041,6 +1079,9 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
 
       window.addEventListener("mousemove", onPointerMove, { passive: true });
       window.addEventListener("mouseleave", onPointerLeave);
+      window.addEventListener("touchmove", onPointerMove, { passive: true });
+      window.addEventListener("touchend", deactivateHover, { passive: true });
+      window.addEventListener("touchcancel", deactivateHover, { passive: true });
 
       let animId = 0;
       let startTime = performance.now();
@@ -1090,6 +1131,13 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h);
+
+        shaderMaterial.uniforms.uPointSize.value = w < 768 ? 16.0 : 22.0;
+        if (shaderMaterial.uniforms.uProgress.value <= 0.05) {
+          const { heroScale, heroPosY } = getResponsiveSettings();
+          points.scale.set(heroScale, heroScale, heroScale);
+          points.position.set(0, heroPosY, 0);
+        }
         ScrollTrigger.refresh();
       });
       ro.observe(container);
@@ -1098,6 +1146,9 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
         cancelAnimationFrame(animId);
         window.removeEventListener("mousemove", onPointerMove);
         window.removeEventListener("mouseleave", onPointerLeave);
+        window.removeEventListener("touchmove", onPointerMove);
+        window.removeEventListener("touchend", deactivateHover);
+        window.removeEventListener("touchcancel", deactivateHover);
         ro.disconnect();
         morphTrigger.kill();
         exitTrigger.kill();

@@ -125,6 +125,8 @@ function ServiceToolIcon({ name }: { name: string }) {
 export default function HeroWithServicesTransition() {
   const [activeServiceIndex, setActiveServiceIndex] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement>(null);
@@ -139,6 +141,11 @@ export default function HeroWithServicesTransition() {
   const isClickNavigatingRef = useRef(false);
   const clickNavTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const activeServiceIndexRef = useRef(0);
+
+  // Touch gesture refs for horizontal card swiping on mobile
+  const touchStartXRef = useRef(0);
+  const touchStartYRef = useRef(0);
+  const touchDeltaXRef = useRef(0);
 
   // Listen for user wheel or touch interrupts to immediately release click navigation lock
   useEffect(() => {
@@ -161,6 +168,18 @@ export default function HeroWithServicesTransition() {
         clearTimeout(clickNavTimeoutRef.current);
       }
     };
+  }, []);
+
+  // Track scroll position: pastHero = show CTA in navbar, scrolled = glassmorphism bg
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setScrolled(scrollY > 40);
+      setPastHero(scrollY > window.innerHeight * 0.55);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Update cards track transform on window resize
@@ -259,16 +278,24 @@ export default function HeroWithServicesTransition() {
       },
     });
 
-    // 3. Smooth fade of services content when exiting at the bottom
-    const contentFadeTrigger = ScrollTrigger.create({
-      trigger: servicesTrackRef.current,
-      start: "bottom-=120px top",
-      end: "bottom top",
-      scrub: true,
+    // 3. Fade out hero bottom stats gracefully as user starts scrolling to eliminate collision with Services
+    const heroFadeTrigger = ScrollTrigger.create({
+      trigger: heroRef.current,
+      start: "top top",
+      end: "top+=240px top",
+      scrub: 0.4,
       onUpdate: (self) => {
-        const remaining = 1.0 - self.progress;
-        if (servicesContentRef.current) {
-          servicesContentRef.current.style.opacity = `${Math.max(0, remaining)}`;
+        const heroBottom = document.getElementById("hero-bottom-actions");
+        if (heroBottom) {
+          heroBottom.style.opacity = `${Math.max(0, 1.0 - self.progress)}`;
+          heroBottom.style.transform = `translate3d(0, ${-self.progress * 24}px, 0)`;
+        }
+      },
+      onLeaveBack: () => {
+        const heroBottom = document.getElementById("hero-bottom-actions");
+        if (heroBottom) {
+          heroBottom.style.opacity = "1";
+          heroBottom.style.transform = "translate3d(0, 0, 0)";
         }
       },
     });
@@ -276,7 +303,7 @@ export default function HeroWithServicesTransition() {
     return () => {
       glowTrigger.kill();
       servicesCardsTrigger.kill();
-      contentFadeTrigger.kill();
+      heroFadeTrigger.kill();
     };
   }, []);
 
@@ -340,11 +367,11 @@ export default function HeroWithServicesTransition() {
         className="pointer-events-none fixed inset-0 z-20 w-screen h-screen select-none overflow-hidden"
         style={{ willChange: "opacity" }}
       >
-        {/* Circular Purple-Indigo Atmospheric Nebula Glow Backdrop */}
+        {/* Circular Purple-Indigo Atmospheric Nebula Glow Backdrop (Responsive on mobile) */}
         <div
           ref={nebulaGlowRef}
           aria-hidden
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[440px] h-[440px] sm:w-[500px] sm:h-[500px] rounded-full bg-[radial-gradient(circle,rgba(80,85,175,0.48)_0%,rgba(65,70,150,0.22)_42%,transparent_72%)] blur-[75px] pointer-events-none transition-transform duration-75"
+          className="absolute top-[46%] sm:top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] sm:w-[440px] sm:h-[440px] lg:w-[500px] lg:h-[500px] rounded-full bg-[radial-gradient(circle,rgba(80,85,175,0.48)_0%,rgba(65,70,150,0.22)_42%,transparent_72%)] blur-[55px] sm:blur-[75px] pointer-events-none transition-transform duration-75"
         />
 
         {/* 3D Particle Canvas Viewport */}
@@ -359,7 +386,7 @@ export default function HeroWithServicesTransition() {
       {/* ===================== 2. HERO SECTION ===================== */}
       <section
         ref={heroRef}
-        className="relative z-30 w-full min-h-screen flex flex-col justify-between pt-6 pb-12 px-6 sm:px-10 lg:px-16 overflow-hidden pointer-events-auto"
+        className="relative z-30 w-full min-h-screen flex flex-col justify-between pt-16 sm:pt-18 pb-12 px-6 sm:px-10 lg:px-16 overflow-hidden pointer-events-auto"
       >
         {/* Top-Left Volumetric Spotlight Beam (Subtle Balanced Volumetric Light) */}
         <div
@@ -408,8 +435,19 @@ export default function HeroWithServicesTransition() {
           </span>
         </div>
 
-        {/* Global Navigation Header */}
-        <header className="relative z-40 flex items-center justify-between w-full max-w-7xl mx-auto shrink-0 pointer-events-auto">
+      {/* ===================== FIXED STICKY NAVIGATION HEADER ===================== */}
+      <motion.header
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className={`fixed top-0 left-0 right-0 z-[60] flex items-center justify-between w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-3 sm:py-4 pointer-events-auto transition-[background-color,border-color,box-shadow] duration-500 ${
+          scrolled
+            ? "bg-black/70 backdrop-blur-2xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+            : "bg-transparent backdrop-blur-none"
+        }`}
+        style={{ left: 0, right: 0 }}
+      >
+        <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
           <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group">
             <div className="relative flex items-center justify-center w-[34px] h-[34px] sm:w-[38px] sm:h-[38px] shrink-0">
               <Image
@@ -466,11 +504,15 @@ export default function HeroWithServicesTransition() {
               <Phone className="h-4 w-4" />
             </a>
 
+            {/* Start Your Project CTA: appears after scrolling past hero */}
             <Link
               href="/schedule"
-              className="group flex items-center gap-2.5 px-4 sm:px-5 py-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-xs sm:text-sm font-medium text-white hover:border-white transition-all duration-300"
+              className={`group items-center gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-xs sm:text-sm font-medium text-white hover:border-white transition-all duration-300 ${
+                pastHero ? "hidden xs:flex" : "hidden"
+              }`}
             >
-              <span>Start Your Project</span>
+              <span>Start</span>
+              <span className="hidden sm:inline">Your Project</span>
               <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-black transition-transform duration-300 group-hover:scale-110">
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </div>
@@ -487,7 +529,8 @@ export default function HeroWithServicesTransition() {
               {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </button>
           </div>
-        </header>
+        </div>
+      </motion.header>
 
         {/* Mobile Navigation Drawer */}
         <AnimatePresence>
@@ -497,7 +540,7 @@ export default function HeroWithServicesTransition() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden fixed inset-x-4 top-20 z-50 rounded-3xl border border-white/15 bg-black/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.9)] backdrop-blur-2xl pointer-events-auto"
+              className="md:hidden fixed inset-x-4 top-[60px] z-[55] rounded-3xl border border-white/15 bg-black/95 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.9)] backdrop-blur-2xl pointer-events-auto"
             >
               <nav className="flex flex-col gap-3 text-base font-medium">
                 <Link
@@ -559,22 +602,61 @@ export default function HeroWithServicesTransition() {
 
         {/* Asymmetric Staggered Main Headline Over Globe (Top-Left & Bottom-Right) */}
         <div className="relative z-20 w-full max-w-5xl lg:max-w-6xl mx-auto my-auto px-4 sm:px-6 lg:px-8 pointer-events-none select-none">
-          <h1 className="w-full flex flex-col gap-2 sm:gap-4 md:gap-5 lg:gap-6 text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-[4.75rem] xl:text-[5.4rem] font-light leading-[1.12] tracking-tight text-white font-sans drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
-            {/* Top-Left: "Building Digital" */}
-            <span className="self-start text-left whitespace-normal sm:whitespace-nowrap font-light text-white/95">
-              Building <span className="italic font-bold text-white font-sans">Digital</span>
+          <h1 className="w-full flex flex-col gap-2 sm:gap-4 md:gap-5 lg:gap-6 text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-[4.75rem] xl:text-[5.4rem] font-light leading-[1.18] sm:leading-[1.2] tracking-tight text-white font-sans drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
+            {/* Top-Left: "Building Digital" — staggered word entrance */}
+            <span className="self-start text-left whitespace-normal sm:whitespace-nowrap font-light text-white/95 pb-1">
+              <motion.span
+                initial={{ opacity: 0, y: 35 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-block pb-1"
+              >
+                Building{" "}
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0, y: 35 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-block italic font-bold text-white font-sans pr-2 pb-1"
+              >
+                Digital
+              </motion.span>
             </span>
 
-            {/* Bottom-Right: "Solutions That Matter" */}
-            <span className="self-end text-right whitespace-normal sm:whitespace-nowrap font-light text-white/95">
-              <span className="italic font-bold text-white font-sans">Solutions</span> That Matter
+            {/* Bottom-Right: "Solutions That Matter" — staggered word entrance */}
+            <span className="self-end text-right whitespace-normal sm:whitespace-nowrap font-light text-white/95 pb-1">
+              <motion.span
+                initial={{ opacity: 0, y: 35 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-block italic font-bold text-white font-sans pr-2 pb-1"
+              >
+                Solutions{" "}
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0, y: 35 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-block pb-1"
+              >
+                That Matter
+              </motion.span>
             </span>
           </h1>
         </div>
 
         {/* Bottom Hero Elements: Subtext & CTA on left, Stats on right */}
-        <div className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-8 relative z-30 pointer-events-auto">
-          <div className="max-w-sm sm:max-w-md text-left">
+        <div
+          id="hero-bottom-actions"
+          className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-8 relative z-30 pointer-events-auto transition-opacity"
+        >
+          {/* Subtext & CTA — fade in after headline */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 1.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="max-w-sm sm:max-w-md text-left"
+          >
             <p className="text-gray-300/90 text-sm sm:text-base mb-6 font-light leading-relaxed">
               We empower organizations with AI that turns complex challenges into real-world outcomes.
             </p>
@@ -584,9 +666,15 @@ export default function HeroWithServicesTransition() {
             >
               Start Your Project
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="flex items-center gap-7 sm:gap-10 lg:gap-14">
+          {/* Stats — animate up from bottom with stagger */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 1.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="flex items-center gap-7 sm:gap-10 lg:gap-14"
+          >
             <div className="flex items-center gap-2.5">
               <span className="text-3xl sm:text-4xl font-semibold tracking-tight text-white font-sans">
                 50+
@@ -619,7 +707,7 @@ export default function HeroWithServicesTransition() {
                 Available
               </span>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -627,13 +715,12 @@ export default function HeroWithServicesTransition() {
       <section
         id="services"
         ref={servicesTrackRef}
-        className="services-section relative z-30 w-full"
-        style={{ height: "340vh" }}
+        className="services-section relative z-30 w-full min-h-[220vh] lg:min-h-[300vh]"
       >
         {/* Sticky Full-Viewport Container */}
         <div
           ref={servicesContentRef}
-          className="sticky top-0 h-screen w-full flex items-center px-6 sm:px-10 lg:px-14 overflow-hidden transition-opacity duration-150"
+          className="sticky top-0 h-screen w-full flex items-center px-4 sm:px-10 lg:px-14 overflow-hidden"
         >
           <div className="w-full max-w-[1540px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left 5 Columns: Dedicated 3D Shape Docking Bay */}
@@ -656,23 +743,53 @@ export default function HeroWithServicesTransition() {
                 </p>
               </div>
 
-              {/* Cards Carousel Window with Smooth Sliding Track */}
+              {/* Cards Carousel Window with Smooth Sliding Track & Touch Swipe */}
               <div className="relative w-full overflow-hidden py-3">
                 <div
                   ref={cardsTrackRef}
-                  className="flex gap-6 will-change-transform"
+                  className="flex gap-4 sm:gap-6 will-change-transform"
                   style={{
                     transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+                  }}
+                  onTouchStart={(e) => {
+                    touchStartXRef.current = e.touches[0].clientX;
+                    touchStartYRef.current = e.touches[0].clientY;
+                    touchDeltaXRef.current = 0;
+                  }}
+                  onTouchMove={(e) => {
+                    const deltaX = e.touches[0].clientX - touchStartXRef.current;
+                    const deltaY = e.touches[0].clientY - touchStartYRef.current;
+                    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                      touchDeltaXRef.current = deltaX;
+                    }
+                  }}
+                  onTouchEnd={() => {
+                    if (Math.abs(touchDeltaXRef.current) > 35) {
+                      if (touchDeltaXRef.current < 0) {
+                        handleSelectService(Math.min(SERVICES_DATA.length - 1, activeServiceIndexRef.current + 1));
+                      } else {
+                        handleSelectService(Math.max(0, activeServiceIndexRef.current - 1));
+                      }
+                    }
+                    touchDeltaXRef.current = 0;
                   }}
                 >
                   {SERVICES_DATA.map((service, idx) => {
                     const isActive = activeServiceIndex === idx;
 
                     return (
-                      <div
+                      <Link
                         key={service.id}
-                        onClick={() => handleSelectService(idx)}
-                        className={`service-card group relative shrink-0 w-[280px] xs:w-[320px] sm:w-[350px] md:w-[370px] min-h-[460px] sm:h-[490px] rounded-[28px] p-6 sm:p-8 cursor-pointer select-none flex flex-col justify-between overflow-hidden transition-all duration-500 ease-out ${
+                        href={`/services/${service.id}`}
+                        onMouseEnter={() => handleSelectService(idx)}
+                        onClick={(e) => {
+                          // Prevent navigation if user was swiping horizontally on mobile
+                          if (Math.abs(touchDeltaXRef.current) > 15) {
+                            e.preventDefault();
+                            return;
+                          }
+                        }}
+                        className={`service-card group relative shrink-0 w-[270px] xs:w-[310px] sm:w-[350px] md:w-[370px] min-h-[390px] xs:min-h-[420px] sm:min-h-[460px] sm:h-[490px] rounded-[24px] sm:rounded-[28px] p-5 sm:p-8 cursor-pointer select-none flex flex-col justify-between overflow-hidden transition-all duration-500 ease-out ${
                           isActive
                             ? "bg-[#434a8c] border border-indigo-300/30 shadow-[0_20px_50px_rgba(30,35,80,0.45)] ring-1 ring-indigo-400/20"
                             : "bg-[#090b12] border border-white/[0.08] hover:border-white/25 hover:bg-[#0d101a]"
@@ -689,7 +806,9 @@ export default function HeroWithServicesTransition() {
                             <span className="text-4xl sm:text-5xl font-medium text-white/90 font-sans tracking-tight">
                               {service.number}
                             </span>
-                            <ArrowUpRight className="h-6 w-6 text-white/60 group-hover:text-white transition-colors group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white group-hover:bg-white group-hover:text-black transition-all duration-300">
+                              <ArrowUpRight className="h-4.5 w-4.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                            </div>
                           </div>
 
                           {/* Bottom: Title */}
@@ -727,12 +846,19 @@ export default function HeroWithServicesTransition() {
                               <h3 className="text-2xl sm:text-3xl font-medium tracking-tight text-white font-sans">
                                 {service.title}
                               </h3>
-                              <ArrowUpRight className="h-6 w-6 text-white shrink-0" />
+                              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white group-hover:bg-white group-hover:text-black transition-all duration-300 shrink-0">
+                                <ArrowUpRight className="h-4.5 w-4.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                              </div>
                             </div>
 
-                            <p className="text-sm leading-relaxed text-indigo-100/90 font-light">
+                            <p className="text-sm leading-relaxed text-indigo-100/90 font-light mb-3">
                               {service.description}
                             </p>
+
+                            <div className="inline-flex items-center gap-1.5 text-xs font-mono text-indigo-200 group-hover:text-white transition-colors">
+                              <span>Explore Service Page</span>
+                              <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                            </div>
                           </div>
 
                           {/* Bottom: Services List on left, Tools Icon Grid on right */}
@@ -768,7 +894,7 @@ export default function HeroWithServicesTransition() {
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     );
                   })}
                 </div>

@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 import PageNavbar from "@/components/PageNavbar";
+import CircularInteraction from "@/components/CircularInteraction";
 import AuroraCTASection from "@/components/AuroraCTASection";
 import Footer from "@/components/Footer";
 import { submitWeb3Form, LINKEDIN_URL } from "@/lib/contact";
@@ -254,6 +255,11 @@ export default function ContactPage() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* ===================== INTERACTIVE ENGAGEMENT LIFECYCLE ===================== */}
+      <section className="relative z-10 py-16 sm:py-24 px-4 sm:px-10 lg:px-16 max-w-7xl mx-auto border-t border-white/[0.06]">
+        <CircularInteraction />
       </section>
 
       {/* Unified Antimatter Aurora CTA & Live Clock Footer */}

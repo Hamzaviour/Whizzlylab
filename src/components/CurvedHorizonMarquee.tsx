@@ -105,6 +105,16 @@ const LOGO_COMPONENTS = [
 export default function CurvedHorizonMarquee() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
+  const [isMobileScreen, setIsMobileScreen] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobileScreen(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Animate logos moving right to left along the curved horizon
   useEffect(() => {
@@ -131,17 +141,17 @@ export default function CurvedHorizonMarquee() {
   const totalLogos = LOGO_COMPONENTS.length; // 14
   const logoSpacing = 210; // horizontal spacing between logo centers
   const totalTrackWidth = totalLogos * logoSpacing; // 2940px
-  const curveHalfWidth = 620; // width over which the curve acts
-  const dropHeight = 72; // vertical drop at the curve edges
+  const curveHalfWidth = isMobileScreen ? 360 : 620; // width over which the curve acts
+  const dropHeight = isMobileScreen ? 44 : 72; // vertical drop at the curve edges
 
   return (
-    <section className="relative z-40 w-full bg-black text-white pt-24 pb-20 overflow-hidden flex flex-col items-center">
+    <section className="relative z-40 w-full bg-black text-white pt-8 sm:pt-16 pb-4 sm:pb-8 overflow-hidden flex flex-col items-center">
       {/* 1. Header Text */}
-      <div className="text-center mb-16 sm:mb-20 px-4 z-20 relative">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-3 tracking-tight text-white font-sans">
+      <div className="text-center mb-6 sm:mb-12 px-4 z-20 relative">
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-semibold mb-2 sm:mb-3 tracking-tight text-white font-sans">
           Trusted by Industry Leaders
         </h2>
-        <p className="text-gray-400 text-sm sm:text-base font-light">
+        <p className="text-gray-400 text-xs sm:text-base font-light">
           Powering Innovation for Companies Worldwide
         </p>
       </div>
@@ -149,7 +159,7 @@ export default function CurvedHorizonMarquee() {
       {/* 2. Curved Horizon Stage */}
       <div
         ref={containerRef}
-        className="relative w-full max-w-6xl h-[260px] flex items-center justify-center overflow-hidden"
+        className="relative w-full max-w-6xl h-[180px] sm:h-[260px] flex items-center justify-center overflow-hidden"
         style={{ perspective: "1000px" }}
       >
         {/* --- LOGOS MOVING RIGHT TO LEFT ALONG THE 3D CURVE --- */}

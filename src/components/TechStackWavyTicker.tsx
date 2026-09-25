@@ -393,12 +393,14 @@ export function TechLogo({
   );
 }
 
-// ── Pill Component for Each Tech (Enhanced size & rich typography) ────
+// ── Pill Component for Each Tech (Enlarged icons with 3D glowy blue ring) ────
 function TechPill({ name }: { name: string }) {
   return (
-    <div className="group flex items-center gap-3.5 px-5 py-3 rounded-2xl border border-white/[0.09] bg-[#080912]/92 hover:border-indigo-400/50 hover:bg-[#12162a] transition-all duration-300 backdrop-blur-xl shadow-[0_6px_24px_rgba(0,0,0,0.55)] select-none cursor-default">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/[0.07] border border-white/[0.08] p-1.5 group-hover:scale-115 group-hover:bg-white/10 transition-all duration-300">
-        <TechLogo name={name} className="w-6 h-6" />
+    <div className="group flex items-center gap-4 px-5 py-3 rounded-2xl border border-white/[0.09] bg-[#080912]/92 hover:border-indigo-400/50 hover:bg-[#12162a] transition-all duration-300 backdrop-blur-xl shadow-[0_6px_24px_rgba(0,0,0,0.55)] select-none cursor-default">
+      <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/[0.06] border border-[#3b82f6]/30 p-2 group-hover:scale-115 group-hover:bg-white/10 transition-all duration-300 shadow-[0_0_12px_rgba(59,130,246,0.25),inset_0_0_8px_rgba(59,130,246,0.08)] group-hover:shadow-[0_0_20px_rgba(59,130,246,0.45),0_0_40px_rgba(59,130,246,0.15),inset_0_0_12px_rgba(59,130,246,0.12)]">
+        {/* Subtle 3D blue glow ring */}
+        <div className="absolute inset-0 rounded-xl border border-[#3b82f6]/20 group-hover:border-[#3b82f6]/50 transition-colors duration-300" />
+        <TechLogo name={name} className="w-8 h-8" />
       </div>
       <span className="text-sm sm:text-[15px] font-semibold tracking-tight text-white/90 group-hover:text-white transition-colors font-sans whitespace-nowrap">
         {name}
@@ -494,7 +496,7 @@ export default function TechStackWavyTicker() {
           waveStyle="wavy"
           waveAmplitude={18}
           waveFrequency={0.005}
-          itemSize={62}
+          itemSize={72}
           gap={22}
           padding={22}
           fadeEdges={true}
@@ -512,7 +514,7 @@ export default function TechStackWavyTicker() {
           waveStyle="wavy"
           waveAmplitude={18}
           waveFrequency={0.0048}
-          itemSize={62}
+          itemSize={72}
           gap={22}
           padding={22}
           fadeEdges={true}

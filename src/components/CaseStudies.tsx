@@ -133,15 +133,15 @@ export default function CaseStudies() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section id="work" className="bg-black text-white py-24 sm:py-32 relative z-40 overflow-hidden">
+    <section id="work" className="bg-black text-white pt-8 sm:pt-14 pb-16 sm:pb-24 relative z-40 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 sm:mb-20 gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 sm:mb-16 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs font-mono uppercase tracking-wider text-indigo-300 mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.04] text-xs font-mono uppercase tracking-wider text-indigo-300 mb-3 sm:mb-4">
               Featured Case Studies
             </div>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-white font-sans">
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-white font-sans">
               Case Studies
             </h2>
           </div>
@@ -162,28 +162,28 @@ export default function CaseStudies() {
                   key={study.id}
                   onMouseEnter={() => setActiveIndex(index)}
                   onClick={() => setActiveIndex(index)}
-                  className={`group relative flex flex-col md:flex-row md:items-center justify-between py-4 sm:py-5 px-5 sm:px-6 cursor-pointer transition-all duration-300 ${
+                  className={`group relative flex flex-col md:flex-row md:items-center justify-between py-3.5 sm:py-5 px-4 sm:px-6 cursor-pointer transition-all duration-300 ${
                     isActive
                       ? "bg-[#10121a] border border-indigo-400/40 rounded-2xl shadow-[0_8px_32px_rgba(30,35,80,0.35)] opacity-100"
                       : "border-b border-white/[0.08] rounded-2xl hover:bg-white/[0.02] opacity-65 hover:opacity-100"
                   }`}
                 >
                   {/* Left: ID & Project Name */}
-                  <div className="flex items-center gap-4 sm:gap-6 min-w-[210px]">
-                    <span className="text-sm font-mono text-indigo-300/80 font-medium w-6 shrink-0">
+                  <div className="flex items-center gap-3 sm:gap-6 min-w-0 sm:min-w-[210px]">
+                    <span className="text-xs sm:text-sm font-mono text-indigo-300/80 font-medium w-5 sm:w-6 shrink-0">
                       {study.id}
                     </span>
-                    <h3 className="text-lg sm:text-xl font-medium text-white tracking-tight group-hover:text-indigo-200 transition-colors whitespace-nowrap">
+                    <h3 className="text-base sm:text-xl font-medium text-white tracking-tight group-hover:text-indigo-200 transition-colors truncate sm:whitespace-normal">
                       {study.name}
                     </h3>
                   </div>
 
                   {/* Right: Tag Pills */}
-                  <div className="mt-3 md:mt-0 flex flex-wrap items-center gap-2">
+                  <div className="mt-2.5 md:mt-0 flex flex-wrap items-center gap-1.5 sm:gap-2">
                     {study.tags.map((tag, i) => (
                       <span
                         key={i}
-                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-light transition-all ${
+                        className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full border text-[11px] sm:text-xs font-light transition-all ${
                           isActive
                             ? "border-indigo-400/30 bg-indigo-500/10 text-white"
                             : "border-white/10 bg-white/[0.03] text-gray-400 group-hover:border-white/20 group-hover:text-gray-200"

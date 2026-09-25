@@ -186,7 +186,8 @@ export default function AnimatedFlowPaths({
 
   return (
     <div
-      className={`relative w-full rounded-[32px] bg-[#070913]/90 border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.7)] backdrop-blur-xl overflow-hidden group/canvas ${className}`}
+      onClick={() => setHoveredDomain(null)}
+      className={`relative w-full rounded-[22px] sm:rounded-[32px] bg-[#070913]/90 border border-white/[0.08] shadow-[0_24px_80px_rgba(0,0,0,0.7)] backdrop-blur-xl overflow-hidden group/canvas ${className}`}
     >
       {/* Background ambient lighting */}
       <div
@@ -213,30 +214,30 @@ export default function AnimatedFlowPaths({
       />
 
       {/* Subtle top indicator bar */}
-      <div className="relative z-10 flex items-center justify-between px-6 pt-5 pb-2 text-xs font-mono border-b border-white/[0.04]">
+      <div className="relative z-10 flex items-center justify-between px-4 sm:px-6 pt-3.5 sm:pt-5 pb-2 text-xs font-mono border-b border-white/[0.04]">
         <div className="flex items-center gap-2 text-gray-400">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
-          <span className="uppercase tracking-widest text-[11px] text-gray-300">
+          <span className="uppercase tracking-widest text-[10px] sm:text-[11px] text-gray-300">
             Connected Engineering Flow
           </span>
         </div>
-        <div className="text-[11px] text-gray-500 uppercase tracking-widest hidden sm:block">
+        <div className="text-[10px] sm:text-[11px] text-gray-500 uppercase tracking-widest hidden sm:block">
           Autonomous Architecture
         </div>
       </div>
 
-      {/* Main Flow Canvas Wrapper with horizontal scroll safety on mobile */}
-      <div className="relative w-full overflow-x-auto overflow-y-hidden py-4 sm:py-6 px-2 sm:px-6">
-        <div className="relative min-w-[720px] max-w-5xl mx-auto aspect-[880/500]">
+      {/* Main Flow Canvas Wrapper: fits 100% on mobile screens at once without scrolling */}
+      <div className="relative w-full overflow-hidden py-3 sm:py-6 px-2 sm:px-6">
+        <div className="relative w-full max-w-5xl mx-auto aspect-[880/740] xs:aspect-[880/660] sm:aspect-[880/500]">
           {/* SVG Connection Lines & Shimmers */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none"
             viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
             fill="none"
-            preserveAspectRatio="xMidYMid meet"
+            preserveAspectRatio="none"
           >
             <defs>
               {/* Soft luminous glow filter for the shimmers */}
@@ -338,10 +339,10 @@ export default function AnimatedFlowPaths({
             className="absolute -translate-x-1/2 -translate-y-1/2 z-20 group"
           >
             {/* Ambient beacon pulse */}
-            <div className="absolute inset-0 rounded-2xl bg-indigo-500/20 blur-xl scale-125 animate-pulse" />
+            <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-indigo-500/20 blur-md sm:blur-xl scale-125 animate-pulse" />
 
             {/* Left Node Frame */}
-            <div className="relative flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#090b16]/95 border border-indigo-400/40 p-2.5 shadow-[0_0_35px_rgba(99,102,241,0.35)] backdrop-blur-xl transition-all duration-300 group-hover:scale-105 group-hover:border-indigo-300 group-hover:shadow-[0_0_50px_rgba(99,102,241,0.55)]">
+            <div className="relative flex items-center justify-center w-11 h-11 xs:w-13 xs:h-13 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl sm:rounded-2xl bg-[#090b16]/95 border border-indigo-400/40 p-1.5 xs:p-2 sm:p-2.5 shadow-[0_0_20px_rgba(99,102,241,0.35)] sm:shadow-[0_0_35px_rgba(99,102,241,0.35)] backdrop-blur-xl transition-all duration-300 group-hover:scale-105 group-hover:border-indigo-300 group-hover:shadow-[0_0_50px_rgba(99,102,241,0.55)]">
               <Image
                 src="/transparent-icon.png"
                 alt="Whizzly Lab Hub"
@@ -353,8 +354,8 @@ export default function AnimatedFlowPaths({
             </div>
 
             {/* Subtle Origin Badge */}
-            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-              <span className="px-2 py-0.5 rounded-full bg-black/80 border border-indigo-500/30 text-[10px] font-mono text-indigo-300">
+            <div className="absolute -bottom-5 sm:-bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none hidden sm:block">
+              <span className="px-2 py-0.5 rounded-full bg-black/80 border border-indigo-500/30 text-[9px] sm:text-[10px] font-mono text-indigo-300">
                 Whizzly Lab Hub
               </span>
             </div>
@@ -377,11 +378,15 @@ export default function AnimatedFlowPaths({
                 className="absolute -translate-x-1/2 -translate-y-1/2 z-20 group"
                 onMouseEnter={() => setHoveredDomain(domain.id)}
                 onMouseLeave={() => setHoveredDomain(null)}
+                onTouchStart={(e) => {
+                  e.stopPropagation();
+                  setHoveredDomain(hoveredDomain === domain.id ? null : domain.id);
+                }}
               >
                 {/* Glow behind the icon node */}
                 <div
                   aria-hidden
-                  className={`absolute inset-0 rounded-2xl blur-lg transition-all duration-300 ${
+                  className={`absolute inset-0 rounded-lg xs:rounded-xl sm:rounded-2xl blur-md sm:blur-lg transition-all duration-300 ${
                     isHovered ? "scale-150 opacity-100" : "scale-100 opacity-40"
                   }`}
                   style={{ backgroundColor: domain.glowColor }}
@@ -391,7 +396,7 @@ export default function AnimatedFlowPaths({
                 <Link
                   href={domain.href}
                   aria-label={domain.title}
-                  className={`relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#090d18]/95 border backdrop-blur-xl transition-all duration-300 ${
+                  className={`relative flex items-center justify-center w-7 h-7 xs:w-8 xs:h-8 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg xs:rounded-xl sm:rounded-2xl bg-[#090d18]/95 border backdrop-blur-xl transition-all duration-300 ${
                     isHovered
                       ? "scale-115 shadow-[0_0_30px_rgba(255,255,255,0.25)]"
                       : "scale-100 hover:scale-105"
@@ -406,22 +411,22 @@ export default function AnimatedFlowPaths({
                   }}
                 >
                   <Icon
-                    className="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 group-hover:scale-110"
+                    className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 transition-transform duration-300 group-hover:scale-110"
                     style={{ color: domain.accentColor }}
                     strokeWidth={2}
                   />
                 </Link>
 
-                {/* Tooltip on hover (Icons-only visually, title shows on hover) */}
+                {/* Tooltip on hover (Icons-only visually, title shows on hover/touch) */}
                 <div
-                  className={`absolute right-full mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap transition-all duration-200 pointer-events-none z-30 ${
+                  className={`absolute right-full mr-2 sm:mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap transition-all duration-200 pointer-events-none z-30 ${
                     isHovered
                       ? "opacity-100 translate-x-0"
                       : "opacity-0 translate-x-1"
                   }`}
                 >
                   <span
-                    className="px-2.5 py-1 rounded-lg bg-black/90 border text-xs font-sans font-medium text-white shadow-lg backdrop-blur-md"
+                    className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg bg-black/90 border text-[10px] sm:text-xs font-sans font-medium text-white shadow-lg backdrop-blur-md"
                     style={{ borderColor: `${domain.accentColor}55` }}
                   >
                     {domain.title}
