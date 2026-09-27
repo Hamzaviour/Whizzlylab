@@ -1,4 +1,4 @@
-const CACHE_NAME = "whizzlylab-v1";
+const CACHE_NAME = "whizzlylab-v2";
 const STATIC_ASSETS = [
   "/",
   "/favicon.ico",

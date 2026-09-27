@@ -155,15 +155,15 @@ export default function AuroraCTASection({
         {/* 2. Aurora Background Waves */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -top-[40%] -left-[20%] w-[600px] sm:w-[800px] h-[600px] sm:h-[800px] rounded-full bg-purple-900/40 blur-[130px] mix-blend-screen"
+          className="pointer-events-none absolute -top-[40%] -left-[20%] w-[600px] sm:w-[800px] h-[600px] sm:h-[800px] rounded-full bg-[radial-gradient(circle,rgba(88,28,135,0.4)_0%,rgba(88,28,135,0.15)_35%,transparent_70%)]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-[40%] right-[5%] w-[500px] sm:w-[700px] h-[500px] sm:h-[700px] rounded-full bg-indigo-800/35 blur-[120px] mix-blend-screen"
+          className="pointer-events-none absolute -bottom-[40%] right-[5%] w-[500px] sm:w-[700px] h-[500px] sm:h-[700px] rounded-full bg-[radial-gradient(circle,rgba(55,48,163,0.35)_0%,rgba(55,48,163,0.12)_35%,transparent_70%)]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute top-[25%] right-[25%] w-[350px] h-[120px] rounded-full bg-fuchsia-900/40 blur-[70px] rotate-12 mix-blend-screen"
+          className="pointer-events-none absolute top-[25%] right-[25%] w-[350px] h-[120px] rounded-full bg-[radial-gradient(ellipse,rgba(112,26,117,0.4)_0%,transparent_70%)] rotate-12"
         />
 
         {/* 3. Content */}

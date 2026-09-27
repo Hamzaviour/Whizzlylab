@@ -39,6 +39,8 @@ interface ParticleMorphCanvasProps {
 
 // 25,000 particles: rich, luminous stardust constellation density with smooth 60fps performance
 const PARTICLE_COUNT = 25000;
+// Phones get fewer particles: 25k points at DPR 2 stalls mobile GPUs and makes scrolling janky
+const MOBILE_PARTICLE_COUNT = 12000;
 
 // --- GLSL SHADERS ---
 
@@ -127,6 +129,104 @@ const fragmentShader = `
 
 // --- GEOMETRY GENERATORS (Stardust Constellation Math matching Antimatter.ai screenshots) ---
 
+// --- STROKE SAMPLING HELPERS ---
+// Shapes are described as polylines; particles are spread evenly by arc length so long and
+// short strokes get the same density, then jittered inside a thin 3D tube (uniform in all
+// axes, so strokes stay crisp at any rotation instead of smearing diagonally).
+
+type Vec3 = [number, number, number];
+type Polyline = Vec3[];
+
+function tubeJitter(radius: number): Vec3 {
+  const u = Math.random() * 2 - 1;
+  const theta = Math.random() * Math.PI * 2;
+  const s = Math.sqrt(1 - u * u);
+  // Bias toward the core so strokes have a bright spine with soft falloff
+  const r = radius * Math.pow(Math.random(), 1.4);
+  return [s * Math.cos(theta) * r, s * Math.sin(theta) * r, u * r];
+}
+
+// Fill positions[start .. start+n) with particles spread along a set of polylines
+function fillStrokes(
+  positions: Float32Array,
+  start: number,
+  n: number,
+  lines: Polyline[],
+  radius: number
+) {
+  const segs: { a: Vec3; b: Vec3; len: number; cum: number }[] = [];
+  let total = 0;
+  for (const line of lines) {
+    for (let i = 1; i < line.length; i++) {
+      const a = line[i - 1];
+      const b = line[i];
+      const len = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
+      total += len;
+      segs.push({ a, b, len, cum: total });
+    }
+  }
+  for (let i = 0; i < n; i++) {
+    const target = Math.random() * total;
+    let lo = 0;
+    let hi = segs.length - 1;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (segs[mid].cum < target) lo = mid + 1;
+      else hi = mid;
+    }
+    const seg = segs[lo];
+    const t = seg.len > 0 ? 1 - (seg.cum - target) / seg.len : 0;
+    const j = tubeJitter(radius);
+    const idx = (start + i) * 3;
+    positions[idx] = seg.a[0] + (seg.b[0] - seg.a[0]) * t + j[0];
+    positions[idx + 1] = seg.a[1] + (seg.b[1] - seg.a[1]) * t + j[1];
+    positions[idx + 2] = seg.a[2] + (seg.b[2] - seg.a[2]) * t + j[2];
+  }
+}
+
+// Soft glowing cluster (vertices, joints, sparkle cores)
+function fillCluster(positions: Float32Array, start: number, n: number, c: Vec3, radius: number) {
+  for (let i = 0; i < n; i++) {
+    const j = tubeJitter(radius);
+    const idx = (start + i) * 3;
+    positions[idx] = c[0] + j[0];
+    positions[idx + 1] = c[1] + j[1];
+    positions[idx + 2] = c[2] + j[2];
+  }
+}
+
+// Split n particles across clusters, giving the remainder to the last one
+function fillClusters(positions: Float32Array, start: number, n: number, centers: Vec3[], radius: (i: number) => number) {
+  const per = Math.floor(n / centers.length);
+  centers.forEach((c, i) => {
+    const count = i === centers.length - 1 ? n - per * (centers.length - 1) : per;
+    fillCluster(positions, start + i * per, count, c, radius(i));
+  });
+}
+
+function quadBezier(a: Vec3, ctrl: Vec3, b: Vec3, steps = 32): Polyline {
+  const out: Polyline = [];
+  for (let i = 0; i <= steps; i++) {
+    const t = i / steps;
+    const m = 1 - t;
+    out.push([
+      m * m * a[0] + 2 * m * t * ctrl[0] + t * t * b[0],
+      m * m * a[1] + 2 * m * t * ctrl[1] + t * t * b[1],
+      m * m * a[2] + 2 * m * t * ctrl[2] + t * t * b[2],
+    ]);
+  }
+  return out;
+}
+
+function boxEdges(cx: number, cy: number, cz: number, hx: number, hy: number, hz: number): Polyline[] {
+  const c = (sx: number, sy: number, sz: number): Vec3 => [cx + sx * hx, cy + sy * hy, cz + sz * hz];
+  return [
+    [c(-1, -1, -1), c(1, -1, -1)], [c(1, -1, -1), c(1, -1, 1)], [c(1, -1, 1), c(-1, -1, 1)], [c(-1, -1, 1), c(-1, -1, -1)],
+    [c(-1, 1, -1), c(1, 1, -1)], [c(1, 1, -1), c(1, 1, 1)], [c(1, 1, 1), c(-1, 1, 1)], [c(-1, 1, 1), c(-1, 1, -1)],
+    [c(-1, -1, -1), c(-1, 1, -1)], [c(1, -1, -1), c(1, 1, -1)], [c(1, -1, 1), c(1, 1, 1)], [c(-1, -1, 1), c(-1, 1, 1)],
+  ];
+}
+
 // 1. Globe: Hollow spherical surface shell (85%) with inner core volume (15%)
 function generateGlobe(count: number): { positions: Float32Array; colors: Float32Array } {
   const positions = new Float32Array(count * 3);
@@ -178,439 +278,309 @@ function generateGlobe(count: number): { positions: Float32Array; colors: Float3
   return { positions, colors };
 }
 
-// 2. 3D Wireframe Cube (Screenshot 1: Airy stardust tube along 12 edges, empty dark interior)
+// 2. 3D Wireframe Cube (Product Design): crisp stardust edges, glowing vertices, inner cube for depth
 function generateCube(count: number): Float32Array {
   const positions = new Float32Array(count * 3);
-  const half = 1.95;
+  const half = 1.85;
 
-  const edges = [
-    { start: [-half, -half, -half], end: [half, -half, -half] },
-    { start: [half, -half, -half], end: [half, -half, half] },
-    { start: [half, -half, half], end: [-half, -half, half] },
-    { start: [-half, -half, half], end: [-half, -half, -half] },
-    { start: [-half, half, -half], end: [half, half, -half] },
-    { start: [half, half, -half], end: [half, half, half] },
-    { start: [half, half, half], end: [-half, half, half] },
-    { start: [-half, half, half], end: [-half, half, -half] },
-    { start: [-half, -half, -half], end: [-half, half, -half] },
-    { start: [half, -half, -half], end: [half, half, -half] },
-    { start: [half, -half, half], end: [half, half, half] },
-    { start: [-half, -half, half], end: [-half, half, half] },
-  ];
+  const edgeN = Math.floor(count * 0.78);
+  const vertexN = Math.floor(count * 0.1);
+  const innerN = Math.floor(count * 0.08);
+  const dustN = count - edgeN - vertexN - innerN;
 
-  // 94% on edges distributed as a soft stardust tube, 6% faint stray dust on faces
-  const edgeCount = Math.floor(count * 0.94);
-  const faceCount = count - edgeCount;
+  fillStrokes(positions, 0, edgeN, boxEdges(0, 0, 0, half, half, half), 0.13);
 
-  for (let i = 0; i < edgeCount; i++) {
-    const edge = edges[i % edges.length];
-    const t = Math.random();
-    const x = edge.start[0] + (edge.end[0] - edge.start[0]) * t;
-    const y = edge.start[1] + (edge.end[1] - edge.start[1]) * t;
-    const z = edge.start[2] + (edge.end[2] - edge.start[2]) * t;
+  const corners: Vec3[] = [];
+  for (const sx of [-1, 1]) for (const sy of [-1, 1]) for (const sz of [-1, 1]) corners.push([sx * half, sy * half, sz * half]);
+  fillClusters(positions, edgeN, vertexN, corners, () => 0.2);
 
-    // Airy stardust dispersion radius around edge (not a solid line!)
-    const angle = Math.random() * Math.PI * 2;
-    const rad = Math.pow(Math.random(), 0.6) * 0.17;
+  const innerHalf = half * 0.42;
+  fillStrokes(positions, edgeN + vertexN, innerN, boxEdges(0, 0, 0, innerHalf, innerHalf, innerHalf), 0.06);
 
-    positions[i * 3] = x + Math.cos(angle) * rad;
-    positions[i * 3 + 1] = y + Math.sin(angle) * rad;
-    positions[i * 3 + 2] = z + (Math.random() - 0.5) * rad;
-  }
-
-  // Very sparse faint stray points on faces so interior stays clean and see-through
-  for (let i = 0; i < faceCount; i++) {
-    const face = i % 6;
-    const u = (Math.random() * 2 - 1) * half * 0.9;
-    const v = (Math.random() * 2 - 1) * half * 0.9;
-    let x = 0, y = 0, z = 0;
-
-    switch (face) {
-      case 0: x = half; y = u; z = v; break;
-      case 1: x = -half; y = u; z = v; break;
-      case 2: y = half; x = u; z = v; break;
-      case 3: y = -half; x = u; z = v; break;
-      case 4: z = half; x = u; y = v; break;
-      case 5: z = -half; x = u; y = v; break;
-    }
-
-    const idx = (edgeCount + i) * 3;
-    positions[idx] = x;
-    positions[idx + 1] = y;
-    positions[idx + 2] = z;
+  // Sparse dust drifting inside the volume
+  const dustStart = edgeN + vertexN + innerN;
+  for (let i = 0; i < dustN; i++) {
+    const idx = (dustStart + i) * 3;
+    positions[idx] = (Math.random() * 2 - 1) * half * 0.95;
+    positions[idx + 1] = (Math.random() * 2 - 1) * half * 0.95;
+    positions[idx + 2] = (Math.random() * 2 - 1) * half * 0.95;
   }
 
   return positions;
 }
 
-// 3. Code Brackets < / > (Screenshot 2: Luminous stardust strokes)
+// 3. Code Brackets < / > (Development): clean strokes with glowing joints
 function generateBrackets(count: number): Float32Array {
   const positions = new Float32Array(count * 3);
 
-  const leftCount = Math.floor(count * 0.36);
-  const slashCount = Math.floor(count * 0.28);
-  const rightCount = count - leftCount - slashCount;
+  const strokeN = Math.floor(count * 0.9);
+  const jointN = count - strokeN;
 
-  // 1. Left Bracket < (two straight angled strokes meeting at center-left point)
-  for (let i = 0; i < leftCount; i++) {
-    const isUpper = i % 2 === 0;
-    const t = Math.random(); // 0 to 1
-    let x = 0, y = 0;
-    if (isUpper) {
-      // Top stroke from (-1.1, 1.85) to (-2.3, 0.0)
-      x = -1.1 + (-2.3 - -1.1) * t;
-      y = 1.85 + (0.0 - 1.85) * t;
-    } else {
-      // Bottom stroke from (-2.3, 0.0) to (-1.1, -1.85)
-      x = -2.3 + (-1.1 - -2.3) * t;
-      y = 0.0 + (-1.85 - 0.0) * t;
-    }
-    const angle = Math.random() * Math.PI * 2;
-    const rad = Math.pow(Math.random(), 0.6) * 0.18;
+  const lines: Polyline[] = [
+    [[-1.15, 1.75, 0], [-2.35, 0, 0], [-1.15, -1.75, 0]],
+    [[0.6, 2.0, 0], [-0.6, -2.0, 0]],
+    [[1.15, 1.75, 0], [2.35, 0, 0], [1.15, -1.75, 0]],
+  ];
+  fillStrokes(positions, 0, strokeN, lines, 0.16);
 
-    positions[i * 3] = x + Math.cos(angle) * rad;
-    positions[i * 3 + 1] = y + Math.sin(angle) * rad;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 0.25;
-  }
-
-  // 2. Center Slash /
-  for (let i = 0; i < slashCount; i++) {
-    const t = Math.random();
-    const x = -0.65 + (0.65 - -0.65) * t;
-    const y = -2.05 + (2.05 - -2.05) * t;
-
-    const angle = Math.random() * Math.PI * 2;
-    const rad = Math.pow(Math.random(), 0.6) * 0.18;
-
-    const idx = (leftCount + i) * 3;
-    positions[idx] = x + Math.cos(angle) * rad;
-    positions[idx + 1] = y + Math.sin(angle) * rad;
-    positions[idx + 2] = (Math.random() - 0.5) * 0.25;
-  }
-
-  // 3. Right Bracket >
-  for (let i = 0; i < rightCount; i++) {
-    const isUpper = i % 2 === 0;
-    const t = Math.random();
-    let x = 0, y = 0;
-    if (isUpper) {
-      // Top stroke from (1.1, 1.85) to (2.3, 0.0)
-      x = 1.1 + (2.3 - 1.1) * t;
-      y = 1.85 + (0.0 - 1.85) * t;
-    } else {
-      // Bottom stroke from (2.3, 0.0) to (1.1, -1.85)
-      x = 2.3 + (1.1 - 2.3) * t;
-      y = 0.0 + (-1.85 - 0.0) * t;
-    }
-    const angle = Math.random() * Math.PI * 2;
-    const rad = Math.pow(Math.random(), 0.6) * 0.18;
-
-    const idx = (leftCount + slashCount + i) * 3;
-    positions[idx] = x + Math.cos(angle) * rad;
-    positions[idx + 1] = y + Math.sin(angle) * rad;
-    positions[idx + 2] = (Math.random() - 0.5) * 0.25;
-  }
+  const joints: Vec3[] = [
+    [-2.35, 0, 0], [2.35, 0, 0],
+    [-1.15, 1.75, 0], [-1.15, -1.75, 0], [1.15, 1.75, 0], [1.15, -1.75, 0],
+    [0.6, 2.0, 0], [-0.6, -2.0, 0],
+  ];
+  fillClusters(positions, strokeN, jointN, joints, (i) => (i < 2 ? 0.2 : 0.14));
 
   return positions;
 }
 
-// 4. Three 4-Pointed Stars (Screenshot 3 - AI Development: 1 large star + 2 smaller stars)
+// 4. Sparkle Stars (Growth Marketing): three concave 4-point sparkles with bright cores
 function generateStars(count: number): Float32Array {
   const positions = new Float32Array(count * 3);
 
-  const star1Count = Math.floor(count * 0.55); // Large Star (center-left)
-  const star2Count = Math.floor(count * 0.25); // Medium Star (top-right)
-  const star3Count = count - star1Count - star2Count; // Small Star (bottom-right)
-
   const stars = [
-    { count: star1Count, cx: -0.35, cy: 0.05, cz: 0.0, R: 1.6 },
-    { count: star2Count, cx: 1.25, cy: 0.95, cz: -0.15, R: 0.85 },
-    { count: star3Count, cx: 1.15, cy: -1.05, cz: -0.1, R: 0.65 },
+    { share: 0.58, cx: -0.5, cy: -0.15, R: 1.8 },
+    { share: 0.25, cx: 1.35, cy: 1.3, R: 0.85 },
+    { share: 0.17, cx: 1.5, cy: -1.25, R: 0.58 },
   ];
 
+  // Concave astroid outline: sharp points, pinched waist
+  const outlinePoint = (R: number, t: number): [number, number] => {
+    const c = Math.cos(t);
+    const s = Math.sin(t);
+    return [R * Math.sign(c) * Math.pow(Math.abs(c), 3), R * Math.sign(s) * Math.pow(Math.abs(s), 3)];
+  };
+
   let offset = 0;
-  for (const star of stars) {
-    for (let i = 0; i < star.count; i++) {
-      const t = Math.random() * Math.PI * 2;
-      const cosT = Math.cos(t);
-      const sinT = Math.sin(t);
+  stars.forEach((star, si) => {
+    const n = si === stars.length - 1 ? count - offset : Math.floor(count * star.share);
+    const outlineN = Math.floor(n * 0.56);
+    const coreN = Math.floor(n * 0.06);
+    const fillN = n - outlineN - coreN;
 
-      // Astroid / 4-pointed concave star formula
-      const curveX = star.R * Math.sign(cosT) * Math.pow(Math.abs(cosT), 2.2);
-      const curveY = star.R * Math.sign(sinT) * Math.pow(Math.abs(sinT), 2.2);
-
-      // Volumetric stardust thickness
-      const spread = (Math.random() - 0.5) * (0.16 * (star.R / 1.6));
-      const zSpread = (Math.random() - 0.5) * 0.25;
-
-      // 80% along star outline, 20% inner core nebula
-      let finalX = star.cx + curveX + spread;
-      let finalY = star.cy + curveY + spread;
-      if (Math.random() < 0.2) {
-        const innerT = Math.pow(Math.random(), 0.6);
-        finalX = star.cx + curveX * innerT;
-        finalY = star.cy + curveY * innerT;
-      }
-
-      const idx = (offset + i) * 3;
-      positions[idx] = finalX;
-      positions[idx + 1] = finalY;
-      positions[idx + 2] = star.cz + zSpread;
+    const outline: Polyline = [];
+    for (let k = 0; k <= 256; k++) {
+      const [x, y] = outlinePoint(star.R, (k / 256) * Math.PI * 2);
+      outline.push([star.cx + x, star.cy + y, 0]);
     }
-    offset += star.count;
-  }
+    fillStrokes(positions, offset, outlineN, [outline], 0.03 + 0.045 * star.R);
+
+    fillCluster(positions, offset + outlineN, coreN, [star.cx, star.cy, 0], star.R * 0.22);
+
+    // Interior fill fading from the core outward, with a gentle 3D lens bulge
+    for (let i = 0; i < fillN; i++) {
+      const [ox, oy] = outlinePoint(star.R, Math.random() * Math.PI * 2);
+      const k = Math.pow(Math.random(), 1.6);
+      const idx = (offset + outlineN + coreN + i) * 3;
+      positions[idx] = star.cx + ox * k;
+      positions[idx + 1] = star.cy + oy * k;
+      positions[idx + 2] = (Math.random() - 0.5) * (1 - k) * star.R * 0.35;
+    }
+
+    offset += n;
+  });
 
   return positions;
 }
 
-// 5. 3D Wireframe Shield (Screenshot 4 - IoT Development: perimeter crest + faceted horizontal ribs)
+// 5. Security Shield (Security & Compliance): closed crest silhouette, inset rim, check mark
 function generateShield(count: number): Float32Array {
   const positions = new Float32Array(count * 3);
 
-  const outlineCount = Math.floor(count * 0.45);
-  const ribsCount = count - outlineCount;
+  // Convex bulge so the shield reads as 3D when it rotates
+  const bulge = (x: number, y: number): number =>
+    0.45 * (1 - Math.min(1, (x * x) / 2.6 + ((y - 0.1) * (y - 0.1)) / 9));
 
-  // 1. Shield perimeter wireframe
-  for (let i = 0; i < outlineCount; i++) {
-    const t = (i / outlineCount) * 2 - 1; // -1 to 1
-    const y = t * 1.85;
-    // Shield width profile
-    const widthAtY = Math.max(0, 1.45 * (1.0 - Math.pow(Math.max(0, -y) / 1.9, 2.0)));
-    const isLeft = i % 2 === 0;
-    const x = isLeft ? -widthAtY : widthAtY;
-    const z = (1.0 - Math.abs(x) / (widthAtY + 0.001)) * 0.45;
+  const buildOutline = (scale: number, cy: number): Polyline => {
+    const w = 1.6 * scale;
+    const top = cy + 1.55 * scale;
+    const bottom = cy - 2.0 * scale;
+    const pts: Polyline = [];
+    // Top edge: gentle crest rising to a center peak
+    for (let k = 0; k <= 24; k++) {
+      const x = -w + (2 * w * k) / 24;
+      pts.push([x, top + 0.22 * scale * (1 - Math.pow(x / w, 2)), 0]);
+    }
+    // Right side curving down to the point, then back up the left side
+    pts.push(...quadBezier([w, top, 0], [w * 1.02, cy - 0.9 * scale, 0], [0, bottom, 0]).slice(1));
+    pts.push(...quadBezier([0, bottom, 0], [-w * 1.02, cy - 0.9 * scale, 0], [-w, top, 0]).slice(1));
+    return pts.map(([x, y]) => [x, y, bulge(x, y)] as Vec3);
+  };
 
-    const angle = Math.random() * Math.PI * 2;
-    const rad = Math.pow(Math.random(), 0.6) * 0.16;
+  const outerN = Math.floor(count * 0.4);
+  const innerN = Math.floor(count * 0.2);
+  const checkN = Math.floor(count * 0.24);
+  const fillN = count - outerN - innerN - checkN;
 
-    positions[i * 3] = x + Math.cos(angle) * rad;
-    positions[i * 3 + 1] = y + Math.sin(angle) * rad;
-    positions[i * 3 + 2] = z + (Math.random() - 0.5) * 0.15;
-  }
+  const outer = buildOutline(1, 0);
+  fillStrokes(positions, 0, outerN, [outer], 0.12);
+  fillStrokes(positions, outerN, innerN, [buildOutline(0.78, 0.05)], 0.07);
 
-  // 2. Horizontal chevron ribs across the body
-  const numRibs = 6;
-  for (let i = 0; i < ribsCount; i++) {
-    const ribIdx = i % numRibs;
-    const ribY = 1.3 - (ribIdx / (numRibs - 1)) * 2.6; // from top to bottom
-    const widthAtY = Math.max(0.1, 1.4 * (1.0 - Math.pow(Math.max(0, -ribY) / 1.9, 2.0)));
+  const check: Polyline = ([[-0.75, 0.1], [-0.18, -0.55], [0.85, 0.8]] as [number, number][]).map(
+    ([x, y]) => [x, y, bulge(x, y) + 0.12] as Vec3
+  );
+  fillStrokes(positions, outerN + innerN, checkN, [check], 0.13);
 
-    const t = (Math.random() * 2 - 1); // -1 to 1 across width
-    const x = t * widthAtY;
-    // Chevron dip in Y towards center
-    const y = ribY - Math.abs(t) * 0.18;
-    // 3D forward bend in Z along center line
-    const z = (1.0 - Math.abs(t)) * 0.45;
-
-    const angle = Math.random() * Math.PI * 2;
-    const rad = Math.pow(Math.random(), 0.6) * 0.15;
-
-    const idx = (outlineCount + i) * 3;
-    positions[idx] = x + Math.cos(angle) * rad;
-    positions[idx + 1] = y + Math.sin(angle) * rad;
-    positions[idx + 2] = z + (Math.random() - 0.5) * 0.15;
-  }
-
-  return positions;
-}
-
-// 6. Bar Chart + Trend Arrow (GTM Strategy)
-function generateChart(count: number): Float32Array {
-  const positions = new Float32Array(count * 3);
-  const arrowPoints = Math.floor(count * 0.45);
-  const barPoints = count - arrowPoints;
-
-  const bars = [
-    { x: -1.3, width: 0.65, depth: 0.65, height: 1.2, yBase: -1.6 },
-    { x: -0.15, width: 0.65, depth: 0.65, height: 2.0, yBase: -1.6 },
-    { x: 1.0, width: 0.65, depth: 0.65, height: 2.8, yBase: -1.6 },
-  ];
-
-  for (let i = 0; i < barPoints; i++) {
-    const bar = bars[i % 3];
-    positions[i * 3] = bar.x + (Math.random() - 0.5) * bar.width;
-    positions[i * 3 + 1] = bar.yBase + Math.random() * bar.height;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * bar.depth;
-  }
-
-  const linePoints = Math.floor(arrowPoints * 0.75);
-  const headPoints = arrowPoints - linePoints;
-
-  for (let i = 0; i < linePoints; i++) {
-    const t = i / linePoints;
-    const x = -1.8 + t * 3.4;
-    const y = -0.9 + Math.pow(t, 1.25) * 2.8;
-    const idx = (barPoints + i) * 3;
-    positions[idx] = x + (Math.random() - 0.5) * 0.12;
-    positions[idx + 1] = y + (Math.random() - 0.5) * 0.12;
-    positions[idx + 2] = 0.2 + (Math.random() - 0.5) * 0.2;
-  }
-
-  const tipX = 1.6;
-  const tipY = 1.9;
-  for (let i = 0; i < headPoints; i++) {
-    const isUpper = i % 2 === 0;
-    const t = Math.random() * 0.65;
-    const x = isUpper ? tipX - t * 0.65 : tipX - t * 0.25;
-    const y = isUpper ? tipY - t * 0.25 : tipY - t * 0.65;
-    const idx = (barPoints + linePoints + i) * 3;
+  // Faint body fill inside the silhouette (rejection sampled against the outer outline)
+  const inside = (x: number, y: number): boolean => {
+    let hit = false;
+    for (let i = 0, j = outer.length - 1; i < outer.length; j = i++) {
+      const [xi, yi] = outer[i];
+      const [xj, yj] = outer[j];
+      if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) hit = !hit;
+    }
+    return hit;
+  };
+  const fillStart = outerN + innerN + checkN;
+  let filled = 0;
+  while (filled < fillN) {
+    const x = (Math.random() * 2 - 1) * 1.6;
+    const y = -2.0 + Math.random() * 3.8;
+    if (!inside(x, y)) continue;
+    const idx = (fillStart + filled) * 3;
     positions[idx] = x;
     positions[idx + 1] = y;
-    positions[idx + 2] = 0.2 + (Math.random() - 0.5) * 0.2;
+    positions[idx + 2] = bulge(x, y) + (Math.random() - 0.5) * 0.1;
+    filled++;
   }
 
   return positions;
 }
 
-// 7. 3D Neural Network / Synaptic Mesh (AI Transformation & Deep Learning)
+// 6. Bar Chart + Trend Arrow (GTM Strategy): wireframe 3D bars, baseline, rising arrow
+function generateChart(count: number): Float32Array {
+  const positions = new Float32Array(count * 3);
+
+  const baseY = -1.75;
+  const bars = [
+    { x: -1.5, h: 1.1 },
+    { x: -0.5, h: 1.8 },
+    { x: 0.5, h: 2.5 },
+    { x: 1.5, h: 3.3 },
+  ];
+  const hw = 0.3;
+
+  const barEdgeN = Math.floor(count * 0.42);
+  const barFillN = Math.floor(count * 0.1);
+  const axisN = Math.floor(count * 0.06);
+  const lineN = Math.floor(count * 0.3);
+  const nodeN = count - barEdgeN - barFillN - axisN - lineN;
+
+  fillStrokes(
+    positions,
+    0,
+    barEdgeN,
+    bars.flatMap((b) => boxEdges(b.x, baseY + b.h / 2, 0, hw, b.h / 2, hw)),
+    0.05
+  );
+
+  // Faint volume inside each bar, weighted by bar height
+  const totalH = bars.reduce((sum, b) => sum + b.h, 0);
+  let fillIdx = barEdgeN;
+  bars.forEach((b, bi) => {
+    const n = bi === bars.length - 1 ? barEdgeN + barFillN - fillIdx : Math.floor((b.h / totalH) * barFillN);
+    for (let i = 0; i < n; i++) {
+      const idx = (fillIdx + i) * 3;
+      positions[idx] = b.x + (Math.random() * 2 - 1) * hw;
+      positions[idx + 1] = baseY + Math.random() * b.h;
+      positions[idx + 2] = (Math.random() * 2 - 1) * hw;
+    }
+    fillIdx += n;
+  });
+
+  fillStrokes(positions, barEdgeN + barFillN, axisN, [[[-2.2, baseY, 0], [2.2, baseY, 0]]], 0.04);
+
+  // Trend line zig-zagging upward in front of the bars, ending in an aligned arrowhead
+  const z = 0.55;
+  const trend: Polyline = [
+    [-2.0, -0.75, z],
+    [-1.0, -0.05, z],
+    [-0.1, -0.35, z],
+    [0.9, 0.75, z],
+    [1.95, 2.0, z],
+  ];
+  const tip = trend[trend.length - 1];
+  const prev = trend[trend.length - 2];
+  const dirLen = Math.hypot(tip[0] - prev[0], tip[1] - prev[1]);
+  const dx = (tip[0] - prev[0]) / dirLen;
+  const dy = (tip[1] - prev[1]) / dirLen;
+  const head = 0.6;
+  const wing = (angle: number): Vec3 => {
+    const c = Math.cos(angle);
+    const s = Math.sin(angle);
+    return [tip[0] - head * (dx * c - dy * s), tip[1] - head * (dx * s + dy * c), z];
+  };
+  fillStrokes(positions, barEdgeN + barFillN + axisN, lineN, [trend, [wing(0.5), tip, wing(-0.5)]], 0.08);
+
+  // Glowing data points at each vertex of the trend line
+  fillClusters(positions, barEdgeN + barFillN + axisN + lineN, nodeN, trend.slice(0, -1), () => 0.15);
+
+  return positions;
+}
+
+// 7. Neural Network (AI Transformation): clean 3-4-4-3 layered network, ringed neurons,
+// fully connected synapses trimmed at the rings, and signal pulses travelling along a few links
 function generateNeuralNet(count: number): Float32Array {
   const positions = new Float32Array(count * 3);
 
-  // 19 distinct 3D Neuron Nodes across 4 depth layers + central intelligence core
-  const nodes = [
-    // Layer 1: Input Layer (Left, X ≈ -1.9)
-    { x: -1.9, y: 1.25, z: -0.45, r: 0.22, weight: 1.0 },
-    { x: -1.9, y: 0.42, z: 0.55, r: 0.22, weight: 1.0 },
-    { x: -1.9, y: -0.42, z: -0.55, r: 0.22, weight: 1.0 },
-    { x: -1.9, y: -1.25, z: 0.45, r: 0.22, weight: 1.0 },
+  const layerSizes = [3, 4, 4, 3];
+  const layerX = [-2.1, -0.7, 0.7, 2.1];
+  // Slight depth stagger per layer so the network reads as 3D when it rotates
+  const layerZ = [0.3, -0.15, 0.15, -0.3];
+  const spacing = 1.15;
+  const ringR = 0.26;
 
-    // Layer 2: Hidden Layer 1 (Mid-Left, X ≈ -0.7)
-    { x: -0.7, y: 1.65, z: 0.25, r: 0.24, weight: 1.1 },
-    { x: -0.7, y: 0.85, z: -0.55, r: 0.24, weight: 1.1 },
-    { x: -0.7, y: 0.05, z: 0.65, r: 0.24, weight: 1.1 },
-    { x: -0.7, y: -0.75, z: -0.35, r: 0.24, weight: 1.1 },
-    { x: -0.7, y: -1.55, z: 0.3, r: 0.24, weight: 1.1 },
+  const layers: Vec3[][] = layerSizes.map((size, li) =>
+    Array.from({ length: size }, (_, ni) => [layerX[li], ((size - 1) / 2 - ni) * spacing, layerZ[li]] as Vec3)
+  );
+  const nodes = layers.flat();
 
-    // Central Intelligence Core (Center Hub, X = 0, Y = 0.05, Z = 0)
-    { x: 0.0, y: 0.05, z: 0.0, r: 0.42, weight: 2.8 },
-
-    // Layer 3: Hidden Layer 2 (Mid-Right, X ≈ 0.7)
-    { x: 0.7, y: 1.55, z: -0.3, r: 0.24, weight: 1.1 },
-    { x: 0.7, y: 0.75, z: 0.55, r: 0.24, weight: 1.1 },
-    { x: 0.7, y: -0.05, z: -0.65, r: 0.24, weight: 1.1 },
-    { x: 0.7, y: -0.85, z: 0.35, r: 0.24, weight: 1.1 },
-    { x: 0.7, y: -1.65, z: -0.25, r: 0.24, weight: 1.1 },
-
-    // Layer 4: Output / Decision Layer (Right, X ≈ 1.9)
-    { x: 1.9, y: 1.15, z: 0.35, r: 0.22, weight: 1.0 },
-    { x: 1.9, y: 0.38, z: -0.45, r: 0.22, weight: 1.0 },
-    { x: 1.9, y: -0.38, z: 0.45, r: 0.22, weight: 1.0 },
-    { x: 1.9, y: -1.15, z: -0.35, r: 0.22, weight: 1.0 },
-  ];
-
-  // Synaptic connections (Directed & cross-connected neural axons)
-  const connections: [number, number][] = [
-    // Layer 1 to Layer 2
-    [0, 4], [0, 5], [1, 5], [1, 6], [2, 6], [2, 7], [3, 7], [3, 8],
-    [0, 6], [1, 4], [2, 8], [3, 6],
-
-    // Layer 2 to Central Core (Index 9)
-    [4, 9], [5, 9], [6, 9], [7, 9], [8, 9],
-
-    // Central Core to Layer 3
-    [9, 10], [9, 11], [9, 12], [9, 13], [9, 14],
-
-    // Layer 2 to Layer 3 bypass synapses (ResNet / Skip connections)
-    [4, 10], [5, 11], [6, 12], [7, 13], [8, 14],
-    [5, 12], [7, 11],
-
-    // Layer 3 to Layer 4
-    [10, 15], [10, 16], [11, 15], [11, 16], [12, 16], [12, 17],
-    [13, 17], [13, 18], [14, 17], [14, 18],
-    [11, 17], [12, 15],
-
-    // Intra-layer synaptic lateral loops
-    [4, 5], [7, 8], [10, 11], [13, 14]
-  ];
-
-  // 38% of particles forming glowing neuron clusters
-  const nodeParticlesCount = Math.floor(count * 0.38);
-  // 52% of particles along synaptic axon lines
-  const synapseParticlesCount = Math.floor(count * 0.52);
-  // 10% ambient neural stardust cloud
-  const ambientParticlesCount = count - nodeParticlesCount - synapseParticlesCount;
-
-  // Calculate total weight of nodes
-  const totalWeight = nodes.reduce((sum, n) => sum + n.weight, 0);
-
-  // 1. Generate Node Clusters
-  let pIdx = 0;
-  for (let n = 0; n < nodes.length; n++) {
-    const node = nodes[n];
-    const nodeCount = Math.floor((node.weight / totalWeight) * nodeParticlesCount);
-
-    for (let i = 0; i < nodeCount && pIdx < nodeParticlesCount; i++) {
-      const u = Math.random();
-      const v = Math.random();
-      const theta = u * 2.0 * Math.PI;
-      const phi = Math.acos(2.0 * v - 1.0);
-      const rad = Math.pow(Math.random(), 0.6) * node.r;
-
-      const x = node.x + rad * Math.sin(phi) * Math.cos(theta);
-      const y = node.y + rad * Math.sin(phi) * Math.sin(theta);
-      const z = node.z + rad * Math.cos(phi);
-
-      const idx = pIdx * 3;
-      positions[idx] = x;
-      positions[idx + 1] = y;
-      positions[idx + 2] = z;
-      pIdx++;
+  // Fully connected between adjacent layers, trimmed so lines stop at the neuron rings
+  const links: [Vec3, Vec3][] = [];
+  for (let li = 0; li < layers.length - 1; li++) {
+    for (const a of layers[li]) {
+      for (const b of layers[li + 1]) {
+        const d = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
+        const k = (ringR + 0.06) / d;
+        links.push([
+          [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k],
+          [b[0] - (b[0] - a[0]) * k, b[1] - (b[1] - a[1]) * k, b[2] - (b[2] - a[2]) * k],
+        ]);
+      }
     }
   }
 
-  // 2. Generate Synaptic Axons
-  const perConn = Math.floor(synapseParticlesCount / connections.length);
-  let sIdx = 0;
-  for (let c = 0; c < connections.length; c++) {
-    const [fromIdx, toIdx] = connections[c];
-    const fromNode = nodes[fromIdx];
-    const toNode = nodes[toIdx];
+  const ringN = Math.floor(count * 0.26);
+  const coreN = Math.floor(count * 0.14);
+  const linkN = Math.floor(count * 0.5);
+  const pulseN = count - ringN - coreN - linkN;
 
-    const currentConnCount = (c === connections.length - 1)
-      ? (synapseParticlesCount - sIdx)
-      : perConn;
-
-    for (let i = 0; i < currentConnCount; i++) {
-      const t = Math.random();
-      let x = fromNode.x + (toNode.x - fromNode.x) * t;
-      let y = fromNode.y + (toNode.y - fromNode.y) * t;
-      let z = fromNode.z + (toNode.z - fromNode.z) * t;
-
-      // Organic synaptic curve (sinusoidal pulse)
-      const curve = Math.sin(t * Math.PI) * 0.12;
-      y += curve * 0.5;
-      z += curve;
-
-      // Dispersion around axon filament
-      const angle = Math.random() * Math.PI * 2;
-      const spread = Math.pow(Math.random(), 0.7) * 0.075;
-      x += Math.cos(angle) * spread;
-      y += Math.sin(angle) * spread;
-      z += (Math.random() - 0.5) * spread;
-
-      const idx = (nodeParticlesCount + sIdx) * 3;
-      positions[idx] = x;
-      positions[idx + 1] = y;
-      positions[idx + 2] = z;
-      sIdx++;
+  // Neuron rings (circle outline facing the camera)
+  const rings: Polyline[] = nodes.map((c) => {
+    const ring: Polyline = [];
+    for (let k = 0; k <= 48; k++) {
+      const t = (k / 48) * Math.PI * 2;
+      ring.push([c[0] + Math.cos(t) * ringR, c[1] + Math.sin(t) * ringR, c[2]]);
     }
-  }
+    return ring;
+  });
+  fillStrokes(positions, 0, ringN, rings, 0.045);
 
-  // 3. Generate Ambient Neural Aura
-  for (let i = 0; i < ambientParticlesCount; i++) {
-    const nA = nodes[Math.floor(Math.random() * nodes.length)];
-    const nB = nodes[Math.floor(Math.random() * nodes.length)];
-    const t = Math.random();
+  // Bright neuron cores
+  fillClusters(positions, ringN, coreN, nodes, () => 0.11);
 
-    const x = nA.x + (nB.x - nA.x) * t + (Math.random() - 0.5) * 0.45;
-    const y = nA.y + (nB.y - nA.y) * t + (Math.random() - 0.5) * 0.45;
-    const z = nA.z + (nB.z - nA.z) * t + (Math.random() - 0.5) * 0.45;
+  // Thin synapse filaments
+  fillStrokes(positions, ringN + coreN, linkN, links, 0.035);
 
-    const idx = (nodeParticlesCount + synapseParticlesCount + i) * 3;
-    positions[idx] = x;
-    positions[idx + 1] = y;
-    positions[idx + 2] = z;
-  }
+  // Signal pulses: small bright clusters on every third link, placed a quarter of the way in
+  // from either end. Link midpoints are where the fully connected lines cross, so pulses
+  // there pile up into one bright blob in the middle of the network.
+  const pulses = links
+    .filter((_, i) => i % 3 === 0)
+    .map(([a, b], i) => {
+      const t = i % 2 === 0 ? 0.25 : 0.75;
+      return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t] as Vec3;
+    });
+  fillClusters(positions, ringN + coreN + linkN, pulseN, pulses, () => 0.06);
 
   return positions;
 }
@@ -729,22 +699,26 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
       const canvas = canvasRef.current;
       if (!container || !canvas) return;
 
-      const globeData = generateGlobe(PARTICLE_COUNT);
+      const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+      const particleCount =
+        isCoarsePointer || window.innerWidth < 768 ? MOBILE_PARTICLE_COUNT : PARTICLE_COUNT;
+
+      const globeData = generateGlobe(particleCount);
 
       const shapes: Record<ShapeType, Float32Array> = {
         globe: globeData.positions,
-        cube: generateCube(PARTICLE_COUNT),
-        brackets: generateBrackets(PARTICLE_COUNT),
-        chart: generateChart(PARTICLE_COUNT),
-        neural: generateNeuralNet(PARTICLE_COUNT),
-        dna: generateDNA(PARTICLE_COUNT),
-        star: generateStars(PARTICLE_COUNT),
-        shield: generateShield(PARTICLE_COUNT),
+        cube: generateCube(particleCount),
+        brackets: generateBrackets(particleCount),
+        chart: generateChart(particleCount),
+        neural: generateNeuralNet(particleCount),
+        dna: generateDNA(particleCount),
+        star: generateStars(particleCount),
+        shield: generateShield(particleCount),
       };
       shapesRef.current = shapes;
 
-      const randoms = new Float32Array(PARTICLE_COUNT);
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const randoms = new Float32Array(particleCount);
+      for (let i = 0; i < particleCount; i++) {
         randoms[i] = Math.random();
       }
 
@@ -761,10 +735,10 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
       const renderer = new THREE.WebGLRenderer({
         canvas,
         alpha: true,
-        antialias: true,
+        antialias: !isCoarsePointer,
         powerPreference: "high-performance",
       });
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, isCoarsePointer ? 1.5 : 2);
       renderer.setPixelRatio(pixelRatio);
       renderer.setSize(container.clientWidth, container.clientHeight);
 
@@ -883,6 +857,24 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
         };
       };
 
+      // Render loop control. Declared before the ScrollTriggers because their callbacks can fire
+      // synchronously on create; the loop only actually starts once `animate` exists (loopReady).
+      let animId = 0;
+      let loopRunning = false;
+      let loopWanted = true;
+      let loopReady = false;
+      const startLoop = () => {
+        loopWanted = true;
+        if (!loopReady || loopRunning) return;
+        loopRunning = true;
+        animId = requestAnimationFrame(animate);
+      };
+      const stopLoop = () => {
+        loopWanted = false;
+        loopRunning = false;
+        cancelAnimationFrame(animId);
+      };
+
       // --- GSAP SCROLL CONTROL WITH DYNAMIC 3D DOCKING ---
       const morphTrigger = ScrollTrigger.create({
         trigger: ".services-section",
@@ -924,17 +916,21 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
           shaderMaterial.uniforms.uOpacity.value = Math.max(0, remaining);
           if (remaining <= 0.01) {
             canvas.style.display = "none";
+            stopLoop();
           } else {
             canvas.style.display = "block";
+            startLoop();
           }
         },
         onLeave: () => {
           canvas.style.display = "none";
           shaderMaterial.uniforms.uOpacity.value = 0.0;
+          stopLoop();
         },
         onEnterBack: () => {
           canvas.style.display = "block";
           shaderMaterial.uniforms.uOpacity.value = 1.0;
+          startLoop();
         },
       });
 
@@ -1079,14 +1075,11 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
 
       window.addEventListener("mousemove", onPointerMove, { passive: true });
       window.addEventListener("mouseleave", onPointerLeave);
-      window.addEventListener("touchmove", onPointerMove, { passive: true });
-      window.addEventListener("touchend", deactivateHover, { passive: true });
-      window.addEventListener("touchcancel", deactivateHover, { passive: true });
 
-      let animId = 0;
-      let startTime = performance.now();
+      const startTime = performance.now();
 
       const animate = () => {
+        if (!loopRunning) return;
         animId = requestAnimationFrame(animate);
         const time = (performance.now() - startTime) * 0.001;
 
@@ -1121,7 +1114,8 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
         renderer.render(scene, camera);
       };
 
-      animId = requestAnimationFrame(animate);
+      loopReady = true;
+      if (loopWanted) startLoop();
 
       const ro = new ResizeObserver(() => {
         if (!container) return;
@@ -1143,12 +1137,9 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
       ro.observe(container);
 
       return () => {
-        cancelAnimationFrame(animId);
+        stopLoop();
         window.removeEventListener("mousemove", onPointerMove);
         window.removeEventListener("mouseleave", onPointerLeave);
-        window.removeEventListener("touchmove", onPointerMove);
-        window.removeEventListener("touchend", deactivateHover);
-        window.removeEventListener("touchcancel", deactivateHover);
         ro.disconnect();
         morphTrigger.kill();
         exitTrigger.kill();

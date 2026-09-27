@@ -5,6 +5,7 @@ import {
   JetBrains_Mono,
   Space_Grotesk,
 } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import InteractiveShell from "@/components/InteractiveShell";
@@ -294,11 +295,6 @@ export default function RootLayout({
             }),
           }}
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}`,
-          }}
-        />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -317,6 +313,13 @@ export default function RootLayout({
             <InteractiveShell>{children}</InteractiveShell>
           </CurrencyProvider>
         </SmoothScroll>
+        {/* Dev chunk URLs are not content-hashed, so a cache-first SW would serve stale JS
+            against fresh HTML (hydration errors). Only register in production; purge in dev. */}
+        <Script id="sw-register" strategy="lazyOnload">
+          {process.env.NODE_ENV === "production"
+            ? `if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(function(){});}`
+            : `if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});});if(window.caches){caches.keys().then(function(ks){ks.forEach(function(k){caches.delete(k);});});}}`}
+        </Script>
       </body>
     </html>
   );

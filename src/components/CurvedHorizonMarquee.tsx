@@ -1,106 +1,51 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import {
+  Box,
+  Coffee,
+  HeartPulse,
+  KeyRound,
+  Package,
+  ScanEye,
+  ShieldCheck,
+  Shirt,
+  Stethoscope,
+  type LucideIcon,
+} from "lucide-react";
 
-// High-fidelity vector logos matching the reference screenshot
-function E2OpenLogo() {
-  return (
-    <div className="flex items-center gap-1 font-bold text-2xl tracking-tighter text-white select-none">
-      <span className="text-3xl font-extrabold tracking-normal">e2</span>open
-    </div>
-  );
-}
+// Real Whizzly Lab clients, rendered as icon + wordmark
+type ClientMark = {
+  name: string;
+  Icon: LucideIcon;
+  className?: string;
+};
 
-function ToyotaLogo() {
-  return (
-    <div className="flex items-center gap-2.5 select-none">
-      {/* Toyota emblem */}
-      <svg className="w-8 h-6 text-white fill-current" viewBox="0 0 100 70">
-        <ellipse cx="50" cy="35" rx="48" ry="32" fill="none" stroke="currentColor" strokeWidth="6" />
-        <ellipse cx="50" cy="30" rx="30" ry="16" fill="none" stroke="currentColor" strokeWidth="5.5" />
-        <ellipse cx="50" cy="40" rx="14" ry="26" fill="none" stroke="currentColor" strokeWidth="5.5" />
-      </svg>
-      <span className="font-extrabold text-xl tracking-[0.18em] text-white">TOYOTA</span>
-    </div>
-  );
-}
-
-function OwaspLogo() {
-  return (
-    <div className="flex items-center gap-2 select-none">
-      {/* OWASP logo circle with rays */}
-      <svg className="w-8 h-8 text-white fill-current" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" strokeWidth="6" />
-        <path d="M 50 20 L 50 80 M 24 35 L 76 65 M 24 65 L 76 35" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
-      </svg>
-      <span className="font-extrabold text-2xl tracking-tight text-white">OWASP</span>
-    </div>
-  );
-}
-
-function InjazatLogo() {
-  return (
-    <div className="flex items-center gap-2 select-none">
-      {/* Injazat dotted globe */}
-      <svg className="w-7 h-7 text-white fill-current" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="5" strokeDasharray="6 6" />
-        <circle cx="50" cy="50" r="28" fill="none" stroke="currentColor" strokeWidth="5" strokeDasharray="5 5" />
-        <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" strokeWidth="4" />
-      </svg>
-      <span className="font-bold text-2xl tracking-normal text-white">Injazat</span>
-    </div>
-  );
-}
-
-function LowesLogo() {
-  return (
-    <div className="flex items-center select-none">
-      <span className="font-black text-2xl sm:text-3xl tracking-tight text-white border-b-2 border-white leading-none pb-0.5">
-        LOWE'S
-      </span>
-    </div>
-  );
-}
-
-function CognizantLogo() {
-  return (
-    <div className="flex items-center select-none">
-      <span className="font-bold text-2xl sm:text-3xl tracking-tight text-white">
-        Cognizant
-      </span>
-    </div>
-  );
-}
-
-function TrimbleLogo() {
-  return (
-    <div className="flex items-center gap-2 select-none">
-      {/* Trimble geometric prism icon */}
-      <svg className="w-7 h-7 text-white fill-current" viewBox="0 0 100 100">
-        <polygon points="50,15 85,80 15,80" fill="none" stroke="currentColor" strokeWidth="7" />
-        <polygon points="50,38 72,78 28,78" fill="currentColor" opacity="0.6" />
-      </svg>
-      <span className="font-bold text-2xl tracking-tight text-white">Trimble</span>
-    </div>
-  );
-}
-
-const LOGO_COMPONENTS = [
-  { id: "e2open-1", Component: E2OpenLogo },
-  { id: "toyota-1", Component: ToyotaLogo },
-  { id: "owasp-1", Component: OwaspLogo },
-  { id: "injazat-1", Component: InjazatLogo },
-  { id: "lowes-1", Component: LowesLogo },
-  { id: "cognizant-1", Component: CognizantLogo },
-  { id: "trimble-1", Component: TrimbleLogo },
-  { id: "e2open-2", Component: E2OpenLogo },
-  { id: "toyota-2", Component: ToyotaLogo },
-  { id: "owasp-2", Component: OwaspLogo },
-  { id: "injazat-2", Component: InjazatLogo },
-  { id: "lowes-2", Component: LowesLogo },
-  { id: "cognizant-2", Component: CognizantLogo },
-  { id: "trimble-2", Component: TrimbleLogo },
+const CLIENTS: ClientMark[] = [
+  { name: "COMPLYSECOPS", Icon: ShieldCheck, className: "tracking-[0.08em] font-extrabold" },
+  { name: "XecureAI", Icon: ScanEye },
+  { name: "CureCMS", Icon: HeartPulse },
+  { name: "OXO Packaging", Icon: Box },
+  { name: "Option Packaging", Icon: Package },
+  { name: "Al-Deewan", Icon: Shirt },
+  { name: "Rakanda Gold", Icon: Coffee },
+  { name: "Keyspace Studio", Icon: KeyRound },
+  { name: "RT Direct", Icon: Stethoscope },
 ];
+
+function ClientLogo({ name, Icon, className = "tracking-tight font-bold" }: ClientMark) {
+  return (
+    <div className="flex items-center gap-2 select-none whitespace-nowrap">
+      <Icon className="w-6 h-6 text-white shrink-0" strokeWidth={2.25} />
+      <span className={`text-xl sm:text-2xl text-white ${className}`}>{name}</span>
+    </div>
+  );
+}
+
+// Two passes so the ring is always full across the curve
+const LOGO_COMPONENTS = [1, 2].flatMap((pass) =>
+  CLIENTS.map((client) => ({ id: `${client.name}-${pass}`, client }))
+);
 
 export default function CurvedHorizonMarquee() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -117,13 +62,18 @@ export default function CurvedHorizonMarquee() {
   }, []);
 
   // Animate logos moving right to left along the curved horizon
+  // Only runs while the stage is on screen: this re-renders React every frame, which
+  // otherwise keeps the main thread busy while scrolling the rest of the page
   useEffect(() => {
+    const stage = containerRef.current;
+    if (!stage) return;
+
     let animId = 0;
     let lastTime = performance.now();
     const speed = 46; // pixels per second moving leftwards
 
     const tick = (now: number) => {
-      const dt = (now - lastTime) / 1000;
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
 
       setOffset((prev) => {
@@ -134,13 +84,24 @@ export default function CurvedHorizonMarquee() {
       animId = requestAnimationFrame(tick);
     };
 
-    animId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animId);
+    const observer = new IntersectionObserver(([entry]) => {
+      cancelAnimationFrame(animId);
+      if (entry.isIntersecting) {
+        lastTime = performance.now();
+        animId = requestAnimationFrame(tick);
+      }
+    });
+    observer.observe(stage);
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(animId);
+    };
   }, []);
 
-  const totalLogos = LOGO_COMPONENTS.length; // 14
-  const logoSpacing = 210; // horizontal spacing between logo centers
-  const totalTrackWidth = totalLogos * logoSpacing; // 2940px
+  const totalLogos = LOGO_COMPONENTS.length; // 18
+  const logoSpacing = 250; // horizontal spacing between logo centers (client names are longer)
+  const totalTrackWidth = totalLogos * logoSpacing; // 4500px
   const curveHalfWidth = isMobileScreen ? 360 : 620; // width over which the curve acts
   const dropHeight = isMobileScreen ? 44 : 72; // vertical drop at the curve edges
 
@@ -202,7 +163,7 @@ export default function CurvedHorizonMarquee() {
                   filter: `drop-shadow(0 2px 8px rgba(0,0,0,0.8))`,
                 }}
               >
-                <item.Component />
+                <ClientLogo {...item.client} />
               </div>
             );
           })}

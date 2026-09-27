@@ -204,11 +204,11 @@ export default function CaseStudies() {
             {/* Ambient Volumetric Backdrop Glow */}
             <div
               aria-hidden
-              className="absolute -top-16 -right-16 w-[360px] h-[360px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.25)_0%,rgba(168,85,247,0.12)_40%,transparent_70%)] blur-3xl pointer-events-none"
+              className="absolute -top-16 -right-16 w-[360px] h-[360px] rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.25)_0%,rgba(168,85,247,0.12)_40%,transparent_70%)] pointer-events-none"
             />
             <div
               aria-hidden
-              className="absolute -bottom-16 -left-16 w-[320px] h-[320px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.2)_0%,transparent_65%)] blur-3xl pointer-events-none"
+              className="absolute -bottom-16 -left-16 w-[320px] h-[320px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.2)_0%,transparent_65%)] pointer-events-none"
             />
 
             {/* Subtle Vignette Gradient */}
@@ -223,22 +223,20 @@ export default function CaseStudies() {
               return (
                 <div
                   key={study.id}
-                  className={`absolute inset-0 flex items-center justify-center p-4 transition-all duration-700 ease-out ${
+                  aria-hidden={!isActive}
+                  className={`absolute inset-0 flex items-center justify-center p-4 transition-[opacity,transform,visibility] duration-700 ease-out ${
                     isActive
-                      ? "opacity-100 scale-100 pointer-events-auto z-20"
-                      : "opacity-0 scale-95 pointer-events-none z-0"
+                      ? "visible opacity-100 scale-100 pointer-events-auto z-20"
+                      : "invisible opacity-0 scale-95 pointer-events-none z-0"
                   }`}
                 >
                   <div className="relative flex flex-col items-center justify-center w-full h-full">
                     {/* Accurate iPhone 16 Pro Frame with 414x896 Screen Ratio */}
                     <div
-                      className="relative w-[235px] sm:w-[260px] md:w-[275px] h-[450px] sm:h-[490px] md:h-[515px] rounded-[42px] sm:rounded-[46px] bg-[#12131c] border-[6px] sm:border-[7px] border-[#252839] shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(99,102,241,0.2)] overflow-hidden transition-all duration-700 flex flex-col"
-                      style={{
-                        transform: "rotateY(-4deg) rotateX(2deg)",
-                      }}
+                      className="relative w-[235px] sm:w-[260px] md:w-[275px] h-[450px] sm:h-[490px] md:h-[515px] rounded-[42px] sm:rounded-[46px] bg-[#12131c] border-[6px] sm:border-[7px] border-[#252839] shadow-[0_30px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(99,102,241,0.2)] overflow-hidden flex flex-col"
                     >
                       {/* Top Bezel: Dynamic Island Notch & Status Bar */}
-                      <div className="relative w-full h-9 sm:h-10 bg-black/90 backdrop-blur-md px-5 flex items-center justify-between shrink-0 z-30 border-b border-white/5">
+                      <div className="relative w-full h-9 sm:h-10 bg-black px-5 flex items-center justify-between shrink-0 z-30 border-b border-white/5">
                         {/* Clock */}
                         <span className="text-[11px] font-semibold text-white/90 font-mono tracking-tight">
                           9:41
@@ -275,7 +273,7 @@ export default function CaseStudies() {
                       </div>
 
                       {/* Bottom Mobile Browser Address Pill (Safari / Chrome Mobile) */}
-                      <div className="w-full bg-black/95 backdrop-blur-lg px-4 py-2 flex flex-col items-center shrink-0 border-t border-white/10 z-30">
+                      <div className="w-full bg-black px-4 py-2 flex flex-col items-center shrink-0 border-t border-white/10 z-30">
                         <div className="w-full py-1 px-3 rounded-full bg-white/[0.08] border border-white/10 flex items-center justify-center gap-1.5">
                           <Lock className="w-2.5 h-2.5 text-emerald-400" />
                           <span className="text-[10px] text-white/80 font-mono tracking-tight truncate max-w-[170px]">
@@ -288,7 +286,7 @@ export default function CaseStudies() {
                     </div>
 
                     {/* Bottom Floating Card: Project Name & Live Link */}
-                    <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-4 sm:right-4 z-40 flex items-center justify-between p-3 sm:p-3.5 rounded-2xl bg-black/85 backdrop-blur-xl border border-white/15 shadow-2xl">
+                    <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-4 sm:right-4 z-40 flex items-center justify-between p-3 sm:p-3.5 rounded-2xl bg-black/90 border border-white/15 shadow-2xl">
                       <div className="min-w-0 pr-2">
                         <p className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-indigo-300 truncate">
                           {study.subtitle}

@@ -300,7 +300,21 @@ export default function HeroWithServicesTransition() {
       },
     });
 
+    // 4. Hide the fixed canvas layer (incl. blurred nebula glow) once past Services, so it isn't
+    // composited over every section below on each scroll frame (major jank on mobile GPUs)
+    const layerHideTrigger = ScrollTrigger.create({
+      trigger: servicesTrackRef.current,
+      start: "bottom+=120px top",
+      onEnter: () => {
+        if (canvasContainerRef.current) canvasContainerRef.current.style.visibility = "hidden";
+      },
+      onLeaveBack: () => {
+        if (canvasContainerRef.current) canvasContainerRef.current.style.visibility = "visible";
+      },
+    });
+
     return () => {
+      layerHideTrigger.kill();
       glowTrigger.kill();
       servicesCardsTrigger.kill();
       heroFadeTrigger.kill();
@@ -781,7 +795,6 @@ export default function HeroWithServicesTransition() {
                       <Link
                         key={service.id}
                         href={`/services/${service.id}`}
-                        onMouseEnter={() => handleSelectService(idx)}
                         onClick={(e) => {
                           // Prevent navigation if user was swiping horizontally on mobile
                           if (Math.abs(touchDeltaXRef.current) > 15) {
