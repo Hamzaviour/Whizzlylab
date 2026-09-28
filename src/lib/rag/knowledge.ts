@@ -83,12 +83,22 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
 - Sarah Chen: Principal ML Researcher (Transformer Fine-Tuning & RAG)
 - Marcus Webb: Distributed Systems Lead (Kafka Streaming & Telemetry)
 - Jennifer Liu: Lead Full-Stack Architect (Next.js 15 & Cloud Infrastructure)
+- Umair Dogar: Chief Product Officer (CPO) (Product Strategy & Roadmap)
 - David Park: DevOps & Cloud Architect (Kubernetes & AWS)
 - Ayesha Rahman: AI Safety & Guardrails Lead (Hallucination Evals)
 - Alexandre Moreau: Real-Time Systems Specialist (Low-Latency Vector Indexing)
 - Elena Rostova: WebGL & 3D Graphics Engineer (Three.js & GLSL Shaders)
 - Karan Mehta: Automation & Workflow Lead (n8n & Voice AI)`,
-    keywords: ["team", "engineers", "squad", "staff", "who works here", "developers", "researchers", "sarah chen", "marcus webb", "jennifer liu", "david park"],
+    keywords: ["team", "engineers", "squad", "staff", "who works here", "developers", "researchers", "sarah chen", "marcus webb", "jennifer liu", "david park", "umair", "umair dogar", "cpo", "chief product officer"],
+    url: "/about",
+    actionText: "View Team Orbit",
+  },
+  {
+    id: "team-umair-dogar",
+    category: "team",
+    title: "Chief Product Officer: Umair Dogar",
+    content: `Umair Dogar is the Chief Product Officer (CPO) at Whizzly Lab. He owns product strategy, roadmap, and alignment between client goals and engineering delivery, working alongside founder Hamza Younas and the core team.`,
+    keywords: ["umair", "umair dogar", "dogar", "cpo", "chief product officer", "product officer", "head of product", "product strategy", "who is the cpo"],
     url: "/about",
     actionText: "View Team Orbit",
   },

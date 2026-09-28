@@ -49,6 +49,14 @@ const INNER_ORBIT_TEAM: TeamMember[] = [
     avatar: "/images/avatars/jennifer-liu.webp",
     accentColor: "#EC4899", // Neon Pink
   },
+  {
+    id: "umair-dogar",
+    name: "Umair Dogar",
+    role: "Chief Product Officer (CPO)",
+    domain: "Product Strategy & Roadmap",
+    avatar: "/images/avatars/umair-dogar.jpeg",
+    accentColor: "#FACC15", // Signal Yellow
+  },
 ];
 
 const OUTER_ORBIT_TEAM: TeamMember[] = [

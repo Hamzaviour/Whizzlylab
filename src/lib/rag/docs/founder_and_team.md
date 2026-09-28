@@ -20,15 +20,17 @@ Whizzly Lab is organized into an elite, distributed squad structure:
    - Domain: Apache Kafka Event Streaming, Consumer Group Partitioning, and Telemetry Infrastructure.
 4. **Jennifer Liu** — *Lead Full-Stack Architect*
    - Domain: Next.js 15, High-Scale Cloud Architecture, and React Micro-Frontends.
+5. **Umair Dogar** — *Chief Product Officer (CPO)*
+   - Domain: Product Strategy, Roadmap Ownership, and Client Delivery Alignment.
 
 ### Outer Orbit Specialists
-5. **David Park** — *DevOps & Cloud Architect*
+6. **David Park** — *DevOps & Cloud Architect*
    - Domain: Kubernetes, AWS Multi-Region Infrastructure, CI/CD Automation & Terraform.
-6. **Ayesha Rahman** — *AI Safety & Guardrails Lead*
+7. **Ayesha Rahman** — *AI Safety & Guardrails Lead*
    - Domain: LLM Hallucination Benchmarks, Evals, Guardrails, and Context Faithfulness.
-7. **Alexandre Moreau** — *Real-Time Systems Specialist*
+8. **Alexandre Moreau** — *Real-Time Systems Specialist*
    - Domain: Low-Latency Vector Indexing (Qdrant/Pinecone), Caching & Microservices.
-8. **Elena Rostova** — *WebGL & 3D Graphics Engineer*
+9. **Elena Rostova** — *WebGL & 3D Graphics Engineer*
    - Domain: Three.js, GLSL Shaders, Interactive 3D Visualizations, and Canvas Morphing.
-9. **Karan Mehta** — *Automation & Workflow Lead*
+10. **Karan Mehta** — *Automation & Workflow Lead*
    - Domain: n8n Orchestration, Voice AI (Whisper, Deepgram, ElevenLabs), and CRM Integrations.

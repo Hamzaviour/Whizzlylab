@@ -138,6 +138,18 @@ export function retrieveKnowledge(
       score += 22.0;
     }
 
+    // CPO intent (Umair Dogar)
+    if (
+      (queryLower.includes("umair") ||
+        queryLower.includes("dogar") ||
+        /\bcpo\b/.test(queryLower) ||
+        queryLower.includes("chief product") ||
+        queryLower.includes("head of product")) &&
+      chunk.id === "team-umair-dogar"
+    ) {
+      score += 24.0;
+    }
+
     // Team intent
     if (
       (queryLower.includes("team") ||
@@ -222,6 +234,7 @@ Whizzly Lab is an elite AI engineering studio and full-stack software developmen
    - When asked to meet, talk, or schedule: Always provide our calendar link (\`/schedule\` or https://whizzlylab.com/schedule) and phone number \`+1 (424) 451-0714\`.
 4. **FOUNDER & TEAM**:
    - Founded by Hamza Younas, Lead Systems Architect.
+   - Umair Dogar is the Chief Product Officer (CPO), owning product strategy and roadmap.
    - Core team includes Sarah Chen (ML/RAG), Marcus Webb (Kafka), Jennifer Liu (Next.js), David Park (DevOps), and Ayesha Rahman (AI Guardrails).
 5. **PRICING**:
    - Engineering rates are transparently quoted strictly in USD (from $300 for basic web to $5,000+ for enterprise clusters).
@@ -338,6 +351,21 @@ export function generateSmartFallbackReply(
       "How can I book a call with Hamza?",
     ];
   }
+  // 4b. CPO (Umair Dogar)
+  else if (
+    queryLower.includes("umair") ||
+    queryLower.includes("dogar") ||
+    /\bcpo\b/.test(queryLower) ||
+    queryLower.includes("chief product") ||
+    queryLower.includes("head of product")
+  ) {
+    reply = `**Umair Dogar** is the **Chief Product Officer (CPO)** at Whizzly Lab. He owns product strategy and roadmap, keeping client goals aligned with engineering delivery alongside founder Hamza Younas.`;
+    suggestedQuestions = [
+      "Who else is on the engineering team?",
+      "Who founded Whizzly Lab?",
+      "Can we schedule a call with the team?",
+    ];
+  }
   // 5. Team & Squad
   else if (
     queryLower.includes("team") ||
@@ -345,7 +373,7 @@ export function generateSmartFallbackReply(
     queryLower.includes("who works here") ||
     queryLower.includes("engineers")
   ) {
-    reply = `Our engineering squad is an elite collective led by **Hamza Younas** (Founder & Lead Architect), **Sarah Chen** (Principal ML Researcher), **Marcus Webb** (Kafka Distributed Systems Lead), **Jennifer Liu** (Lead Next.js Architect), **David Park** (DevOps & Cloud), and **Ayesha Rahman** (AI Safety & Guardrails).`;
+    reply = `Our engineering squad is an elite collective led by **Hamza Younas** (Founder & Lead Architect), **Umair Dogar** (Chief Product Officer), **Sarah Chen** (Principal ML Researcher), **Marcus Webb** (Kafka Distributed Systems Lead), **Jennifer Liu** (Lead Next.js Architect), **David Park** (DevOps & Cloud), and **Ayesha Rahman** (AI Safety & Guardrails).`;
     suggestedQuestions = [
       "How do you structure client engagements?",
       "Can we schedule a call with the team?",
