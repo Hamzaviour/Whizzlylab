@@ -125,6 +125,15 @@ export async function changePasswordAction(fd: FormData) {
   redirect("/portal/account?ok=Password+changed");
 }
 
+export async function updateProfileAction(fd: FormData) {
+  const user = await requireUser();
+  const name = str(fd, "name", 120);
+  if (!name) redirect("/portal/account?error=Name+is+required");
+  await sql()`UPDATE users SET name = ${name} WHERE id = ${user.id}`;
+  revalidatePath("/portal", "layout");
+  redirect("/portal/account?ok=Profile+updated");
+}
+
 export async function logoutAction() {
   await destroySession();
   redirect("/portal/login");

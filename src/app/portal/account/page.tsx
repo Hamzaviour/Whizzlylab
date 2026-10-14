@@ -1,6 +1,6 @@
 import { KeyRound, Mail, ShieldCheck } from "lucide-react";
 import { requireUser } from "@/lib/portal/auth";
-import { changePasswordAction } from "@/lib/portal/actions";
+import { changePasswordAction, updateProfileAction } from "@/lib/portal/actions";
 import { Avatar, Badge, btnPrimary, Card, Field, Flash, inputCls, PageHeader } from "@/components/portal/ui";
 
 export default async function AccountPage({
@@ -27,6 +27,16 @@ export default async function AccountPage({
             </div>
           </div>
         </div>
+        <form action={updateProfileAction} className="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-end">
+          <div className="flex-1">
+            <Field name="name" label="Display name" hint="Shown to your team and clients across the portal.">
+              <input id="name" name="name" required maxLength={120} defaultValue={user.name} autoComplete="name" className={inputCls} />
+            </Field>
+          </div>
+          <button type="submit" className={`${btnPrimary} sm:mb-[22px]`}>
+            Save
+          </button>
+        </form>
       </Card>
       <Card>
         <div className="mb-4 flex items-center gap-2">

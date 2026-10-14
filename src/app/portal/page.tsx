@@ -26,6 +26,18 @@ import {
 import { ActivityFeed, DueChip, GreetingBanner, ProjectCard } from "@/components/portal/blocks";
 import { Badge, Card, Donut, Empty, ProgressRing, SectionTitle, StatCard, timeAgo } from "@/components/portal/ui";
 
+/** Titles and family prefixes that shouldn't be used as a first name ("Ch Hamza Younas" -> "Hamza"). */
+const NAME_PREFIXES = new Set([
+  "ch", "chaudhry", "chaudhary", "chaudhri", "mr", "mrs", "ms", "miss", "dr", "prof", "sir", "engr", "eng",
+  "syed", "sayed", "mian", "rana", "malik", "raja", "hafiz", "haji", "sheikh", "shaikh", "mirza", "khawaja", "sardar", "muhammad", "mohammad", "m",
+]);
+
+function greetingName(fullName: string): string {
+  const parts = fullName.trim().split(/\s+/).filter(Boolean);
+  const first = parts.find((p) => !NAME_PREFIXES.has(p.toLowerCase().replace(/\.$/, "")));
+  return first ?? parts[0] ?? "there";
+}
+
 function greeting() {
   const h = new Date().getHours();
   return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
@@ -34,7 +46,7 @@ function greeting() {
 export default async function PortalHome() {
   const user = await requireUser();
   const staff = isStaff(user);
-  const firstName = user.name.split(" ")[0];
+  const firstName = greetingName(user.name);
 
   const [projects, updates, activity, breakdown, dueSoon, approvals, stats, pipeline] = await Promise.all([
     getProjects(user),
