@@ -38,6 +38,7 @@ html {
   color-scheme: dark;
   overflow-x: clip;
   max-width: 100%;
+  overscroll-behavior-y: none;
 }
 
 html.lenis, html.lenis body {
@@ -64,6 +65,7 @@ body {
   font-family: var(--font-sans-primary), ui-sans-serif, system-ui, sans-serif;
   overflow-x: clip;
   max-width: 100%;
+  overscroll-behavior-y: none;
 }
 
 ::selection {

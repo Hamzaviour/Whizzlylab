@@ -12,6 +12,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     // Register GSAP ScrollTrigger
     if (typeof window !== "undefined") {
       gsap.registerPlugin(ScrollTrigger);
+      ScrollTrigger.config({ ignoreMobileResize: true });
     }
 
     // Initialize Lenis with buttery smooth settings

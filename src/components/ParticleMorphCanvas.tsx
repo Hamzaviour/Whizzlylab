@@ -1117,11 +1117,15 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
       loopReady = true;
       if (loopWanted) startLoop();
 
+      let lastW = 0;
       const ro = new ResizeObserver(() => {
         if (!container) return;
         const w = container.clientWidth;
         const h = container.clientHeight;
         if (w === 0 || h === 0) return;
+        // Mobile URL-bar show/hide only changes height; skip to avoid scroll-length refresh churn.
+        if (isCoarsePointer && lastW === w && lastW !== 0) return;
+        lastW = w;
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h);

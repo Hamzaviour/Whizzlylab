@@ -378,7 +378,7 @@ export default function HeroWithServicesTransition() {
       {/* ===================== 1. THE PERSISTENT 3D PARTICLE CANVAS ===================== */}
       <div
         ref={canvasContainerRef}
-        className="pointer-events-none fixed inset-0 z-20 w-screen h-screen select-none overflow-hidden"
+        className="pointer-events-none fixed inset-0 z-20 select-none overflow-hidden"
         style={{ willChange: "opacity" }}
       >
         {/* Circular Purple-Indigo Atmospheric Nebula Glow Backdrop (Responsive on mobile) */}
