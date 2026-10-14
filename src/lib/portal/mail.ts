@@ -1,32 +1,56 @@
 import "server-only";
-import nodemailer from "nodemailer";
-import type { Transporter } from "nodemailer";
+import MailComposer from "nodemailer/lib/mail-composer";
 
 /**
- * Gmail SMTP sender (app password). Set GMAIL_USER and GMAIL_APP_PASSWORD.
+ * Gmail API sender (OAuth2, gmail.send scope).
+ * Env: GMAIL_USER, GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN.
  * Sending never throws: failures are logged so a mail outage can't break the portal.
  */
 
-let _transport: Transporter | null = null;
-
 export function isMailConfigured(): boolean {
-  return Boolean(process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD);
+  return Boolean(
+    process.env.GMAIL_USER &&
+      process.env.GMAIL_CLIENT_ID &&
+      process.env.GMAIL_CLIENT_SECRET &&
+      process.env.GMAIL_REFRESH_TOKEN
+  );
 }
 
-function transport(): Transporter {
-  if (!_transport) {
-    _transport = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.GMAIL_USER,
-        // Google shows app passwords with spaces; SMTP wants them without.
-        pass: (process.env.GMAIL_APP_PASSWORD || "").replace(/\s+/g, ""),
-      },
-    });
+let cachedToken: { value: string; expiresAt: number } | null = null;
+
+async function accessToken(): Promise<string> {
+  if (cachedToken && cachedToken.expiresAt > Date.now() + 60_000) return cachedToken.value;
+  const resp = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: process.env.GMAIL_CLIENT_ID!,
+      client_secret: process.env.GMAIL_CLIENT_SECRET!,
+      refresh_token: process.env.GMAIL_REFRESH_TOKEN!,
+      grant_type: "refresh_token",
+    }),
+    signal: AbortSignal.timeout(10_000),
+  });
+  const data = await resp.json().catch(() => ({}));
+  if (!resp.ok || !data.access_token) {
+    throw new Error(`Google token refresh failed: ${data.error_description || data.error || resp.status}`);
   }
-  return _transport;
+  cachedToken = { value: data.access_token, expiresAt: Date.now() + (data.expires_in ?? 3600) * 1000 };
+  return cachedToken.value;
+}
+
+function buildRaw(opts: { to: string; subject: string; html: string; text: string }): Promise<string> {
+  return new Promise((resolve, reject) => {
+    new MailComposer({
+      from: `"Whizzly Lab Portal" <${process.env.GMAIL_USER}>`,
+      to: opts.to,
+      subject: opts.subject,
+      html: opts.html,
+      text: opts.text,
+    })
+      .compile()
+      .build((err, message) => (err ? reject(err) : resolve(message.toString("base64url"))));
+  });
 }
 
 /** Public base URL used in email links. Never derived from request headers. */
@@ -62,23 +86,30 @@ export async function sendMail(opts: {
   html: string;
   text: string;
 }): Promise<boolean> {
-  const recipients = (Array.isArray(opts.to) ? opts.to : [opts.to]).filter(Boolean);
+  const recipients = [...new Set((Array.isArray(opts.to) ? opts.to : [opts.to]).filter(Boolean))];
   if (recipients.length === 0) return false;
   if (!isMailConfigured()) {
-    console.warn("[portal mail] GMAIL_USER / GMAIL_APP_PASSWORD not set; email skipped");
+    console.warn("[portal mail] Gmail OAuth env vars not set; email skipped");
     return false;
   }
   try {
-    await transport().sendMail({
-      from: `"Whizzly Lab Portal" <${process.env.GMAIL_USER}>`,
-      // Each recipient gets their own copy so addresses are never exposed to each other.
-      to: recipients.length === 1 ? recipients[0] : process.env.GMAIL_USER,
-      bcc: recipients.length === 1 ? undefined : recipients,
-      subject: opts.subject,
-      html: opts.html,
-      text: opts.text,
-    });
-    return true;
+    const token = await accessToken();
+    let allOk = true;
+    // One message per recipient so addresses are never exposed to each other.
+    for (const to of recipients) {
+      const raw = await buildRaw({ to, subject: opts.subject, html: opts.html, text: opts.text });
+      const resp = await fetch("https://gmail.googleapis.com/gmail/v1/users/me/messages/send", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ raw }),
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (!resp.ok) {
+        allOk = false;
+        console.error(`[portal mail] Gmail API ${resp.status}:`, (await resp.text()).slice(0, 300));
+      }
+    }
+    return allOk;
   } catch (e) {
     console.error("[portal mail] send failed:", e instanceof Error ? e.message : e);
     return false;
