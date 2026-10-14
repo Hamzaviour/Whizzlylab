@@ -1,6 +1,7 @@
+import { KeyRound, Mail, ShieldCheck } from "lucide-react";
 import { requireUser } from "@/lib/portal/auth";
 import { changePasswordAction } from "@/lib/portal/actions";
-import { btnPrimary, Card, Field, Flash, inputCls, PageHeader } from "@/components/portal/ui";
+import { Avatar, Badge, btnPrimary, Card, Field, Flash, inputCls, PageHeader } from "@/components/portal/ui";
 
 export default async function AccountPage({
   searchParams,
@@ -10,25 +11,48 @@ export default async function AccountPage({
   const user = await requireUser();
   const { error, ok } = await searchParams;
   return (
-    <div className="max-w-lg">
-      <PageHeader title="Account" subtitle={`${user.name} · ${user.email}`} />
+    <div className="max-w-2xl">
+      <PageHeader title="Account" subtitle="Your profile and security settings." />
       <Flash error={error} ok={ok} />
+      <Card className="mb-6">
+        <div className="flex items-center gap-4">
+          <Avatar name={user.name} size={56} />
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="font-heading text-lg font-semibold text-slate-900">{user.name}</span>
+              <Badge value={user.role} text={user.role === "client" ? "Client" : user.role === "admin" ? "Admin" : "Team"} />
+            </div>
+            <div className="mt-0.5 flex items-center gap-1.5 text-sm text-slate-500">
+              <Mail className="h-4 w-4" /> {user.email}
+            </div>
+          </div>
+        </div>
+      </Card>
       <Card>
-        <h2 className="mb-3 text-sm font-semibold text-slate-900">Change password</h2>
-        <form action={changePasswordAction} className="space-y-3">
+        <div className="mb-4 flex items-center gap-2">
+          <KeyRound className="h-4 w-4 text-[#066bf5]" />
+          <h2 className="font-semibold text-slate-900">Change password</h2>
+        </div>
+        <form action={changePasswordAction} className="space-y-4">
           <Field name="current" label="Current password">
             <input id="current" name="current" type="password" required autoComplete="current-password" className={inputCls} />
           </Field>
-          <Field name="password" label="New password (10+ characters)">
-            <input id="password" name="password" type="password" required minLength={10} autoComplete="new-password" className={inputCls} />
-          </Field>
-          <Field name="confirm" label="Confirm new password">
-            <input id="confirm" name="confirm" type="password" required minLength={10} autoComplete="new-password" className={inputCls} />
-          </Field>
-          <button type="submit" className={btnPrimary}>
-            Change password
-          </button>
-          <p className="text-xs text-slate-500">Changing your password signs you out on all other devices.</p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field name="password" label="New password" hint="At least 10 characters.">
+              <input id="password" name="password" type="password" required minLength={10} autoComplete="new-password" className={inputCls} />
+            </Field>
+            <Field name="confirm" label="Confirm new password">
+              <input id="confirm" name="confirm" type="password" required minLength={10} autoComplete="new-password" className={inputCls} />
+            </Field>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="flex items-center gap-1.5 text-xs text-slate-500">
+              <ShieldCheck className="h-3.5 w-3.5" /> Signs you out on all other devices.
+            </p>
+            <button type="submit" className={btnPrimary}>
+              Update password
+            </button>
+          </div>
         </form>
       </Card>
     </div>

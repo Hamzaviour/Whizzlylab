@@ -60,6 +60,8 @@ export interface Task {
   assignee_name: string | null;
   due_date: string | null;
   client_visible: boolean;
+  approval: "pending" | "approved" | "changes_requested" | null;
+  approval_note: string | null;
   created_at: string;
 }
 
@@ -85,5 +87,28 @@ export interface Comment {
   author_role: Role | null;
   body: string;
   internal: boolean;
+  created_at: string;
+}
+
+export type LinkKind = "staging" | "production" | "repo" | "design" | "document" | "other";
+
+export interface ProjectLink {
+  id: string;
+  project_id: string;
+  title: string;
+  url: string;
+  kind: LinkKind;
+  client_visible: boolean;
+  created_at: string;
+}
+
+export interface Activity {
+  id: string;
+  project_id: string | null;
+  project_name: string | null;
+  actor_name: string | null;
+  actor_role: Role | null;
+  verb: string;
+  detail: string | null;
   created_at: string;
 }

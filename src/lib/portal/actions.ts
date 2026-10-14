@@ -14,7 +14,14 @@ import {
   getUser,
 } from "./auth";
 import { getProject } from "./data";
-import { notifyComment, notifyUpdatePosted, sendLoginCreated, sendPasswordReset } from "./notify";
+import {
+  notifyApprovalRequested,
+  notifyApprovalResponse,
+  notifyComment,
+  notifyUpdatePosted,
+  sendLoginCreated,
+  sendPasswordReset,
+} from "./notify";
 
 const str = (fd: FormData, key: string, max = 2000): string =>
   String(fd.get(key) ?? "").trim().slice(0, max);
@@ -212,7 +219,7 @@ export async function deleteClientLoginAction(fd: FormData) {
 const CLIENT_STATUS = ["lead", "active", "paused", "closed"] as const;
 
 export async function createClientAction(fd: FormData) {
-  await requireUser([...STAFF]);
+  const user = await requireUser([...STAFF]);
   const name = str(fd, "name", 160);
   if (!name) redirect("/portal/clients?error=Name+is+required");
   const rows = (await sql()`
@@ -221,6 +228,7 @@ export async function createClientAction(fd: FormData) {
             ${oneOf(str(fd, "status", 10), CLIENT_STATUS, "lead")}, ${optStr(fd, "notes", 4000)})
     RETURNING id
   `) as { id: string }[];
+  await logActivity({ clientId: rows[0].id, actorId: user.id, verb: "added client", detail: name, clientVisible: false });
   revalidatePath("/portal/clients");
   redirect(`/portal/clients/${rows[0].id}`);
 }
@@ -248,11 +256,42 @@ export async function deleteClientAction(fd: FormData) {
   redirect("/portal/clients");
 }
 
+// ── Activity log ────────────────────────────────────────────────────────────
+async function logActivity(a: {
+  projectId?: string | null;
+  clientId?: string | null;
+  actorId: string | null;
+  verb: string;
+  detail?: string | null;
+  clientVisible?: boolean;
+}) {
+  try {
+    await sql()`
+      INSERT INTO activity (project_id, client_id, actor_id, verb, detail, client_visible)
+      VALUES (${a.projectId ?? null}, ${a.clientId ?? null}, ${a.actorId}, ${a.verb},
+              ${a.detail ? a.detail.slice(0, 300) : null}, ${a.clientVisible ?? true})
+    `;
+  } catch (e) {
+    console.error("[portal] activity log failed:", e);
+  }
+}
+
+const TABS = ["overview", "board", "updates", "discussion", "files", "activity", "settings"] as const;
+
+/** Redirect back to a project tab, optionally with a flash message. */
+function projectUrl(projectId: string, fd: FormData, flash?: { ok?: string; error?: string }) {
+  const tab = oneOf(str(fd, "tab", 20), TABS, "overview");
+  const qs = new URLSearchParams({ tab });
+  if (flash?.ok) qs.set("ok", flash.ok);
+  if (flash?.error) qs.set("error", flash.error);
+  return `/portal/projects/${projectId}?${qs}`;
+}
+
 // ── Projects ────────────────────────────────────────────────────────────────
 const PROJECT_STATUS = ["planning", "in_progress", "review", "completed", "on_hold"] as const;
 
 export async function createProjectAction(fd: FormData) {
-  await requireUser([...STAFF]);
+  const user = await requireUser([...STAFF]);
   const clientId = str(fd, "client_id", 40);
   const name = str(fd, "name", 160);
   if (!uuid(clientId)) redirect("/portal/clients");
@@ -263,24 +302,30 @@ export async function createProjectAction(fd: FormData) {
             ${oneOf(str(fd, "status", 12), PROJECT_STATUS, "planning")}, ${optDate(fd, "start_date")}, ${optDate(fd, "due_date")})
     RETURNING id
   `) as { id: string }[];
+  await logActivity({ projectId: rows[0].id, clientId, actorId: user.id, verb: "started the project", detail: name });
   revalidatePath("/portal");
   redirect(`/portal/projects/${rows[0].id}`);
 }
 
 export async function updateProjectAction(fd: FormData) {
-  await requireUser([...STAFF]);
+  const user = await requireUser([...STAFF]);
   const id = str(fd, "id", 40);
   const name = str(fd, "name", 160);
   if (!uuid(id) || !name) redirect("/portal");
   const progress = Math.max(0, Math.min(100, Math.round(Number(str(fd, "progress", 4)) || 0)));
+  const status = oneOf(str(fd, "status", 12), PROJECT_STATUS, "planning");
+  const before = (await sql()`SELECT status FROM projects WHERE id = ${id}`) as { status: string }[];
   await sql()`
     UPDATE projects SET name = ${name}, description = ${optStr(fd, "description", 4000)},
-      status = ${oneOf(str(fd, "status", 12), PROJECT_STATUS, "planning")}, progress = ${progress},
+      status = ${status}, progress = ${progress},
       start_date = ${optDate(fd, "start_date")}, due_date = ${optDate(fd, "due_date")}
     WHERE id = ${id}
   `;
+  if (before[0] && before[0].status !== status) {
+    await logActivity({ projectId: id, actorId: user.id, verb: "changed project status to", detail: status.replace(/_/g, " ") });
+  }
   revalidatePath(`/portal/projects/${id}`);
-  redirect(`/portal/projects/${id}?ok=Project+saved`);
+  redirect(projectUrl(id, fd, { ok: "Project saved" }));
 }
 
 export async function deleteProjectAction(fd: FormData) {
@@ -294,6 +339,7 @@ export async function deleteProjectAction(fd: FormData) {
 
 // ── Tasks ───────────────────────────────────────────────────────────────────
 const TASK_STATUS = ["todo", "in_progress", "review", "done"] as const;
+const PRIORITY = ["low", "medium", "high"] as const;
 
 /** Keeps the project's progress bar in sync with its tasks. */
 async function syncProgress(projectId: string) {
@@ -305,35 +351,73 @@ async function syncProgress(projectId: string) {
   `;
 }
 
+async function taskInfo(id: string, projectId: string) {
+  const rows = (await sql()`SELECT title, client_visible FROM tasks WHERE id = ${id} AND project_id = ${projectId}`) as {
+    title: string;
+    client_visible: boolean;
+  }[];
+  return rows[0] ?? null;
+}
+
 export async function createTaskAction(fd: FormData) {
   const user = await requireUser([...STAFF]);
   const projectId = str(fd, "project_id", 40);
   const title = str(fd, "title", 200);
-  const back = `/portal/projects/${projectId}`;
   if (!uuid(projectId)) redirect("/portal");
-  if (!title) redirect(`${back}?error=Task+title+is+required`);
+  if (!title) redirect(projectUrl(projectId, fd, { error: "Task title is required" }));
   const assignee = str(fd, "assignee_id", 40);
+  const visible = fd.get("client_visible") === "on";
   await sql()`
-    INSERT INTO tasks (project_id, title, description, priority, assignee_id, due_date, client_visible)
-    VALUES (${projectId}, ${title}, ${optStr(fd, "description", 2000)},
-            ${oneOf(str(fd, "priority", 8), ["low", "medium", "high"] as const, "medium")},
-            ${uuid(assignee) ? assignee : user.id}, ${optDate(fd, "due_date")}, ${fd.get("client_visible") === "on"})
+    INSERT INTO tasks (project_id, title, description, priority, assignee_id, due_date, client_visible, status)
+    VALUES (${projectId}, ${title}, ${optStr(fd, "description", 2000)}, ${oneOf(str(fd, "priority", 8), PRIORITY, "medium")},
+            ${uuid(assignee) ? assignee : user.id}, ${optDate(fd, "due_date")}, ${visible},
+            ${oneOf(str(fd, "status", 12), TASK_STATUS, "todo")})
   `;
   await syncProgress(projectId);
-  revalidatePath(back);
-  redirect(back);
+  await logActivity({ projectId, actorId: user.id, verb: "added task", detail: title, clientVisible: visible });
+  revalidatePath(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd));
+}
+
+export async function editTaskAction(fd: FormData) {
+  await requireUser([...STAFF]);
+  const id = str(fd, "id", 40);
+  const projectId = str(fd, "project_id", 40);
+  const title = str(fd, "title", 200);
+  if (!uuid(id) || !uuid(projectId)) redirect("/portal");
+  if (!title) redirect(projectUrl(projectId, fd, { error: "Task title is required" }));
+  const assignee = str(fd, "assignee_id", 40);
+  await sql()`
+    UPDATE tasks SET title = ${title}, description = ${optStr(fd, "description", 2000)},
+      priority = ${oneOf(str(fd, "priority", 8), PRIORITY, "medium")},
+      assignee_id = ${uuid(assignee) ? assignee : null}, due_date = ${optDate(fd, "due_date")},
+      client_visible = ${fd.get("client_visible") === "on"}, updated_at = now()
+    WHERE id = ${id} AND project_id = ${projectId}
+  `;
+  revalidatePath(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd, { ok: "Task updated" }));
 }
 
 export async function setTaskStatusAction(fd: FormData) {
-  await requireUser([...STAFF]);
+  const user = await requireUser([...STAFF]);
   const id = str(fd, "id", 40);
   const projectId = str(fd, "project_id", 40);
   const status = oneOf(str(fd, "status", 12), TASK_STATUS, "todo");
   if (!uuid(id) || !uuid(projectId)) redirect("/portal");
-  await sql()`UPDATE tasks SET status = ${status} WHERE id = ${id} AND project_id = ${projectId}`;
+  await sql()`UPDATE tasks SET status = ${status}, updated_at = now() WHERE id = ${id} AND project_id = ${projectId}`;
   await syncProgress(projectId);
+  const t = await taskInfo(id, projectId);
+  if (t) {
+    await logActivity({
+      projectId,
+      actorId: user.id,
+      verb: status === "done" ? "completed task" : `moved to ${status.replace(/_/g, " ")}:`,
+      detail: t.title,
+      clientVisible: t.client_visible,
+    });
+  }
   revalidatePath(`/portal/projects/${projectId}`);
-  redirect(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd));
 }
 
 export async function toggleTaskVisibilityAction(fd: FormData) {
@@ -341,10 +425,10 @@ export async function toggleTaskVisibilityAction(fd: FormData) {
   const id = str(fd, "id", 40);
   const projectId = str(fd, "project_id", 40);
   if (uuid(id) && uuid(projectId)) {
-    await sql()`UPDATE tasks SET client_visible = NOT client_visible WHERE id = ${id} AND project_id = ${projectId}`;
+    await sql()`UPDATE tasks SET client_visible = NOT client_visible, updated_at = now() WHERE id = ${id} AND project_id = ${projectId}`;
   }
   revalidatePath(`/portal/projects/${projectId}`);
-  redirect(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd));
 }
 
 export async function deleteTaskAction(fd: FormData) {
@@ -356,7 +440,97 @@ export async function deleteTaskAction(fd: FormData) {
     await syncProgress(projectId);
   }
   revalidatePath(`/portal/projects/${projectId}`);
-  redirect(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd));
+}
+
+// ── Client approvals ────────────────────────────────────────────────────────
+export async function requestApprovalAction(fd: FormData) {
+  const user = await requireUser([...STAFF]);
+  const id = str(fd, "id", 40);
+  const projectId = str(fd, "project_id", 40);
+  if (!uuid(id) || !uuid(projectId)) redirect("/portal");
+  // Asking for approval makes the task visible to the client and moves it to review.
+  const rows = (await sql()`
+    UPDATE tasks SET approval = 'pending', approval_note = NULL, client_visible = true,
+      status = CASE WHEN status = 'done' THEN status ELSE 'review' END, updated_at = now()
+    WHERE id = ${id} AND project_id = ${projectId} RETURNING title
+  `) as { title: string }[];
+  if (rows[0]) {
+    const title = rows[0].title;
+    await logActivity({ projectId, actorId: user.id, verb: "requested client approval for", detail: title });
+    after(() => notifyApprovalRequested(projectId, title));
+  }
+  revalidatePath(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd, { ok: "Approval requested from the client" }));
+}
+
+export async function respondApprovalAction(fd: FormData) {
+  const user = await requireUser(["client"]);
+  const id = str(fd, "id", 40);
+  const projectId = str(fd, "project_id", 40);
+  const decision = oneOf(str(fd, "decision", 20), ["approved", "changes_requested"] as const, "approved");
+  const note = optStr(fd, "note", 2000);
+  // getProject enforces that the client owns this project.
+  const project = uuid(projectId) ? await getProject(user, projectId) : null;
+  if (!project || !uuid(id)) redirect("/portal");
+  if (decision === "changes_requested" && !note) {
+    redirect(projectUrl(projectId, fd, { error: "Please describe the changes you need" }));
+  }
+  const rows = (await sql()`
+    UPDATE tasks SET approval = ${decision}, approval_note = ${note},
+      status = CASE WHEN ${decision} = 'approved' THEN 'done' ELSE 'in_progress' END, updated_at = now()
+    WHERE id = ${id} AND project_id = ${projectId} AND approval = 'pending' AND client_visible
+    RETURNING title
+  `) as { title: string }[];
+  if (rows[0]) {
+    const title = rows[0].title;
+    await syncProgress(projectId);
+    await logActivity({
+      projectId,
+      actorId: user.id,
+      verb: decision === "approved" ? "approved" : "requested changes on",
+      detail: note ? `${title}: ${note}` : title,
+    });
+    after(() => notifyApprovalResponse(projectId, title, decision, note, user.name));
+  }
+  revalidatePath(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd, { ok: decision === "approved" ? "Approved. Thank you!" : "Change request sent to the team" }));
+}
+
+// ── Links & resources ───────────────────────────────────────────────────────
+const LINK_KINDS = ["staging", "production", "repo", "design", "document", "other"] as const;
+
+export async function addLinkAction(fd: FormData) {
+  const user = await requireUser([...STAFF]);
+  const projectId = str(fd, "project_id", 40);
+  const title = str(fd, "title", 160);
+  const raw = str(fd, "url", 1000);
+  if (!uuid(projectId)) redirect("/portal");
+  let url: string | null = null;
+  try {
+    const parsed = new URL(raw);
+    if (parsed.protocol === "http:" || parsed.protocol === "https:") url = parsed.toString();
+  } catch {
+    url = null;
+  }
+  if (!title || !url) redirect(projectUrl(projectId, fd, { error: "Add a title and a full http(s) link" }));
+  const visible = fd.get("client_visible") === "on";
+  await sql()`
+    INSERT INTO project_links (project_id, title, url, kind, client_visible, created_by)
+    VALUES (${projectId}, ${title}, ${url}, ${oneOf(str(fd, "kind", 12), LINK_KINDS, "other")}, ${visible}, ${user.id})
+  `;
+  await logActivity({ projectId, actorId: user.id, verb: "shared a link:", detail: title, clientVisible: visible });
+  revalidatePath(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd, { ok: "Link added" }));
+}
+
+export async function deleteLinkAction(fd: FormData) {
+  await requireUser([...STAFF]);
+  const id = str(fd, "id", 40);
+  const projectId = str(fd, "project_id", 40);
+  if (uuid(id) && uuid(projectId)) await sql()`DELETE FROM project_links WHERE id = ${id} AND project_id = ${projectId}`;
+  revalidatePath(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd));
 }
 
 // ── Updates & comments ──────────────────────────────────────────────────────
@@ -365,19 +539,24 @@ export async function postUpdateAction(fd: FormData) {
   const projectId = str(fd, "project_id", 40);
   const title = str(fd, "title", 200);
   const body = str(fd, "body", 8000);
-  const back = `/portal/projects/${projectId}`;
   if (!uuid(projectId)) redirect("/portal");
-  if (!title || !body) redirect(`${back}?error=Update+needs+a+title+and+details`);
+  if (!title || !body) redirect(projectUrl(projectId, fd, { error: "Update needs a title and details" }));
   const visible = fd.get("client_visible") === "on";
+  const kind = oneOf(str(fd, "kind", 10), ["update", "milestone", "delivery"] as const, "update");
   await sql()`
     INSERT INTO updates (project_id, author_id, title, body, kind, client_visible)
-    VALUES (${projectId}, ${user.id}, ${title}, ${body},
-            ${oneOf(str(fd, "kind", 10), ["update", "milestone", "delivery"] as const, "update")},
-            ${visible})
+    VALUES (${projectId}, ${user.id}, ${title}, ${body}, ${kind}, ${visible})
   `;
+  await logActivity({
+    projectId,
+    actorId: user.id,
+    verb: kind === "update" ? "posted an update:" : `posted a ${kind}:`,
+    detail: title,
+    clientVisible: visible,
+  });
   if (visible && fd.get("notify") === "on") after(() => notifyUpdatePosted(projectId, title, body, user.name));
-  revalidatePath(back);
-  redirect(`${back}?ok=Update+posted`);
+  revalidatePath(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd, { ok: "Update posted" }));
 }
 
 export async function deleteUpdateAction(fd: FormData) {
@@ -386,7 +565,7 @@ export async function deleteUpdateAction(fd: FormData) {
   const projectId = str(fd, "project_id", 40);
   if (uuid(id) && uuid(projectId)) await sql()`DELETE FROM updates WHERE id = ${id} AND project_id = ${projectId}`;
   revalidatePath(`/portal/projects/${projectId}`);
-  redirect(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd));
 }
 
 export async function addCommentAction(fd: FormData) {
@@ -395,11 +574,10 @@ export async function addCommentAction(fd: FormData) {
   const projectId = str(fd, "project_id", 40);
   const updateId = str(fd, "update_id", 40);
   const body = str(fd, "body", 4000);
-  const back = `/portal/projects/${projectId}`;
   // getProject enforces that clients can only reach their own projects.
   const project = uuid(projectId) ? await getProject(user, projectId) : null;
   if (!project) redirect("/portal");
-  if (!body) redirect(back);
+  if (!body) redirect(projectUrl(projectId, fd));
   const internal = user.role !== "client" && fd.get("internal") === "on";
   // The update (if any) must belong to this project and be visible to the commenter.
   let linkedUpdate: string | null = null;
@@ -414,7 +592,8 @@ export async function addCommentAction(fd: FormData) {
     INSERT INTO comments (project_id, update_id, author_id, body, internal)
     VALUES (${projectId}, ${linkedUpdate}, ${user.id}, ${body}, ${internal})
   `;
+  await logActivity({ projectId, actorId: user.id, verb: "commented:", detail: body, clientVisible: !internal });
   if (!internal) after(() => notifyComment(projectId, body, user.name, user.role === "client"));
-  revalidatePath(back);
-  redirect(back);
+  revalidatePath(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd));
 }

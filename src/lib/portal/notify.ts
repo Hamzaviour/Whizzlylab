@@ -67,6 +67,53 @@ export async function notifyComment(projectId: string, body: string, authorName:
   }
 }
 
+export async function notifyApprovalRequested(projectId: string, taskTitle: string) {
+  try {
+    const [to, project] = await Promise.all([clientEmails(projectId), projectName(projectId)]);
+    const url = portalUrl(`/projects/${projectId}?tab=board`);
+    await sendMail({
+      to,
+      subject: `Your approval is needed: ${taskTitle}`,
+      text: `The Whizzly Lab team is waiting for your approval on "${taskTitle}" (${project}).\n\nReview it: ${url}`,
+      html: layout(
+        "Your approval is needed",
+        `<p style="margin:0 0 6px">The team has finished <strong>${esc(taskTitle)}</strong> on ${esc(project)} and would like your sign-off.</p>
+         <p style="margin:0">Approve it or request changes in the portal.</p>`,
+        { label: "Review & approve", url }
+      ),
+    });
+  } catch (e) {
+    console.error("[portal notify] approval request:", e);
+  }
+}
+
+export async function notifyApprovalResponse(
+  projectId: string,
+  taskTitle: string,
+  decision: "approved" | "changes_requested",
+  note: string | null,
+  clientName: string
+) {
+  try {
+    const [to, project] = await Promise.all([staffEmails(), projectName(projectId)]);
+    const url = portalUrl(`/projects/${projectId}?tab=board`);
+    const verb = decision === "approved" ? "approved" : "requested changes on";
+    await sendMail({
+      to,
+      subject: `${clientName} ${verb} "${taskTitle}"`,
+      text: `${clientName} ${verb} "${taskTitle}" (${project}).${note ? `\n\nNote: ${note}` : ""}\n\n${url}`,
+      html: layout(
+        decision === "approved" ? "Task approved" : "Changes requested",
+        `<p style="margin:0 0 6px">${esc(clientName)} ${verb} <strong>${esc(taskTitle)}</strong> on ${esc(project)}.</p>
+         ${note ? `<p style="margin:0;white-space:pre-wrap">${esc(clip(note, 800))}</p>` : ""}`,
+        { label: "Open project", url }
+      ),
+    });
+  } catch (e) {
+    console.error("[portal notify] approval response:", e);
+  }
+}
+
 export async function sendPasswordReset(email: string, name: string, token: string) {
   const url = portalUrl(`/reset/${token}`);
   await sendMail({
