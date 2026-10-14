@@ -38,6 +38,8 @@ export default function InteractiveShell({
     return () => window.removeEventListener("mousemove", onMove);
   }, [mx, my]);
 
+  if (pathname?.startsWith("/portal")) return <>{children}</>;
+
   return (
     <>
       {enabled && (
