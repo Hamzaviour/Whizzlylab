@@ -1,289 +1,230 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  retrieveKnowledge,
+  retrieve,
   buildGroundedSystemPrompt,
   generateSmartFallbackReply,
+  outOfScopeMeta,
+  suggestFollowUps,
+  type ChatTurn,
+  type ChatMeta,
 } from "@/lib/rag/engine";
+import { isWebSearchConfigured, searchWeb, type WebResult } from "@/lib/rag/web";
 
 export const dynamic = "force-dynamic";
 
-interface ChatMessage {
-  role: "user" | "assistant" | "system";
-  content: string;
+const MAX_MESSAGE_CHARS = 800;
+const MAX_HISTORY_TURNS = 8;
+const LLM_TIMEOUT_MS = 20_000;
+
+function clean(key: string | undefined): string {
+  return (key || "").trim().replace(/^["']|["']$/g, "");
 }
 
-/**
- * Clean and extract the Groq API key from environment variables.
- */
 function getGroqApiKey(): string {
-  const rawKey =
-    process.env.GROQ_API_KEY ||
-    process.env.GROQ_KEY ||
-    process.env.NEXT_PUBLIC_GROQ_API_KEY ||
-    "";
-  return rawKey.trim().replace(/^["']|["']$/g, "");
+  return clean(process.env.GROQ_API_KEY || process.env.GROQ_KEY);
 }
 
-/**
- * Diagnostic GET endpoint to verify Groq API connection and environment variable status.
- */
-export async function GET(req: NextRequest) {
-  const groqKey = getGroqApiKey();
-  const hasGroqKey = Boolean(groqKey && groqKey.length > 5);
-
-  let groqTestResult: { success: boolean; status: number; message: string; model?: string } = {
-    success: false,
-    status: 0,
-    message: hasGroqKey ? "Not tested" : "GROQ_API_KEY is not set in environment variables.",
-  };
-
-  if (hasGroqKey) {
-    try {
-      const pingResp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${groqKey}`,
-        },
-        body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
-          messages: [{ role: "user", content: "ping" }],
-          max_tokens: 5,
-        }),
-      });
-
-      const data = await pingResp.json();
-      if (pingResp.ok) {
-        groqTestResult = {
-          success: true,
-          status: pingResp.status,
-          message: "Groq API connected and operational!",
-          model: "llama-3.1-8b-instant",
-        };
-      } else {
-        groqTestResult = {
-          success: false,
-          status: pingResp.status,
-          message: data?.error?.message || `HTTP ${pingResp.status}`,
-          model: "openai/gpt-oss-120b",
-        };
-      }
-    } catch (err: unknown) {
-      groqTestResult = {
-        success: false,
-        status: 0,
-        message: err instanceof Error ? err.message : String(err),
-      };
-    }
+/** Keeps only well-formed, size-limited user/assistant turns. */
+function sanitizeHistory(raw: unknown, currentMessage: string): ChatTurn[] {
+  if (!Array.isArray(raw)) return [];
+  const turns: ChatTurn[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== "object") continue;
+    const { role, content } = item as { role?: unknown; content?: unknown };
+    if ((role !== "user" && role !== "assistant") || typeof content !== "string") continue;
+    const text = content.trim().slice(0, 1200);
+    if (text) turns.push({ role, content: text });
   }
+  // The widget sends the current message as the last history item; drop it.
+  const last = turns[turns.length - 1];
+  if (last && last.role === "user" && last.content === currentMessage.slice(0, 1200)) turns.pop();
+  return turns.slice(-MAX_HISTORY_TURNS);
+}
 
+/** Diagnostic endpoint: reports configuration only, never key material. */
+export async function GET() {
   return NextResponse.json({
     status: "ok",
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV,
-    groq: {
-      isConfigured: hasGroqKey,
-      keyPrefix: hasGroqKey ? `${groqKey.slice(0, 6)}...${groqKey.slice(-4)}` : "missing",
-      test: groqTestResult,
+    providers: {
+      groq: Boolean(getGroqApiKey()),
+      webSearch: isWebSearchConfigured(),
+      gemini: Boolean(clean(process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY || process.env.GOOGLE_API_KEY)),
+      openai: Boolean(clean(process.env.OPENAI_API_KEY)),
     },
   });
 }
 
-/**
- * Main Chat Endpoint with RAG Grounding and Groq Acceleration.
- */
+type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
+
+async function callOpenAICompatible(
+  url: string,
+  apiKey: string,
+  model: string,
+  messages: ChatMessage[]
+): Promise<{ text: string | null; error?: string }> {
+  try {
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({ model, messages, temperature: 0.2, max_tokens: 700 }),
+      signal: AbortSignal.timeout(LLM_TIMEOUT_MS),
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      return { text: null, error: err?.error?.message || `HTTP ${resp.status}` };
+    }
+    const data = await resp.json();
+    const text = data?.choices?.[0]?.message?.content?.trim();
+    return { text: text || null };
+  } catch (e) {
+    return { text: null, error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+async function callGemini(
+  apiKey: string,
+  model: string,
+  systemPrompt: string,
+  history: ChatTurn[],
+  message: string
+): Promise<{ text: string | null; error?: string }> {
+  try {
+    const resp = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          contents: [
+            ...history.map((h) => ({
+              role: h.role === "assistant" ? "model" : "user",
+              parts: [{ text: h.content }],
+            })),
+            { role: "user", parts: [{ text: message }] },
+          ],
+          generationConfig: { temperature: 0.2, maxOutputTokens: 700 },
+        }),
+        signal: AbortSignal.timeout(LLM_TIMEOUT_MS),
+      }
+    );
+    if (!resp.ok) return { text: null, error: `HTTP ${resp.status}` };
+    const data = await resp.json();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    return { text: text || null };
+  } catch (e) {
+    return { text: null, error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+/** Tries each configured provider in order until one answers. */
+async function generateWithLLM(
+  systemPrompt: string,
+  history: ChatTurn[],
+  message: string
+): Promise<{ text: string; engine: string } | null> {
+  const messages: ChatMessage[] = [
+    { role: "system", content: systemPrompt },
+    ...history.map((h) => ({ role: h.role as "user" | "assistant", content: h.content })),
+    { role: "user", content: message },
+  ];
+
+  const groqKey = getGroqApiKey();
+  if (groqKey) {
+    for (const model of ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]) {
+      const r = await callOpenAICompatible("https://api.groq.com/openai/v1/chat/completions", groqKey, model, messages);
+      if (r.text) return { text: r.text, engine: `groq-${model}` };
+      console.warn(`[chat] Groq ${model} failed: ${r.error}`);
+    }
+  }
+
+  const geminiKey = clean(process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY || process.env.GOOGLE_API_KEY);
+  if (geminiKey) {
+    for (const model of ["gemini-2.0-flash", "gemini-1.5-flash"]) {
+      const r = await callGemini(geminiKey, model, systemPrompt, history, message);
+      if (r.text) return { text: r.text, engine: model };
+      console.warn(`[chat] Gemini ${model} failed: ${r.error}`);
+    }
+  }
+
+  const openaiKey = clean(process.env.OPENAI_API_KEY);
+  if (openaiKey) {
+    const r = await callOpenAICompatible("https://api.openai.com/v1/chat/completions", openaiKey, "gpt-4o-mini", messages);
+    if (r.text) return { text: r.text, engine: "openai-gpt-4o-mini" };
+    console.warn(`[chat] OpenAI failed: ${r.error}`);
+  }
+
+  return null;
+}
+
+const NO_INFO_RE = /\bI don['’]t have any information about this\b/i;
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
-    const message: string = (body.message || "").trim();
-    const history: ChatMessage[] = Array.isArray(body.history) ? body.history : [];
-    const currency: string = (body.currency || "USD").toUpperCase();
+    const message: string = typeof body.message === "string" ? body.message.trim().slice(0, MAX_MESSAGE_CHARS) : "";
+    const currency: string = typeof body.currency === "string" ? body.currency.toUpperCase() : "USD";
 
     if (!message) {
-      return NextResponse.json(
-        { error: "Message is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Message is required" }, { status: 400 });
     }
 
-    // 1. Perform Hybrid RAG Retrieval over Whizzly Lab Knowledge Base
-    const retrievedChunks = retrieveKnowledge(message, 4);
-    const sources = retrievedChunks.map((r) => ({
-      title: r.chunk.title,
-      url: r.chunk.url,
-    }));
+    const history = sanitizeHistory(body.history, message);
 
-    // 2. Build Grounded Prompt with retrieved context
-    const systemPrompt = buildGroundedSystemPrompt(retrievedChunks, currency);
+    // 1. Retrieve (conversation-aware) and decide whether this is answerable.
+    const outcome = retrieve(message, 6, history);
+    const kbSources = outcome.results.slice(0, 3).map((r) => ({ title: r.chunk.title, url: r.chunk.url }));
 
-    // 3. API Keys Check (Groq is #1 Priority)
-    const groqKey = getGroqApiKey();
-    const geminiKey = (
-      process.env.GEMINI_API_KEY ||
-      process.env.GOOGLE_AI_API_KEY ||
-      process.env.GOOGLE_API_KEY ||
-      ""
-    ).trim().replace(/^["']|["']$/g, "");
-    const openaiKey = (process.env.OPENAI_API_KEY || "").trim().replace(/^["']|["']$/g, "");
-
-    let llmReply: string | null = null;
-    let engineUsed = "local-rag-neural-synthesis";
-    let groqError: string | null = null;
-
-    // ── Primary Engine: Groq API (High-Velocity Llama 3.3 & 3.1) ───────────
-    if (groqKey) {
-      const groqModels = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768"];
-      for (const model of groqModels) {
-        if (llmReply) break;
-        try {
-          const groqResp = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${groqKey}`,
-            },
-            body: JSON.stringify({
-              model,
-              messages: [
-                { role: "system", content: systemPrompt },
-                ...history.slice(-4).map((h) => ({ role: h.role, content: h.content })),
-                { role: "user", content: message },
-              ],
-              temperature: 0.3,
-              max_tokens: 350,
-            }),
-          });
-
-          if (groqResp.ok) {
-            const groqData = await groqResp.json();
-            const text = groqData?.choices?.[0]?.message?.content?.trim();
-            if (text) {
-              llmReply = text;
-              engineUsed = `groq-${model}`;
-            }
-          } else {
-            const errJson = await groqResp.json().catch(() => ({}));
-            groqError = errJson?.error?.message || `HTTP ${groqResp.status}`;
-            console.warn(`[Groq API Warning] (${model}): ${groqError}`);
-          }
-        } catch (groqErr) {
-          groqError = groqErr instanceof Error ? groqErr.message : String(groqErr);
-          console.warn(`[Groq API Exception] (${model}):`, groqError);
-        }
-      }
-    } else {
-      groqError = "GROQ_API_KEY not found in environment variables";
+    // 2. Tech/industry questions the KB can't fully answer may use a web lookup.
+    let web: WebResult[] = [];
+    if (outcome.webEligible) {
+      web = await searchWeb(`${message} (technology explanation)`, 4);
     }
 
-    // ── Secondary Engine: Gemini API (if Groq is not configured/fails) ──────
-    if (!llmReply && geminiKey) {
-      try {
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`;
-        const contents = [
-          ...history.slice(-6).map((h) => ({
-            role: h.role === "assistant" ? "model" : "user",
-            parts: [{ text: h.content }],
-          })),
-          {
-            role: "user",
-            parts: [{ text: message }],
-          },
-        ];
-
-        const geminiResp = await fetch(geminiUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            systemInstruction: { parts: [{ text: systemPrompt }] },
-            contents,
-            generationConfig: {
-              temperature: 0.35,
-              maxOutputTokens: 1000,
-            },
-          }),
-        });
-
-        if (geminiResp.ok) {
-          const geminiData = await geminiResp.json();
-          const candidateText =
-            geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (candidateText) {
-            llmReply = candidateText.trim();
-            engineUsed = "gemini-1.5-flash";
-          }
-        }
-      } catch (geminiErr) {
-        console.warn("Gemini API call failed:", geminiErr);
-      }
-    }
-
-    // ── Tertiary Engine: OpenAI (if configured) ─────────────────────────────
-    if (!llmReply && openaiKey) {
-      try {
-        const openAiResp = await fetch("https://api.openai.com/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${openaiKey}`,
-          },
-          body: JSON.stringify({
-            model: "gpt-4o-mini",
-            messages: [
-              { role: "system", content: systemPrompt },
-              ...history.slice(-6).map((h) => ({ role: h.role, content: h.content })),
-              { role: "user", content: message },
-            ],
-            temperature: 0.3,
-            max_tokens: 1000,
-          }),
-        });
-
-        if (openAiResp.ok) {
-          const openAiData = await openAiResp.json();
-          llmReply = openAiData?.choices?.[0]?.message?.content?.trim() || null;
-          if (llmReply) engineUsed = "openai-gpt-4o-mini";
-        }
-      } catch (openAiErr) {
-        console.warn("OpenAI API call failed:", openAiErr);
-      }
-    }
-
-    // ── Fallback Engine: Deterministic RAG Knowledge Synthesis ───────────────
-    const fallbackMeta = generateSmartFallbackReply(message, retrievedChunks, currency);
-
-    if (!llmReply) {
+    // 3. Clearly unrelated / unanswerable: honest "no information", no LLM call.
+    if (!outcome.inScope && web.length === 0) {
+      const meta = outOfScopeMeta();
       return NextResponse.json({
-        reply: fallbackMeta.reply,
-        sources,
-        suggestedQuestions: fallbackMeta.suggestedQuestions,
-        actionCta: fallbackMeta.actionCta,
-        groundedCount: retrievedChunks.length,
-        engine: "local-rag-neural-synthesis",
-        groqStatus: {
-          hasKey: Boolean(groqKey),
-          error: groqError,
-        },
+        ...meta,
+        groundedCount: 0,
+        outOfScope: true,
+        engine: "scope-guard",
       });
     }
 
+    const sources: { title: string; url?: string }[] = web.length > 0 ? [...web.slice(0, 2).map((w) => ({ title: w.title, url: w.url })), ...kbSources.slice(0, 1)] : kbSources;
+
+    // 4. Generate a grounded answer with the first available LLM.
+    const systemPrompt = buildGroundedSystemPrompt(outcome.results, currency, outcome.intents, web);
+    const llm = await generateWithLLM(systemPrompt, history, message);
+
+    if (llm) {
+      const outOfScope = NO_INFO_RE.test(llm.text);
+      const fallback: ChatMeta = outOfScope ? outOfScopeMeta() : generateSmartFallbackReply(message, outcome, web);
+      return NextResponse.json({
+        reply: llm.text,
+        sources: outOfScope ? [] : sources,
+        suggestedQuestions: outOfScope ? fallback.suggestedQuestions : suggestFollowUps(outcome.results, message),
+        actionCta: fallback.actionCta,
+        groundedCount: outcome.results.length,
+        outOfScope,
+        usedWeb: web.length > 0 && !outOfScope,
+        engine: llm.engine,
+      });
+    }
+
+    // 5. No LLM reachable: answer straight from the knowledge base (or web snippets).
+    const meta = generateSmartFallbackReply(message, outcome, web);
     return NextResponse.json({
-      reply: llmReply,
-      sources,
-      suggestedQuestions: fallbackMeta.suggestedQuestions,
-      actionCta: fallbackMeta.actionCta,
-      groundedCount: retrievedChunks.length,
-      engine: engineUsed,
-      groqStatus: {
-        success: true,
-        engine: engineUsed,
-      },
+      ...meta,
+      groundedCount: outcome.results.length,
+      outOfScope: false,
+      engine: "local-rag",
     });
   } catch (error: unknown) {
     const errMessage = error instanceof Error ? error.message : "Internal Server Error";
     console.error("Chat API error:", errMessage);
-    return NextResponse.json(
-      { error: "Failed to process chat request", details: errMessage },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to process chat request" }, { status: 500 });
   }
 }
