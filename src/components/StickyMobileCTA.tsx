@@ -14,11 +14,13 @@ export default function StickyMobileCTA() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Unmount while hidden: an off-screen translated fixed bar still extends scrollable
+  // overflow on mobile browsers, leaving blank scroll space below the footer.
+  if (!visible) return null;
+
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-50 flex items-center gap-2 border-t border-white/15 bg-[#05010f]/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-2xl backdrop-blur-2xl transition-transform duration-300 sm:hidden ${
-        visible ? "translate-y-0" : "pointer-events-none invisible translate-y-full"
-      }`}
+      className={`fixed bottom-0 left-0 right-0 z-50 flex items-center gap-2 border-t border-white/15 bg-[#05010f]/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-2xl backdrop-blur-2xl transition-transform duration-300 sm:hidden animate-[ctaIn_0.3s_ease-out]`}
       role="complementary"
       aria-label="Quick actions"
     >

@@ -396,3 +396,12 @@ html {
 .animate-shimmer {
   animation: shimmer 8s infinite;
 }
+
+@keyframes ctaIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
