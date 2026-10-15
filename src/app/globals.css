@@ -39,6 +39,8 @@ html {
   overflow-x: clip;
   max-width: 100%;
   overscroll-behavior-y: none;
+  /* iOS rubber-band overscroll reveals the root background; match the footer so it reads as one surface. */
+  background: #000;
 }
 
 html.lenis, html.lenis body {
@@ -60,7 +62,7 @@ html.lenis, html.lenis body {
 body {
   margin: 0;
   min-height: 100vh;
-  background: #06060c;
+  background: #000;
   color: #f8fafc;
   font-family: var(--font-sans-primary), ui-sans-serif, system-ui, sans-serif;
   overflow-x: clip;
