@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion", "clsx", "animejs"],
+    // Portal file uploads (4 MB cap enforced in the action, plus multipart overhead).
+    serverActions: { bodySizeLimit: "5mb" },
   },
   images: {
     formats: ["image/avif", "image/webp"],

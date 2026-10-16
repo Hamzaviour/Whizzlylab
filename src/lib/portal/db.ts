@@ -102,6 +102,19 @@ export interface ProjectLink {
   created_at: string;
 }
 
+export interface ProjectFile {
+  id: string;
+  project_id: string;
+  name: string;
+  mime: string;
+  size: number;
+  client_visible: boolean;
+  created_by: string | null;
+  uploader_name: string | null;
+  uploader_role: Role | null;
+  created_at: string;
+}
+
 export interface Activity {
   id: string;
   project_id: string | null;

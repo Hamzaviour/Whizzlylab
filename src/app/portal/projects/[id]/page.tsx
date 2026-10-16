@@ -5,12 +5,16 @@ import {
   CheckCircle2,
   Clock,
   Code2,
+  Download,
   ExternalLink,
   Eye,
   EyeOff,
+  FileArchive,
+  FileSpreadsheet,
   FileText,
   Flag,
   Globe,
+  ImageIcon,
   Inbox,
   Link2,
   ListChecks,
@@ -24,12 +28,14 @@ import {
   Send,
   ThumbsUp,
   Trash2,
+  UploadCloud,
   type LucideIcon,
 } from "lucide-react";
 import { requireUser, isStaff } from "@/lib/portal/auth";
 import {
   getActivity,
   getComments,
+  getFiles,
   getLinks,
   getProject,
   getProjectTeam,
@@ -42,6 +48,7 @@ import {
   addCommentAction,
   addLinkAction,
   createTaskAction,
+  deleteFileAction,
   deleteLinkAction,
   deleteProjectAction,
   deleteTaskAction,
@@ -53,8 +60,10 @@ import {
   setTaskStatusAction,
   toggleTaskVisibilityAction,
   updateProjectAction,
+  uploadFilesAction,
 } from "@/lib/portal/actions";
 import { ActivityFeed, DueChip } from "@/components/portal/blocks";
+import { FileUploadForm } from "@/components/portal/FileUpload";
 import {
   Avatar,
   Badge,
@@ -68,6 +77,7 @@ import {
   Empty,
   Field,
   Flash,
+  fmtBytes,
   fmtDate,
   fmtDateTime,
   inputCls,
@@ -93,6 +103,13 @@ const LINK_META: Record<LinkKind, { icon: LucideIcon; label: string; color: stri
   document: { icon: FileText, label: "Document", color: "#066bf5" },
   other: { icon: Link2, label: "Link", color: "#64748b" },
 };
+
+function fileIcon(mime: string): LucideIcon {
+  if (mime.startsWith("image/")) return ImageIcon;
+  if (mime.includes("sheet") || mime.includes("excel") || mime === "text/csv") return FileSpreadsheet;
+  if (mime === "application/zip") return FileArchive;
+  return FileText;
+}
 
 type TabKey = "overview" | "board" | "updates" | "discussion" | "files" | "activity" | "settings";
 
@@ -334,11 +351,12 @@ export default async function ProjectPage({
   const allowedTabs: TabKey[] = ["overview", "board", "updates", "discussion", "files", "activity", ...(staff ? (["settings"] as TabKey[]) : [])];
   const tab: TabKey = (allowedTabs as string[]).includes(sp.tab ?? "") ? (sp.tab as TabKey) : "overview";
 
-  const [tasks, updates, comments, links, activity, staffUsers, projectTeam] = await Promise.all([
+  const [tasks, updates, comments, links, files, activity, staffUsers, projectTeam] = await Promise.all([
     getTasks(user, id),
     getUpdates(user, id),
     getComments(user, id),
     getLinks(user, id),
+    getFiles(user, id),
     getActivity(user, { projectId: id, limit: tab === "activity" ? 60 : 8 }),
     staff ? getStaffUsers() : Promise.resolve([]),
     getProjectTeam(id),
@@ -354,7 +372,7 @@ export default async function ProjectPage({
     { key: "board", label: "Tasks", href: href("board"), count: tasks.filter((t) => t.status !== "done").length },
     { key: "updates", label: "Updates", href: href("updates"), count: updates.length },
     { key: "discussion", label: "Discussion", href: href("discussion"), count: generalComments.length },
-    { key: "files", label: "Files & links", href: href("files"), count: links.length },
+    { key: "files", label: "Files & links", href: href("files"), count: links.length + files.length },
     { key: "activity", label: "Activity", href: href("activity") },
     ...(staff ? [{ key: "settings", label: "Settings", href: href("settings") }] : []),
   ];
@@ -765,6 +783,77 @@ export default async function ProjectPage({
       {/* ── Files & links ── */}
       {tab === "files" && (
         <>
+          <div className="mb-5 flex flex-wrap gap-3">
+            <Disclosure
+              className="w-full"
+              open={files.length === 0 && links.length === 0 && !staff}
+              summary={
+                <span className={`${btnPrimary} cursor-pointer`}>
+                  <UploadCloud className="h-4 w-4" /> Upload files
+                </span>
+              }
+            >
+              <Card>
+                <FileUploadForm action={uploadFilesAction} projectId={project.id} staff={staff} />
+              </Card>
+            </Disclosure>
+          </div>
+          {files.length > 0 && (
+            <div className="mb-6">
+              <SectionTitle>Files</SectionTitle>
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {files.map((f) => {
+                  const Icon = fileIcon(f.mime);
+                  const isImage = f.mime.startsWith("image/") && f.mime !== "image/svg+xml";
+                  const src = `/portal/files/${f.id}`;
+                  return (
+                    <Card key={f.id} className="group !p-4 transition hover:shadow-md">
+                      {isImage && (
+                        <a href={src} target="_blank" rel="noopener noreferrer" className="mb-3 block overflow-hidden rounded-xl bg-slate-100">
+                          {/* eslint-disable-next-line @next/next/no-img-element -- auth-gated route, not optimisable */}
+                          <img src={src} alt={f.name} loading="lazy" className="h-40 w-full object-cover transition group-hover:scale-[1.02]" />
+                        </a>
+                      )}
+                      <div className="flex items-start gap-3">
+                        {!isImage && (
+                          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#066bf5]/10 text-[#066bf5]">
+                            <Icon className="h-5 w-5" />
+                          </span>
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <a href={src} target="_blank" rel="noopener noreferrer" className="block truncate font-semibold text-slate-900 hover:text-[#066bf5]">
+                            {f.name}
+                          </a>
+                          <p className="truncate text-xs text-slate-500">
+                            {fmtBytes(f.size)} · {f.uploader_name ?? "Unknown"} · {timeAgo(f.created_at)}
+                          </p>
+                          {staff && !f.client_visible && (
+                            <div className="mt-2">
+                              <Badge value="internal" text="Internal" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="mt-4 flex items-center justify-between">
+                        <a href={`${src}?download`} className="inline-flex items-center gap-1 text-xs font-semibold text-[#066bf5]">
+                          Download <Download className="h-3 w-3" />
+                        </a>
+                        {(staff || f.created_by === user.id) && (
+                          <form action={deleteFileAction}>
+                            <Ctx projectId={project.id} tab="files" />
+                            <input type="hidden" name="id" value={f.id} />
+                            <button type="submit" className="cursor-pointer text-xs text-slate-400 hover:text-red-600">
+                              Remove
+                            </button>
+                          </form>
+                        )}
+                      </div>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           {staff && (
             <Disclosure
               className="mb-5"
@@ -807,10 +896,14 @@ export default async function ProjectPage({
             </Disclosure>
           )}
           {links.length === 0 ? (
-            <Empty icon={Link2} title="No files or links yet">
-              Staging sites, designs, repositories and documents shared for this project live here.
-            </Empty>
+            files.length === 0 && (
+              <Empty icon={Link2} title="No files or links yet">
+                Staging sites, designs, repositories, documents and images shared for this project live here.
+              </Empty>
+            )
           ) : (
+            <>
+            {files.length > 0 && <SectionTitle>Links</SectionTitle>}
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {links.map((l) => {
                 const meta = LINK_META[l.kind];
@@ -855,6 +948,7 @@ export default async function ProjectPage({
                 );
               })}
             </div>
+            </>
           )}
         </>
       )}

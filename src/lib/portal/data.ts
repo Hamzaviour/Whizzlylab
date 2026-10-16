@@ -8,6 +8,7 @@ import {
   type Task,
   type Update,
   type ProjectLink,
+  type ProjectFile,
   type Activity,
 } from "./db";
 
@@ -163,6 +164,33 @@ export async function getLinks(user: PortalUser, projectId: string): Promise<Pro
     WHERE project_id = ${projectId} AND (${isStaffUser(user)} OR client_visible)
     ORDER BY created_at
   `) as ProjectLink[];
+}
+
+export async function getFiles(user: PortalUser, projectId: string): Promise<ProjectFile[]> {
+  return (await sql()`
+    SELECT f.id, f.project_id, f.name, f.mime, f.size, f.client_visible, f.created_by,
+           u.name AS uploader_name, u.role AS uploader_role, f.created_at
+    FROM project_files f LEFT JOIN users u ON u.id = f.created_by
+    WHERE f.project_id = ${projectId} AND (${isStaffUser(user)} OR f.client_visible)
+    ORDER BY f.created_at DESC
+  `) as ProjectFile[];
+}
+
+/** File contents for download. Enforces project ownership for clients and hides internal files. */
+export async function getFileContent(
+  user: PortalUser,
+  id: string,
+): Promise<{ name: string; mime: string; data: Buffer } | null> {
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+  const rows = (await sql()`
+    SELECT project_id, name, mime, client_visible, encode(data, 'base64') AS data
+    FROM project_files WHERE id = ${id}
+  `) as { project_id: string; name: string; mime: string; client_visible: boolean; data: string }[];
+  const row = rows[0];
+  if (!row) return null;
+  if (!isStaffUser(user) && !row.client_visible) return null;
+  if (!(await getProject(user, row.project_id))) return null;
+  return { name: row.name, mime: row.mime, data: Buffer.from(row.data, "base64") };
 }
 
 /** Activity feed. Clients only ever see client-visible entries for their own projects. */

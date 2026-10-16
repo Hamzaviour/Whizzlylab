@@ -542,6 +542,86 @@ export async function deleteLinkAction(fd: FormData) {
   redirect(projectUrl(projectId, fd));
 }
 
+// ── Files ───────────────────────────────────────────────────────────────────
+// Stored in Postgres, so uploads go through a server action and must stay under
+// Vercel's 4.5 MB request cap. Videos and archives of builds belong in links.
+const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
+const FILE_TYPES: Record<string, string> = {
+  png: "image/png",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  webp: "image/webp",
+  gif: "image/gif",
+  svg: "image/svg+xml",
+  pdf: "application/pdf",
+  doc: "application/msword",
+  docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  xls: "application/vnd.ms-excel",
+  xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  ppt: "application/vnd.ms-powerpoint",
+  pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  txt: "text/plain",
+  csv: "text/csv",
+  md: "text/markdown",
+  zip: "application/zip",
+};
+
+export async function uploadFilesAction(fd: FormData) {
+  const user = await getUser();
+  if (!user) redirect("/portal/login");
+  const projectId = str(fd, "project_id", 40);
+  // getProject enforces that clients can only upload to their own projects.
+  const project = uuid(projectId) ? await getProject(user, projectId) : null;
+  if (!project) redirect("/portal");
+  const files = fd.getAll("files").filter((f): f is File => f instanceof File && f.size > 0);
+  if (files.length === 0) redirect(projectUrl(projectId, fd, { error: "Choose at least one file" }));
+  const total = files.reduce((n, f) => n + f.size, 0);
+  if (total > MAX_UPLOAD_BYTES) redirect(projectUrl(projectId, fd, { error: "Uploads are limited to 4 MB at a time" }));
+  const typed = files.map((f) => {
+    const name = f.name.replace(/[\\/\x00-\x1f]/g, "_").slice(0, 200) || "file";
+    const ext = name.includes(".") ? name.split(".").pop()!.toLowerCase() : "";
+    return { file: f, name, mime: FILE_TYPES[ext] };
+  });
+  const rejected = typed.find((t) => !t.mime);
+  if (rejected) {
+    redirect(projectUrl(projectId, fd, { error: `${rejected.name} is not a supported file type (images, PDF, Office, text or zip)` }));
+  }
+  // Client uploads are always shared with the team; staff can keep files internal.
+  const visible = user.role === "client" || fd.get("client_visible") === "on";
+  for (const t of typed) {
+    const b64 = Buffer.from(await t.file.arrayBuffer()).toString("base64");
+    await sql()`
+      INSERT INTO project_files (project_id, name, mime, size, data, client_visible, created_by)
+      VALUES (${projectId}, ${t.name}, ${t.mime}, ${t.file.size}, decode(${b64}, 'base64'), ${visible}, ${user.id})
+    `;
+  }
+  await logActivity({
+    projectId,
+    actorId: user.id,
+    verb: typed.length === 1 ? "uploaded a file:" : `uploaded ${typed.length} files:`,
+    detail: typed.map((t) => t.name).join(", "),
+    clientVisible: visible,
+  });
+  revalidatePath(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd, { ok: typed.length === 1 ? "File uploaded" : `${typed.length} files uploaded` }));
+}
+
+export async function deleteFileAction(fd: FormData) {
+  const user = await getUser();
+  if (!user) redirect("/portal/login");
+  const id = str(fd, "id", 40);
+  const projectId = str(fd, "project_id", 40);
+  if (uuid(id) && uuid(projectId)) {
+    // Staff can remove any file; clients only the ones they uploaded.
+    await sql()`
+      DELETE FROM project_files WHERE id = ${id} AND project_id = ${projectId}
+        AND (${user.role !== "client"} OR created_by = ${user.id})
+    `;
+  }
+  revalidatePath(`/portal/projects/${projectId}`);
+  redirect(projectUrl(projectId, fd));
+}
+
 // ── Updates & comments ──────────────────────────────────────────────────────
 export async function postUpdateAction(fd: FormData) {
   const user = await requireUser([...STAFF]);
