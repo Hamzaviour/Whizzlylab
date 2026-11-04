@@ -159,15 +159,6 @@ export default function SchedulePage() {
                   {COMPANY_EMAIL}
                 </a>
               </p>
-              <p className="text-sm text-gray-300 font-light">
-                Direct call:{" "}
-                <a
-                  href="tel:+14244510714"
-                  className="text-indigo-300 hover:text-white underline underline-offset-4"
-                >
-                  +1 (424) 451-0714
-                </a>
-              </p>
             </div>
           </div>
 

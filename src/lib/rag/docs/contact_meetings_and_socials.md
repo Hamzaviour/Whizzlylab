@@ -1,10 +1,6 @@
 # Whizzly Lab — Contact, Meetings & Social Channels
 
 ## Direct Technical Consultation & Contact
-- **Phone Number**: +1 (424) 451-0714
-  - Direct Tel Link: [tel:+14244510714](tel:+14244510714)
-  - Raw Number: `+14244510714`
-  - Usage: Call directly for urgent technical scoping, architecture consultations, or active sprint discussions.
 - **Email Address**: whizzlylab@gmail.com
   - Direct Mail Link: [mailto:whizzlylab@gmail.com](mailto:whizzlylab@gmail.com)
   - Inquiries are monitored and reviewed directly by lead engineering architects.

@@ -203,7 +203,6 @@ export default function RootLayout({
                   contactPoint: {
                     "@type": "ContactPoint",
                     contactType: "customer service",
-                    telephone: "+1-424-451-0714",
                     email: "whizzlylab@gmail.com",
                     url: "https://whizzlylab.com/contact",
                     availableLanguage: ["English"],

@@ -106,13 +106,6 @@ export default function ContactPage() {
                 contact@whizzlylab.com
               </a>
 
-              <a
-                href="tel:+14244510714"
-                className="text-xl sm:text-2xl font-light text-gray-300 hover:text-indigo-300 transition-colors tracking-tight font-sans block mb-6"
-              >
-                +1 (424) 451-0714
-              </a>
-
               <p className="text-sm text-gray-400 font-light leading-relaxed mb-8">
                 We review every inquiry directly with lead engineers. Expect technical scope clarity and direct architectural feedback.
               </p>

@@ -47,7 +47,7 @@ export interface KnowledgeChunk {
 }
 
 const SITE = "https://www.whizzlylab.com";
-const PHONE = "+1 (424) 451-0714";
+const PHONE = "";
 const EMAIL = "whizzlylab@gmail.com";
 
 // ── Currency helpers (site pricing is stored in PKR, shown in USD by default) ──
@@ -231,7 +231,7 @@ Outer orbit specialists:
     title: "Book a Meeting / Call With the Team",
     content: `To meet or talk to the team:
 - Book online: ${SITE}/schedule, a 1:1 technical scoping/discovery call of about 15–30 minutes via Google Meet or Zoom with a senior AI/software architect. You'll review your requirements, data, compliance needs, timeline and deliverables.
-- Phone: ${PHONE} (tel:+14244510714)
+- Phone: ${PHONE}
 - Email: ${EMAIL}
 - Contact form: ${SITE}/contact
 The team replies with concrete technical feedback within 4–12 hours (always under 24 hours).`,
@@ -245,7 +245,7 @@ The team replies with concrete technical feedback within 4–12 hours (always un
     category: "contact",
     title: "Contact Details: Phone, Email, WhatsApp, Form",
     content: `Reach Whizzly Lab:
-- Phone / call: ${PHONE} (tel:+14244510714)
+- Phone / call: ${PHONE}
 - Email: ${EMAIL}
 - Contact form: ${SITE}/contact
 - Book a call: ${SITE}/schedule
