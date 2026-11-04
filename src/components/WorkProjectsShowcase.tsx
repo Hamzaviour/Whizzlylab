@@ -56,7 +56,7 @@ export default function WorkProjectsShowcase() {
                 activeTab === "all" ? "bg-black/15 text-black" : "bg-white/10 text-white/70"
               }`}
             >
-              12
+              11
             </span>
           </button>
 
@@ -76,7 +76,7 @@ export default function WorkProjectsShowcase() {
                 activeTab === "website" ? "bg-black/15 text-black" : "bg-white/10 text-white/70"
               }`}
             >
-              5
+              4
             </span>
           </button>
 

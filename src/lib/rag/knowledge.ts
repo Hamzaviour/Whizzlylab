@@ -11,7 +11,6 @@
  */
 
 import { SERVICES } from "@/lib/services";
-import { SERVICE_PRICING, INFRASTRUCTURE_FEES } from "@/lib/pricing";
 import { ALL_PROJECTS } from "@/lib/projectsData";
 import { BLOG_POSTS } from "@/lib/blogData";
 import {
@@ -27,7 +26,6 @@ export type KnowledgeCategory =
   | "website"
   | "team"
   | "service"
-  | "pricing"
   | "project"
   | "contact"
   | "careers"
@@ -164,7 +162,6 @@ const CORE_CHUNKS: KnowledgeChunk[] = [
 - E-Commerce & Retail: headless Next.js storefronts, semantic product search, cart-recovery agents, support automation (e.g. Al-Deewan Collection).
 - Logistics & Fleet: IoT/telemetry streaming, predictive dispatch and ETA.
 - Cybersecurity & Compliance: threat telemetry, AI governance, SOC 2 / ISO 27001 readiness (e.g. XecureAI, CyberBrain IDS).
-- Manufacturing & Packaging: 3D configurators and automated quoting (e.g. Option Packaging).
 - CTOs & tech founders: AI feature builds, engineering augmentation and architecture support.
 If your industry isn't listed, ask via a scoping call; we scope custom work.`,
     keywords: ["industries", "industry", "sectors", "sector", "healthcare", "medical", "fintech", "finance", "banking", "ecommerce", "e-commerce", "retail", "logistics", "fleet", "supply chain", "manufacturing", "cybersecurity", "startups", "founders", "cto", "who do you work with", "clients", "do you work with", "experience in"],
@@ -176,7 +173,7 @@ If your industry isn't listed, ask via a scoping call; we scope custom work.`,
     id: "company-reviews-clients",
     category: "company",
     title: "Clients, Testimonials & Track Record",
-    content: `Whizzly Lab has shipped 11+ production platforms and AI systems, including client websites Al-Deewan Collection, Option Packaging, XecureAI and CureCMS Solution, plus AI/ML systems EchoSense, Marginalia, Sentiment Analyzer, CyberBrain IDS, Intelligent Support Engine, Knowly and the Al-Deewan POS System. Client reviews and logos are on the homepage (${SITE}), and every project with a public demo is linked on the Work page (${SITE}/work).`,
+    content: `Whizzly Lab has shipped 10+ production platforms and AI systems, including client websites Al-Deewan Collection, XecureAI and CureCMS Solution, plus AI/ML systems EchoSense, Marginalia, Sentiment Analyzer, CyberBrain IDS, Intelligent Support Engine, Knowly and the Al-Deewan POS System. Client reviews and logos are on the homepage (${SITE}), and every project with a public demo is linked on the Work page (${SITE}/work).`,
     keywords: ["reviews", "testimonials", "clients", "client list", "trust", "track record", "references", "reputation", "proof", "experience", "years of experience", "how many projects", "customers", "logos", "rating"],
     url: "/work",
     actionText: "See Our Work",
@@ -188,7 +185,7 @@ If your industry isn't listed, ask via a scoping call; we scope custom work.`,
     id: "founder-hamza-younas",
     category: "team",
     title: "Founder: Hamza Younas",
-    content: `Whizzly Lab was founded by Hamza Younas, Founder & Lead Systems Architect, specializing in Distributed AI, Neural Engines, Full-Stack Web Development, Workflow Automation and Autonomous AI Integration. He founded the studio to bridge the gap between fragile AI proofs-of-concept and mission-critical production systems, and personally oversees architecture decisions, code quality and client sprints. He architected flagship projects like EchoSense, Marginalia, CyberBrain IDS, Al-Deewan Collection and Option Packaging. GitHub: https://github.com/Hamzaviour`,
+    content: `Whizzly Lab was founded by Hamza Younas, Founder & Lead Systems Architect, specializing in Distributed AI, Neural Engines, Full-Stack Web Development, Workflow Automation and Autonomous AI Integration. He founded the studio to bridge the gap between fragile AI proofs-of-concept and mission-critical production systems, and personally oversees architecture decisions, code quality and client sprints. He architected flagship projects like EchoSense, Marginalia, CyberBrain IDS, and Al-Deewan Collection. GitHub: https://github.com/Hamzaviour`,
     keywords: ["hamza", "hamza younas", "younas", "founder", "ceo", "creator", "owner", "who founded", "who created", "who owns", "who runs", "who started", "who is the founder", "lead architect", "lead engineer", "boss", "head of company"],
     url: "/about",
     actionText: "Meet the Founder",
@@ -499,11 +496,11 @@ const SERVICES_OVERVIEW: KnowledgeChunk = {
   title: "All Services Overview",
   content: `Whizzly Lab offers ${SERVICES.length} service lines (${SITE}/services):
 ${SERVICES.map((s) => `- ${s.title}: ${s.short.split(/(?<=\.)\s/)[0]}`).join("\n")}
-Pricing is listed publicly for: Websites, AI & Machine Learning, Automation, Mobile Apps, Data Analytics, Computer Vision, Data Pipelines and Business Solutions. Design, GTM, growth marketing and security/compliance engagements are scoped on a call.`,
+Design, GTM, growth marketing, security/compliance and all other engagements are scoped on a discovery call.`,
   keywords: ["services", "service", "what services", "what do you offer", "what do you provide", "offerings", "capabilities", "what can you build", "solutions", "what do you do", "list of services", "all services", "products", "expertise", "specialize", "specialization", "skills", "areas"],
   url: "/services",
   actionText: "Browse All Services",
-  followUps: ["How much do your services cost?", "Show me your past projects", "Book a scoping call"],
+  followUps: [""Show me your past projects", "Book a scoping call"],
 };
 
 // ── Pricing ─────────────────────────────────────────────────────────────────
@@ -553,7 +550,6 @@ These are separate from the development fee and billed to your own cloud account
 // ── Projects ────────────────────────────────────────────────────────────────
 const PROJECT_ALIASES: Record<string, string[]> = {
   aldeewan: ["al-deewan", "al deewan", "aldeewan", "deewan collection", "fashion store"],
-  optionpackaging: ["option packaging", "optionpackaging", "3d configurator", "dieline"],
   xecureai: ["xecure", "xecure ai", "ai governance"],
   curecmsolution: ["curecms", "cure cms", "curecm", "medical billing", "rcm"],
   echosense: ["echo sense", "crisis nlp"],
@@ -723,9 +719,6 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
   ...CORE_CHUNKS,
   SERVICES_OVERVIEW,
   ...SERVICE_CHUNKS,
-  PRICING_OVERVIEW,
-  ...PRICING_CHUNKS,
-  PRICING_INFRA,
   PORTFOLIO_OVERVIEW,
   ...PROJECT_CHUNKS,
   EXTRA_PROJECT_CHUNK,
@@ -737,4 +730,4 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
 ];
 
 /** Chunks always injected into the prompt so basic facts are never missing. */
-export const CORE_FACTS = `Whizzly Lab: AI engineering studio and full-stack software collective. Website: ${SITE}. Founder: Hamza Younas (Lead Systems Architect). CPO: Umair Dogar. Remote-first, global. Phone: ${PHONE}. Email: ${EMAIL}. Book a call: ${SITE}/schedule. Contact form: ${SITE}/contact. Pricing: ${SITE}/pricing. Work: ${SITE}/work. Careers: ${SITE}/careers. Clients keep 100% IP. Payments are milestone-based (50% upfront / 50% on sign-off). Replies within 4–12 hours.`;
+export const CORE_FACTS = `Whizzly Lab: AI engineering studio and full-stack software collective. Website: ${SITE}. Founder: Hamza Younas (Lead Systems Architect). CPO: Umair Dogar. Remote-first, global. Phone: ${PHONE}. Email: ${EMAIL}. Book a call: ${SITE}/schedule. Contact form: ${SITE}/contact. Work: ${SITE}/work. Careers: ${SITE}/careers. Clients keep 100% IP. Payments are milestone-based (50% upfront / 50% on sign-off). Replies within 4–12 hours.`;

@@ -65,15 +65,6 @@ const ROUTE_COPIES: { pattern: RegExp | string; copy: RouteCopy }[] = [
     },
   },
   {
-    pattern: "/pricing",
-    copy: {
-      prefix: "Engineering excellence backed by",
-      words: ["transparent", "predictable", "delivery."],
-      buttonText: "Discuss Your Scope",
-      buttonHref: "/schedule",
-    },
-  },
-  {
     pattern: "/careers",
     copy: {
       prefix: "Join an elite studio solving",

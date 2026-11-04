@@ -6,7 +6,7 @@
   - **Specialization**: Distributed AI, Neural Engines, Full-Stack Web Development, Workflow Automation, and Autonomous AI Integration.
   - **Profile**: Hamza Younas founded Whizzly Lab to bridge the gap between fragile AI proofs-of-concept and mission-critical enterprise production systems. He personally oversees architectural decisions, code quality reviews, and client engineering sprints.
   - **GitHub**: https://github.com/Hamzaviour
-  - **Portfolio/Projects**: Architected flagship projects including EchoSense (Kafka/Spark crisis NLP streaming), Marginalia (arXiv AI paper synthesis), CyberBrain IDS (network anomaly detection), Al-Deewan Collection, and Option Packaging.
+  - **Portfolio/Projects**: Architected flagship projects including EchoSense (Kafka/Spark crisis NLP streaming), Marginalia (arXiv AI paper synthesis), CyberBrain IDS (network anomaly detection), and Al-Deewan Collection.
 
 ## The Engineering Squad & Collective
 Whizzly Lab is organized into an elite, distributed squad structure:

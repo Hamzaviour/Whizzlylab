@@ -50,20 +50,6 @@ const CASE_STUDIES: CaseStudyItem[] = [
   },
   {
     id: "02",
-    name: "Option Packaging",
-    subtitle: "Automated Packaging Estimation Engine",
-    tags: [
-      { label: "Web Design", icon: "globe" },
-      { label: "Development", icon: "code" },
-      { label: "B2B E-Commerce", icon: "gtm" },
-    ],
-    image: "/images/websites/optionpackaging.webp",
-    mobileImage: "/images/websites/optionpackaging-mobile.png",
-    link: "https://optionpackaging.com/",
-    domainUrl: "optionpackaging.com",
-  },
-  {
-    id: "03",
     name: "Whizzly Lab",
     subtitle: "Autonomous Multi-Agent Systems & Engineering Studio",
     tags: [
@@ -77,7 +63,7 @@ const CASE_STUDIES: CaseStudyItem[] = [
     domainUrl: "whizzlylab.com",
   },
   {
-    id: "04",
+    id: "03",
     name: "XecureAI",
     subtitle: "Enterprise Cybersecurity & Autonomous SOC Platform",
     tags: [
@@ -91,7 +77,7 @@ const CASE_STUDIES: CaseStudyItem[] = [
     domainUrl: "xecureai.com",
   },
   {
-    id: "05",
+    id: "04",
     name: "CureCMS Solution",
     subtitle: "AI Healthcare & RCM Billing Platform",
     tags: [

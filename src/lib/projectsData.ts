@@ -51,29 +51,6 @@ export const ALL_PROJECTS: ProjectItem[] = [
       "Re-architected the entire storefront into a headless Next.js architecture with edge-cached static assets, automated image optimization, and multi-threaded checkout queues.",
   },
   {
-    id: "optionpackaging",
-    category: "website",
-    title: "Option Packaging",
-    tagline: "Parametric 3D Carton Configuration & Quote Engine",
-    description:
-      "Full-scale custom packaging e-commerce platform offering wholesale boxes, automated quote estimation, category filtering, and client order workflows.",
-    image: "/images/websites/optionpackaging.webp",
-    domain: "B2B Manufacturing Platform",
-    tags: ["Custom Packaging", "B2B E-Commerce", "WebGL 3D", "Automated Quoting", "Full-Stack"],
-    liveUrl: "https://optionpackaging.com/",
-    githubUrl: "https://github.com/Hamzaviour/optionpackaging",
-    featured: true,
-    impactMetrics: [
-      { label: "Quoting Acceleration", value: "10x" },
-      { label: "Pricing Precision", value: "100%" },
-      { label: "Automated Pipeline", value: "$2M+" },
-    ],
-    challenge:
-      "Packaging estimates required up to 48 hours of manual dieline calculation, resulting in dropped enterprise leads and customer pricing ambiguity.",
-    solution:
-      "Developed a browser-based 3D packaging visualizer paired with automated parametric dieline calculation and instant volume pricing algorithms.",
-  },
-  {
     id: "xecureai",
     category: "website",
     title: "XecureAI",

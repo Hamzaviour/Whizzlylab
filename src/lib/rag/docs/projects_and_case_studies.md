@@ -12,14 +12,6 @@ Whizzly Lab has built and shipped product-grade platforms across high-volume e-c
 - **Challenge**: Legacy platform experienced high checkout abandonment and 4.2-second page loads during viral seasonal launches with 20k+ concurrent shoppers.
 - **Solution**: Engineered a headless Next.js storefront with edge-cached static assets, automated WebP/AVIF image pipelines, and multi-threaded checkout queues on Stripe.
 
-### Option Packaging
-- **Category**: B2B Manufacturing & 3D Packaging Configuration Engine
-- **Live URL**: https://optionpackaging.com/
-- **GitHub**: https://github.com/Hamzaviour/optionpackaging
-- **Impact Metrics**: 10x Quoting Acceleration, 100% Pricing Precision, $2M+ Pipeline Automated
-- **Challenge**: Custom wholesale packaging required up to 48 hours of manual dieline calculation, causing enterprise lead loss.
-- **Solution**: Developed a browser-based WebGL 3D packaging visualizer paired with parametric dieline calculations and instant volume pricing algorithms.
-
 ### XecureAI
 - **Category**: Enterprise AI Risk Governance & Threat Telemetry Platform
 - **Live URL**: https://xecureai.com/
