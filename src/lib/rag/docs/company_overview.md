@@ -18,7 +18,6 @@
 ## Official Online Presence
 - **Website**: https://www.whizzlylab.com/
 - **Schedule Call**: https://www.whizzlylab.com/schedule
-- **Pricing & Plans**: https://www.whizzlylab.com/pricing
 - **Shipped Work & Case Studies**: https://www.whizzlylab.com/work
 - **Company / About**: https://www.whizzlylab.com/about
 - **Careers**: https://www.whizzlylab.com/careers

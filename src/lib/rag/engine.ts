@@ -595,7 +595,6 @@ const CATEGORY_SUGGESTIONS: Partial<Record<KnowledgeCategory, string[]>> = {
 
 const CTA_LABEL_BY_URL: Array<[RegExp, string]> = [
   [/^\/schedule/, "📅 "],
-  [/^\/pricing/, "💰 "],
   [/^\/work|^\/case-studies/, "🚀 "],
   [/^\/careers/, "💼 "],
   [/^\/contact/, "✉️ "],

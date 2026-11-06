@@ -32,7 +32,8 @@ export type KnowledgeCategory =
   | "blog"
   | "industry"
   | "process"
-  | "faq";
+  | "faq"
+  | "pricing";
 
 export interface KnowledgeChunk {
   id: string;
@@ -50,20 +51,6 @@ const SITE = "https://www.whizzlylab.com";
 const PHONE = "";
 const EMAIL = "whizzlylab@gmail.com";
 
-// ── Currency helpers (site pricing is stored in PKR, shown in USD by default) ──
-const PKR_PER_USD = 278; // same fallback rate the website's currency toggle uses
-
-function fmtPkr(n: number): string {
-  return `PKR ${n.toLocaleString("en-US")}`;
-}
-function fmtUsd(pkr: number): string {
-  const usd = pkr / PKR_PER_USD;
-  const rounded = usd >= 1000 ? Math.round(usd / 10) * 10 : Math.round(usd);
-  return `$${rounded.toLocaleString("en-US")}`;
-}
-function range(min: number, max: number): string {
-  return `${fmtUsd(min)} – ${fmtUsd(max)} (${fmtPkr(min)} – ${fmtPkr(max)})`;
-}
 
 // ═══════════════════════════════════════════════════════════════════════════
 // 1. HAND-WRITTEN CHUNKS
@@ -105,7 +92,6 @@ const CORE_CHUNKS: KnowledgeChunk[] = [
 - Home (/): overview of the studio, services, industries, reviews and FAQs.
 - Services (/services): all service lines with detail pages (e.g. /services/ai, /services/web-development).
 - Work (/work): shipped projects with live demos; Case Studies (/case-studies).
-- Pricing (/pricing): interactive pricing calculator with a PKR/USD toggle.
 - About (/about): story, principles and the team.
 - Blog (/blog): engineering articles.
 - Careers (/careers): open roles.
@@ -280,7 +266,7 @@ Response time: technical feedback within 4–12 hours, always under 24 hours. In
 2. Book a 15–30 min scoping call: ${SITE}/schedule, or call ${PHONE}, or email ${EMAIL}.
 3. Receive a fixed-scope proposal with milestones and an architecture blueprint.
 4. Kick off: typically 50% upfront, 50% on staging sign-off. You own 100% of the code.
-Useful details to share: what you want built, who the users are, existing tools/systems to integrate with, target launch date and rough budget. For an instant range, see the pricing calculator at ${SITE}/pricing.`,
+Useful details to share: what you want built, who the users are, existing tools/systems to integrate with, target launch date and rough budget.`,
     keywords: ["get started", "start a project", "start project", "hire", "hire you", "hire whizzly", "work with you", "work with us", "i want", "i need", "i would like", "looking for", "interested", "interested in your services", "need a service", "want this service", "for my business", "for my company", "for my startup", "my business", "my company", "my startup", "request a service", "order", "proposal", "get a quote", "free quote", "build me", "develop for me", "outsource", "engage", "onboard", "sign up", "next step", "next steps", "how do i start", "how to start", "how to hire"],
     url: "/schedule",
     actionText: "Start Your Project",
@@ -317,7 +303,7 @@ Timelines vary by scope: a targeted feature or pipeline 2–4 weeks, an end-to-e
     id: "process-timeline",
     category: "process",
     title: "Project Timelines & Delivery Speed",
-    content: `Typical delivery windows (from the pricing calculator):
+    content: `Typical delivery windows:
 - Static / business website: 2–4 weeks; CMS site: 4–8 weeks; e-commerce store: 6–14 weeks; enterprise web app: 12–28+ weeks.
 - AI chatbot: 2–4 weeks; RAG knowledge base / agents: 4–10 weeks; custom model/LLM platform: 10–24+ weeks.
 - Simple automation: 1–3 weeks; automation stack: 3–6 weeks; voice AI / complex orchestration: 6–14+ weeks.
@@ -325,8 +311,8 @@ Timelines vary by scope: a targeted feature or pipeline 2–4 weeks, an end-to-e
 - Dashboards: 1–3 weeks (executive) up to 8–20+ weeks (data platform).
 General guide: a targeted feature or pipeline takes 2–4 weeks, an end-to-end AI system 4–8 weeks, a full enterprise SaaS 2–4 months. Working staging previews usually arrive within the first few weeks. An accelerated (priority) delivery add-on exists (+15%). The exact timeline is confirmed after the scoping call.`,
     keywords: ["how long", "timeline", "time", "duration", "how fast", "how soon", "deadline", "turnaround", "delivery time", "when will it be ready", "weeks", "months", "urgent", "rush", "asap", "mvp", "quick"],
-    url: "/pricing",
-    actionText: "View Pricing & Timelines",
+    url: "/schedule",
+    actionText: "Book a Scoping Call",
     followUps: ["How much does it cost?", "Can you deliver faster?", "Book a scoping call"],
   },
   {
@@ -347,8 +333,8 @@ General guide: a targeted feature or pipeline takes 2–4 weeks, an end-to-end A
     title: "Payment Terms & Milestones",
     content: `Engagements are milestone-based: typically 50% upfront to start the architecture sprint and 50% on final staging delivery and sign-off. There are no hidden fees or surprise retainers; scope and milestones are fixed in the proposal after the scoping call. Which payment methods/gateways we accept for client invoices is agreed during proposal, so ask the team via ${SITE}/schedule or ${EMAIL}.`,
     keywords: ["payment", "payment terms", "pay", "paying", "deposit", "advance", "upfront", "50/50", "milestone", "milestones", "invoice", "billing", "installments", "installment", "refund", "payment method", "payment methods", "how do i pay", "hidden fees", "retainer"],
-    url: "/pricing",
-    actionText: "View Pricing",
+    url: "/schedule",
+    actionText: "Book a Scoping Call",
     followUps: ["How much does a project cost?", "How long does it take?"],
   },
   {
@@ -451,24 +437,9 @@ const SERVICE_EXTRA_KEYWORDS: Record<string, string[]> = {
   "security-compliance": ["security", "soc 2", "hipaa", "iso 27001", "penetration test", "pentest", "zero trust", "compliance"],
 };
 
-const SERVICE_PRICING_KEY: Record<string, string> = {
-  "web-development": "web",
-  ai: "ai",
-  automation: "automation",
-  development: "mobile",
-  "data-analytics": "analytics",
-  "computer-vision": "vision",
-  "data-pipelines": "pipelines",
-  "business-solutions": "solutions",
-  "machine-learning": "ai",
-  "ai-transformation": "ai",
-};
-
 const SERVICE_CHUNKS: KnowledgeChunk[] = SERVICES.map((s) => {
-  const priceKey = SERVICE_PRICING_KEY[s.slug];
-  const priceNote = priceKey
-    ? `\nPricing for this area: see the "${SERVICE_PRICING.find((p) => p.key === priceKey)?.label}" tiers (${SITE}/pricing).`
-    : `\nPricing for this area isn't listed in the public calculator; the team quotes it after a scoping call (${SITE}/schedule).`;
+  const priceNote = `
+Pricing for this area is quoted after a short scoping call (${SITE}/schedule).`;
   return {
     id: `service-${s.slug}`,
     category: "service" as const,
@@ -500,51 +471,7 @@ Design, GTM, growth marketing, security/compliance and all other engagements are
   keywords: ["services", "service", "what services", "what do you offer", "what do you provide", "offerings", "capabilities", "what can you build", "solutions", "what do you do", "list of services", "all services", "products", "expertise", "specialize", "specialization", "skills", "areas"],
   url: "/services",
   actionText: "Browse All Services",
-  followUps: [""Show me your past projects", "Book a scoping call"],
-};
-
-// ── Pricing ─────────────────────────────────────────────────────────────────
-const PRICING_CHUNKS: KnowledgeChunk[] = SERVICE_PRICING.map((p) => ({
-  id: `pricing-${p.key}`,
-  category: "pricing" as const,
-  title: `Pricing: ${p.label}`,
-  content: `${p.label} pricing (USD approx., converted at ~${PKR_PER_USD} PKR/USD; PKR amounts shown on the site):
-${p.tiers.map((t) => `- ${t.name}: ${range(t.min, t.max)}. ${t.features}. Delivery: ${t.delivery}.`).join("\n")}
-${p.addons ? `Optional add-ons (uplift on top of the tier): ${p.addons.map((a) => `${a.label} +${Math.round(a.uplift * 100)}%`).join("; ")}.` : ""}
-These are market ranges; the exact quote depends on scope and is confirmed after a scoping call. Use the interactive calculator at ${SITE}/pricing.`,
-  keywords: [p.label.toLowerCase(), p.key, "price", "cost", "pricing", "how much", "rate", "quote", "budget", "estimate", "charges", "fee", ...p.tiers.map((t) => t.name.toLowerCase())],
-  url: "/pricing",
-  actionText: "Open Pricing Calculator",
-  followUps: ["How do payments work?", "How long will it take?", "Book a scoping call"],
-}));
-
-const PRICING_OVERVIEW: KnowledgeChunk = {
-  id: "pricing-overview",
-  category: "pricing",
-  title: "Pricing Overview (All Services)",
-  content: `Whizzly Lab publishes transparent starting ranges (USD approx.; the site's pricing page lets you switch between USD and PKR with a live exchange rate):
-${SERVICE_PRICING.map((p) => {
-    const min = Math.min(...p.tiers.map((t) => t.min));
-    const max = Math.max(...p.tiers.map((t) => t.max));
-    return `- ${p.label}: ${fmtUsd(min)} – ${fmtUsd(max)} (${fmtPkr(min)} – ${fmtPkr(max)})`;
-  }).join("\n")}
-Each service has 3 tiers (starter, standard, enterprise), delivery estimates and optional add-ons, all on ${SITE}/pricing. Payment is milestone-based (typically 50% upfront, 50% on sign-off) with 100% IP ownership and no hidden fees. Final quotes are fixed after a scoping call.`,
-  keywords: ["pricing", "price", "prices", "cost", "costs", "how much", "rate", "rates", "quote", "budget", "fees", "charges", "packages", "package", "plans", "tiers", "affordable", "cheap", "expensive", "estimate", "starting price", "usd", "pkr", "dollars", "rupees", "currency", "calculator", "what do you charge", "pricing page"],
-  url: "/pricing",
-  actionText: "Open Pricing Calculator",
-  followUps: ["How much does a website cost?", "How much does an AI chatbot cost?", "How do payments work?"],
-};
-
-const PRICING_INFRA: KnowledgeChunk = {
-  id: "pricing-infrastructure",
-  category: "pricing",
-  title: "Infrastructure & Running Costs (Domain, Hosting)",
-  content: `Annual running costs, paid directly to the provider (mainly for website projects):
-${INFRASTRUCTURE_FEES.map((f) => `- ${f.name}: ${range(f.min, f.max)} per year. ${f.note}.`).join("\n")}
-These are separate from the development fee and billed to your own cloud accounts.`,
-  keywords: ["domain", "hosting", "infrastructure", "server", "cloud costs", "running cost", "annual cost", "yearly cost", "maintenance cost", "monthly cost", "ssl", "vercel", "aws cost", "database cost"],
-  url: "/pricing",
-  actionText: "View Pricing",
+  followUps: ["Show me your past projects", "Book a scoping call"],
 };
 
 // ── Projects ────────────────────────────────────────────────────────────────

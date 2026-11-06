@@ -13,7 +13,6 @@ export function getAllSiteUrls(): string[] {
     "",
     "/about",
     "/services",
-    "/pricing",
     "/contact",
     "/schedule",
     "/privacy",

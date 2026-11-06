@@ -120,10 +120,10 @@ export default function ServicesPage() {
               </div>
             </Link>
             <Link
-              href="/pricing"
+              href="/schedule"
               className="group inline-flex items-center gap-2 px-5 py-3 rounded-full border border-indigo-400/30 bg-indigo-500/10 backdrop-blur-md text-sm font-medium text-indigo-200 hover:text-white hover:border-indigo-400/60 hover:bg-indigo-500/20 transition-all duration-300 shadow-[0_0_20px_rgba(99,102,241,0.15)]"
             >
-              <span>View Pricing &amp; Plans</span>
+              <span>Get a Quote</span>
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
             <Link
@@ -238,10 +238,10 @@ export default function ServicesPage() {
 
             <div className="flex flex-wrap items-center gap-4 shrink-0">
               <Link
-                href="/pricing"
+                href="/schedule"
                 className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-white text-black text-sm font-medium hover:bg-indigo-300 transition-all duration-300 shadow-lg hover:shadow-indigo-500/25"
               >
-                <span>Explore Pricing &amp; Plans</span>
+                <span>Get a Quote</span>
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>

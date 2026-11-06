@@ -91,10 +91,10 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
               </div>
             </Link>
             <Link
-              href="/pricing"
+              href="/schedule"
               className="group inline-flex items-center gap-2 px-5 py-3 rounded-full border border-indigo-400/30 bg-indigo-500/10 backdrop-blur-md text-sm font-medium text-indigo-200 hover:text-white hover:border-indigo-400/60 hover:bg-indigo-500/20 transition-all duration-300 shadow-[0_0_20px_rgba(99,102,241,0.15)]"
             >
-              <span>View Pricing &amp; Plans</span>
+              <span>Get a Quote</span>
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </div>
