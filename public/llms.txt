@@ -23,7 +23,6 @@
 - **EchoSense**: Real-time crisis intervention NLP pipeline utilizing Kafka and Spark NLP to detect high-priority signals, with vector RAG and Hugging Face deployment (70% faster signal detection).
 - **CureCMS Solution**: AI-powered medical billing and revenue cycle management (RCM) system engineered for healthcare providers with strict HIPAA compliance.
 - **COMPLYSECOPS**: Cybersecurity and compliance consulting platform featuring an AI assistant for compliance documentation (saving engineering teams 15+ hours weekly).
-- **OXO Packaging**: Custom high-volume e-commerce platform with automated quote calculation, bulk wholesale ordering, and Stripe integration (handling 500+ daily orders).
 
 ## Sitemap & Canonical Links
 - **Homepage**: https://whizzlylab.com

@@ -4,7 +4,6 @@ const brands = [
   "EchoSense",
   "CureCMS",
   "COMPLYSECOPS",
-  "OXO",
   "Kafka",
   "Spark",
   "LangChain",

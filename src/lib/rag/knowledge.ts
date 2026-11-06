@@ -581,11 +581,10 @@ Tags: ${p.tags.join(", ")}.${p.liveUrl ? `\nLive: ${p.liveUrl}` : ""}${p.githubU
 const EXTRA_PROJECT_CHUNK: KnowledgeChunk = {
   id: "project-legacy-case-studies",
   category: "project",
-  title: "More Case Studies: COMPLYSECOPS & OXO Packaging",
+  title: "More Case Studies: COMPLYSECOPS",
   content: `Additional shipped platforms:
-- COMPLYSECOPS: unified compliance and cybersecurity consulting platform with a built-in AI documentation assistant; replaced multiple disjointed tools and saved engineering teams 15+ hours per week. Live: https://complysecops.netlify.app/
-- OXO Packaging: high-volume custom e-commerce with a quoting engine, dynamic packaging price calculator and wholesale order flows; handles 500+ daily bulk orders. Live: https://umairpackaging.netlify.app/`,
-  keywords: ["complysecops", "oxo", "oxo packaging", "compliance platform", "wholesale", "packaging", "case study"],
+- COMPLYSECOPS: unified compliance and cybersecurity consulting platform with a built-in AI documentation assistant; replaced multiple disjointed tools and saved engineering teams 15+ hours per week. Live: https://complysecops.netlify.app/`,
+  keywords: ["complysecops", "compliance platform", "case study"],
   url: "/case-studies",
   actionText: "View Case Studies",
 };
@@ -599,7 +598,7 @@ Client websites & platforms:
 ${ALL_PROJECTS.filter((p) => p.category === "website").map((p) => `- ${p.title}: ${p.tagline}`).join("\n")}
 AI / ML systems:
 ${ALL_PROJECTS.filter((p) => p.category === "ml-ai").map((p) => `- ${p.title}: ${p.tagline}`).join("\n")}
-Also: COMPLYSECOPS (compliance SaaS) and OXO Packaging (wholesale e-commerce). Ask about any of them for metrics, tech stack and live demo links.`,
+Also: COMPLYSECOPS (compliance SaaS). Ask about any of them for metrics, tech stack and live demo links.`,
   keywords: ["projects", "project", "portfolio", "work", "our work", "past work", "previous work", "examples", "case studies", "case study", "what have you built", "what did you build", "shipped", "built", "demos", "demo", "samples", "showcase", "references", "live demos", "show me"],
   url: "/work",
   actionText: "View Our Work",

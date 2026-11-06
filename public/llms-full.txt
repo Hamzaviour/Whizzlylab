@@ -89,10 +89,6 @@
    - Replaced multiple disjointed tools, saving engineering teams 15+ hours per week.
    - Live platform: https://complysecops.netlify.app/
 
-4. **OXO Packaging (High-Volume Custom E-Commerce)**:
-   - Custom quoting engine, dynamic packaging pricing calculator, and wholesale order flows.
-   - Live platform: https://umairpackaging.netlify.app/
-   - Outcome: Handles 500+ daily bulk orders.
 
 ---
 

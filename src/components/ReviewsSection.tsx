@@ -24,15 +24,6 @@ const reviews = [
     text: "Their RAG implementation for our medical documentation system cut retrieval time by 70%. The team understood HIPAA requirements from day one. Rare to find that depth in an engineering team.",
   },
   {
-    name: "Ayesha Rahman",
-    role: "Founder, E-Commerce Platform",
-    location: "Dubai, UAE",
-    avatar: "/images/avatars/ayesha-rahman.webp",
-    rating: 5,
-    project: "Custom E-Commerce Engine",
-    text: "OXO Packaging was built end-to-end by Whizzly Lab, from product catalog to wholesale ordering. They shipped on time, on budget, and the site handles 500+ daily orders without a hiccup.",
-  },
-  {
     name: "David Park",
     role: "VP Product, Cybersecurity",
     location: "Singapore",

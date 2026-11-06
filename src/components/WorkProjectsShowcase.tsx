@@ -132,7 +132,7 @@ export default function WorkProjectsShowcase() {
               Websites We Built
             </h2>
             <p className="mt-3 max-w-2xl text-sm sm:text-base text-gray-400 font-light leading-relaxed">
-              Production websites deployed for clients — from healthcare billing and cybersecurity to high-converting luxury e-commerce packaging.
+              Production websites deployed for clients — from healthcare billing and cybersecurity to high-converting luxury e-commerce.
             </p>
           </div>
 

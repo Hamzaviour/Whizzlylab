@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Box,
   Coffee,
   HeartPulse,
   KeyRound,
@@ -24,7 +23,6 @@ const CLIENTS: ClientMark[] = [
   { name: "COMPLYSECOPS", Icon: ShieldCheck, className: "tracking-[0.08em] font-extrabold" },
   { name: "XecureAI", Icon: ScanEye },
   { name: "CureCMS", Icon: HeartPulse },
-  { name: "OXO Packaging", Icon: Box },
   { name: "Al-Deewan", Icon: Shirt },
   { name: "Rakanda Gold", Icon: Coffee },
   { name: "Keyspace Studio", Icon: KeyRound },

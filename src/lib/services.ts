@@ -133,7 +133,7 @@ export const SERVICES: ServicePage[] = [
       "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1400&q=80",
     headline: "Domain platforms for healthcare, compliance, and commerce.",
     body: [
-      "We ship vertical products like CureCMS, COMPLYSECOPS, and OXO, blending product design, AI, and reliable engineering.",
+      "We ship vertical products like CureCMS and COMPLYSECOPS, blending product design, AI, and reliable engineering.",
       "Every engagement is scoped to your sector’s constraints: privacy, auditability, ops workflows, and customer experience.",
     ],
     deliverables: [
