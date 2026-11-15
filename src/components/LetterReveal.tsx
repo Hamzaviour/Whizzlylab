@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { EASE_OUT } from "@/lib/motion";
 
 type Props = {
   text: string;
@@ -24,7 +25,7 @@ export default function LetterReveal({ text, className = "", delay = 0 }: Props)
           transition={{
             duration: 0.55,
             delay: delay + i * 0.028,
-            ease: [0.22, 1, 0.36, 1],
+            ease: EASE_OUT,
           }}
         >
           {char === " " ? "\u00A0" : char}

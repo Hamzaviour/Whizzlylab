@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Calendar, ArrowUpRight } from "lucide-react";
 import { BlogPost, BLOG_POSTS } from "@/lib/blogData";
+import { EASE_OUT } from "@/lib/motion";
 
 const CATEGORIES = [
   "All",
@@ -145,7 +146,7 @@ export default function BlogSectionFramer({
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.96 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.4, ease: EASE_OUT }}
                 className="group relative flex flex-col justify-between rounded-[26px] bg-[#090b12] border border-white/[0.08] hover:border-white/25 hover:bg-[#0c0f1b] transition-all duration-400 overflow-hidden select-none shadow-[0_16px_45px_rgba(0,0,0,0.65)] hover:shadow-[0_24px_70px_rgba(0,0,0,0.85)]"
               >
                 <div>

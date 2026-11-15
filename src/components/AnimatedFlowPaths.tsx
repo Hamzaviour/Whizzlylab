@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   LucideIcon,
 } from "lucide-react";
+import { EASE_IN_OUT } from "@/lib/motion";
 
 interface DomainItem {
   id: string;
@@ -158,7 +159,7 @@ export default function AnimatedFlowPaths({
     setMounted(true);
     const controls = animate(0, 1, {
       duration: speed,
-      ease: [0.42, 0, 0.58, 1],
+      ease: EASE_IN_OUT,
       repeat: Infinity,
       repeatType: "loop",
       repeatDelay: 0.5,

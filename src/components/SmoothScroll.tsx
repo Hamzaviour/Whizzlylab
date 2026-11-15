@@ -15,6 +15,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       ScrollTrigger.config({ ignoreMobileResize: true });
     }
 
+    // Reduced motion: keep native scrolling. ScrollTrigger still works off native scroll.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     // Initialize Lenis with buttery smooth settings
     const lenis = new Lenis({
       duration: 1.15,

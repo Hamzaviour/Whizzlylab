@@ -10,10 +10,22 @@ import { SERVICES_DATA } from "@/lib/servicesData";
 import { COMPANY_PHONE, HAS_PHONE, PHONE_URL } from "@/lib/contact";
 import Link from "next/link";
 import Image from "next/image";
+import { EASE_OUT } from "@/lib/motion";
 
 // Register GSAP ScrollTrigger plugin on client
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
+}
+
+/**
+ * Distance from one service card to the next. Measured from the DOM so it always
+ * matches the real card width and flex gap (the gap is 16px on mobile, 24px from sm up).
+ */
+function getCardStep(track: HTMLElement, isDesktop: boolean): number {
+  const first = track.children[0] as HTMLElement | undefined;
+  const second = track.children[1] as HTMLElement | undefined;
+  if (first && second) return second.offsetLeft - first.offsetLeft;
+  return isDesktop ? 394 : 330;
 }
 
 export default function HeroWithServicesTransition() {
@@ -80,9 +92,8 @@ export default function HeroWithServicesTransition() {
   useEffect(() => {
     const handleResize = () => {
       if (cardsTrackRef.current) {
-        const firstCard = cardsTrackRef.current.children[0] as HTMLElement | undefined;
         const isDesktop = window.innerWidth >= 1024;
-        const cardStep = firstCard ? firstCard.offsetWidth + 24 : (isDesktop ? 394 : 330);
+        const cardStep = getCardStep(cardsTrackRef.current, isDesktop);
         cardsTrackRef.current.style.transform = `translate3d(${-activeServiceIndexRef.current * cardStep}px, 0, 0)`;
       }
     };
@@ -153,8 +164,7 @@ export default function HeroWithServicesTransition() {
           }
 
           if (cardsTrackRef.current) {
-            const firstCard = cardsTrackRef.current.children[0] as HTMLElement | undefined;
-            const cardStep = firstCard ? firstCard.offsetWidth + 24 : (isDesktop ? 394 : 330);
+            const cardStep = getCardStep(cardsTrackRef.current, isDesktop);
             cardsTrackRef.current.style.transform = `translate3d(${-newIndex * cardStep}px, 0, 0)`;
           }
         }
@@ -231,9 +241,8 @@ export default function HeroWithServicesTransition() {
 
     // 3. Smoothly animate carousel track to the targeted card
     if (cardsTrackRef.current) {
-      const firstCard = cardsTrackRef.current.children[0] as HTMLElement | undefined;
       const isDesktop = window.innerWidth >= 1024;
-      const cardStep = firstCard ? firstCard.offsetWidth + 24 : (isDesktop ? 394 : 330);
+      const cardStep = getCardStep(cardsTrackRef.current, isDesktop);
       cardsTrackRef.current.style.transform = `translate3d(${-index * cardStep}px, 0, 0)`;
     }
 
@@ -347,7 +356,7 @@ export default function HeroWithServicesTransition() {
       <motion.header
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.7, delay: 0.1, ease: EASE_OUT }}
         className={`fixed top-0 left-0 right-0 z-[60] flex items-center justify-between w-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-3 sm:py-4 pointer-events-auto transition-[background-color,border-color,box-shadow] duration-500 ${
           scrolled
             ? "bg-black/70 backdrop-blur-2xl border-b border-white/[0.06] shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
@@ -524,7 +533,7 @@ export default function HeroWithServicesTransition() {
               <motion.span
                 initial={{ opacity: 0, y: 35 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, delay: 0.45, ease: EASE_OUT }}
                 className="inline-block pb-1"
               >
                 Building{" "}
@@ -532,7 +541,7 @@ export default function HeroWithServicesTransition() {
               <motion.span
                 initial={{ opacity: 0, y: 35 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, delay: 0.6, ease: EASE_OUT }}
                 className="inline-block italic font-bold text-white font-sans pr-2 pb-1"
               >
                 Digital
@@ -544,7 +553,7 @@ export default function HeroWithServicesTransition() {
               <motion.span
                 initial={{ opacity: 0, y: 35 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, delay: 0.75, ease: EASE_OUT }}
                 className="inline-block italic font-bold text-white font-sans pr-2 pb-1"
               >
                 Solutions{" "}
@@ -552,7 +561,7 @@ export default function HeroWithServicesTransition() {
               <motion.span
                 initial={{ opacity: 0, y: 35 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, delay: 0.9, ease: EASE_OUT }}
                 className="inline-block pb-1"
               >
                 That Matter
@@ -570,7 +579,7 @@ export default function HeroWithServicesTransition() {
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 1.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.65, delay: 1.1, ease: EASE_OUT }}
             className="max-w-sm sm:max-w-md text-left"
           >
             <p className="text-gray-300/90 text-sm sm:text-base mb-6 font-light leading-relaxed">
@@ -588,7 +597,7 @@ export default function HeroWithServicesTransition() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.65, delay: 1.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.65, delay: 1.3, ease: EASE_OUT }}
             className="flex items-start sm:items-center gap-7 sm:gap-10 lg:gap-14 pr-16 sm:pr-0"
           >
             <div className="flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2.5">
@@ -636,7 +645,7 @@ export default function HeroWithServicesTransition() {
         {/* Sticky Full-Viewport Container */}
         <div
           ref={servicesContentRef}
-          className="sticky top-0 h-screen w-full flex items-center px-4 sm:px-10 lg:px-14 overflow-hidden"
+          className="sticky top-0 h-screen w-full flex items-center px-4 sm:px-10 lg:px-14 pt-16 sm:pt-20 overflow-hidden"
         >
           <div className="w-full max-w-[1540px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left 5 Columns: Dedicated 3D Shape Docking Bay */}
@@ -648,13 +657,13 @@ export default function HeroWithServicesTransition() {
             {/* Right 7 Columns: Services Header & Glassmorphism Interactive Cards */}
             <div className="lg:col-span-7 flex flex-col relative z-40 pointer-events-auto">
               {/* Header Row: Title on left, subtitle on right */}
-              <div className="mb-7 flex flex-col sm:flex-row sm:items-end justify-between gap-6 pr-4">
+              <div className="mb-7 short:mb-3 flex flex-col sm:flex-row sm:items-end justify-between gap-6 pr-4">
                 <div>
-                  <h2 className="text-4xl sm:text-5xl font-normal tracking-tight text-white font-sans">
+                  <h2 className="text-4xl sm:text-5xl short:text-3xl! font-normal tracking-tight text-white font-sans">
                     Our Services
                   </h2>
                 </div>
-                <p className="max-w-sm text-xs sm:text-sm text-gray-400 font-light leading-relaxed">
+                <p className="max-w-sm text-xs sm:text-sm text-gray-400 font-light leading-relaxed short:hidden">
                   We offer comprehensive digital solutions that transform your business and drive innovation across every touchpoint.
                 </p>
               </div>
@@ -704,7 +713,7 @@ export default function HeroWithServicesTransition() {
                             return;
                           }
                         }}
-                        className={`service-card group relative shrink-0 w-[270px] xs:w-[310px] sm:w-[350px] md:w-[370px] min-h-[390px] xs:min-h-[420px] sm:min-h-[460px] sm:h-[490px] rounded-[24px] sm:rounded-[28px] p-5 sm:p-8 cursor-pointer select-none flex flex-col justify-between overflow-hidden transition-all duration-500 ease-out ${
+                        className={`service-card group relative shrink-0 w-[270px] xs:w-[310px] sm:w-[350px] md:w-[370px] min-h-[390px] sm:min-h-[min(460px,calc(100dvh-210px))] sm:h-[min(490px,calc(100dvh-210px))] rounded-[24px] sm:rounded-[28px] p-5 sm:p-8 short:p-6! cursor-pointer select-none flex flex-col justify-between overflow-hidden transition-all duration-500 ease-out ${
                           isActive
                             ? "bg-[#434a8c] border border-indigo-300/30 shadow-[0_20px_50px_rgba(30,35,80,0.45)] ring-1 ring-indigo-400/20"
                             : "bg-[#090b12] border border-white/[0.08] hover:border-white/25 hover:bg-[#0d101a]"
@@ -770,7 +779,7 @@ export default function HeroWithServicesTransition() {
                               {service.description}
                             </p>
 
-                            <div className="inline-flex items-center gap-1.5 text-xs font-mono text-indigo-200 group-hover:text-white transition-colors">
+                            <div className="inline-flex short:hidden! items-center gap-1.5 text-xs font-mono text-indigo-200 group-hover:text-white transition-colors">
                               <span>Explore Service Page</span>
                               <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                             </div>

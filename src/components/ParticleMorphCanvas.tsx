@@ -711,6 +711,8 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
       delete container.dataset.webgl;
 
       const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+      // Reduced motion: the globe holds still; scroll-driven morphs (user-initiated) remain.
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const particleCount =
         isCoarsePointer || window.innerWidth < 768 ? MOBILE_PARTICLE_COUNT : PARTICLE_COUNT;
 
@@ -1108,7 +1110,7 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
         // 3D rotation & parallax tilt
         if (shaderMaterial.uniforms.uProgress.value < 0.25) {
           // Free spinning for the celestial globe in Hero
-          points.rotation.y += rotationSpeed;
+          if (!reduceMotion) points.rotation.y += rotationSpeed;
         } else {
           // For service shapes (Cube, Brackets, Stars, Shield), maintain optimal front isometric angle
           const targetAngleY = 0.32 + currentTiltY * 0.45;

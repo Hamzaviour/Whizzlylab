@@ -42,5 +42,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# browser automation output (also keeps Tailwind from scanning it and rebuilding in a loop)
+.playwright-mcp/
+
 # SEO audit reports
 seo-audit-report.*

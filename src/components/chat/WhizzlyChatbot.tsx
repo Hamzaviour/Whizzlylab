@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useCurrency } from "@/lib/currency";
+import { EASE_OUT } from "@/lib/motion";
 
 interface SourceCitation {
   title: string;
@@ -433,7 +434,7 @@ export default function WhizzlyChatbot() {
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.25, ease: EASE_OUT }}
             className="fixed inset-x-3 bottom-24 md:inset-auto md:bottom-24 md:right-8 z-50 md:w-[440px] h-[580px] max-h-[82vh] flex flex-col rounded-3xl bg-[#090714]/95 border border-white/15 shadow-[0_24px_70px_rgba(0,0,0,0.85),0_0_35px_rgba(99,102,241,0.18)] backdrop-blur-2xl overflow-hidden font-sans"
           >
             {/* Header */}

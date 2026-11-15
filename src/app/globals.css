@@ -13,6 +13,13 @@
   --blue: #6366f1;
   --purple: #a855f7;
   --emerald: #10b981;
+
+  /* Motion tokens. Mirrored for framer-motion in src/lib/motion.ts. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 200ms;
+  --dur-base: 400ms;
+  --dur-slow: 700ms;
 }
 
 @theme inline {
@@ -29,6 +36,9 @@
   --font-space: var(--font-space-grotesk), "Space Grotesk", sans-serif;
   --font-serif: var(--font-serif), "Playfair Display", Georgia, serif;
 }
+
+/* `short:` variant for low viewports (1366x768 laptops leave ~650px of page height). */
+@custom-variant short (@media (max-height: 760px));
 
 * {
   box-sizing: border-box;
@@ -219,15 +229,20 @@ body {
   border-color: rgba(255, 255, 255, 0.32);
 }
 
-/* Interactive affordances */
-a,
-button {
-  transition:
-    color 0.25s ease,
-    background 0.25s ease,
-    border-color 0.25s ease,
-    opacity 0.25s ease,
-    transform 0.25s ease;
+/* Interactive affordances.
+   In the base layer so Tailwind transition utilities on an element win over it.
+   No transform here: a CSS transform transition fights framer-motion, which
+   writes transforms every frame. Elements that scale on hover opt in with a
+   transition utility. */
+@layer base {
+  a,
+  button {
+    transition:
+      color var(--dur-fast) ease,
+      background-color var(--dur-fast) ease,
+      border-color var(--dur-fast) ease,
+      opacity var(--dur-fast) ease;
+  }
 }
 
 .interactive-link {
@@ -244,7 +259,7 @@ button {
   background: currentColor;
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform var(--dur-base) var(--ease-out);
   opacity: 0.55;
 }
 
@@ -405,5 +420,72 @@ html {
   }
   to {
     transform: translateY(0);
+  }
+}
+
+/* ── Route transitions (React <ViewTransition> in InteractiveShell) ──
+   Old page fades out quickly, new page fades in with a small rise.
+   Browsers without the View Transitions API just navigate instantly. */
+@keyframes vt-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vt-rise {
+  from {
+    transform: translateY(12px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Only the page content animates; the chat button and social dock hold still. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-old(.page) {
+  animation: 150ms ease-in both vt-fade reverse;
+}
+
+::view-transition-new(.page) {
+  animation:
+    var(--dur-base) var(--ease-out) 120ms both vt-fade,
+    var(--dur-base) var(--ease-out) 120ms both vt-rise;
+}
+
+/* ── Reduced motion ──
+   Honour the OS setting: stop looping/decorative animation and make route
+   changes instant. Opacity fades stay; they don't cause motion sickness. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation: none !important;
+  }
+
+  .animate-marquee,
+  .animate-marquee-scroll,
+  .animate-border-flow,
+  .animate-border-beam,
+  .animate-shimmer,
+  .animate-pulse,
+  .animate-ping,
+  [class*="animate-[spin"] {
+    animation: none !important;
+  }
+
+  .interactive-link::after {
+    transition: none;
+  }
+
+  html {
+    scroll-behavior: auto !important;
   }
 }

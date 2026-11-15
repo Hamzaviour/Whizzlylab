@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { EASE_OUT } from "@/lib/motion";
 
 interface AuroraCTAProps {
   headingPrefix?: string;
@@ -134,7 +135,7 @@ export default function AuroraCTASection({
       transition: {
         delay: i * 0.25,
         duration: 0.8,
-        ease: [0.16, 1, 0.3, 1] as const,
+        ease: EASE_OUT,
       },
     }),
   };

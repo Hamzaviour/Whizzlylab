@@ -16,6 +16,7 @@ import {
   HAS_PHONE,
   GITHUB_URL,
 } from "@/lib/contact";
+import { EASE_OUT } from "@/lib/motion";
 
 const ALL_ITEMS = [
   {
@@ -68,7 +69,7 @@ export default function StickySocialBar() {
         aria-label="Official Social Channels"
         initial={{ opacity: 0, x: -24 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.6, delay: 0.4, ease: EASE_OUT }}
         className="fixed left-3 sm:left-4 md:left-5 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-center"
       >
         <div className="relative flex flex-col items-center gap-2 p-2 rounded-2xl border border-white/10 bg-black/80 backdrop-blur-xl shadow-[0_12px_40px_rgba(0,0,0,0.8)]">

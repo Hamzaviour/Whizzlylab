@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, ViewTransition } from "react";
 import { usePathname } from "next/navigation";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, MotionConfig, useMotionValue, useSpring } from "framer-motion";
 import dynamic from "next/dynamic";
 import StickyMobileCTA from "./StickyMobileCTA";
 import StickySocialBar from "./StickySocialBar";
@@ -41,7 +41,9 @@ export default function InteractiveShell({
   if (pathname?.startsWith("/portal")) return <>{children}</>;
 
   return (
-    <>
+    // reducedMotion="user": with the OS "reduce motion" setting on, framer-motion
+    // drops transform/layout animation site-wide and keeps opacity fades.
+    <MotionConfig reducedMotion="user">
       {enabled && (
         <motion.div
           aria-hidden
@@ -54,12 +56,18 @@ export default function InteractiveShell({
           }}
         />
       )}
-      <div className="relative z-[2]">{children}</div>
+      <div className="relative z-[2]">
+        {/* Keyed by route so each navigation is an exit + enter of the page.
+            Styled by ::view-transition-*(.page) in globals.css. */}
+        <ViewTransition key={pathname} enter="page" exit="page" default="none">
+          {children}
+        </ViewTransition>
+      </div>
       {pathname !== "/" && <StickyMobileCTA />}
       <StickySocialBar />
       <WhizzlyChatbot />
       <Analytics />
-    </>
+    </MotionConfig>
   );
 }
 
