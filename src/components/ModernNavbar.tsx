@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, ArrowUpRight, Phone } from "lucide-react";
-import { COMPANY_PHONE, PHONE_URL } from "@/lib/contact";
+import { COMPANY_PHONE, HAS_PHONE, PHONE_URL } from "@/lib/contact";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -92,15 +92,17 @@ export default function ModernNavbar() {
         {/* Desktop Action: Antimatter Pill Button & Phone CTA */}
         <div className="hidden md:flex items-center gap-3">
           {/* Phone Number CTA */}
-          <a
-            href={PHONE_URL}
-            className="hidden lg:inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/30 text-xs sm:text-sm font-medium text-gray-200 hover:text-white transition-all duration-300 backdrop-blur-md group"
-          >
-            <div className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300">
-              <Phone className="h-3 w-3" />
-            </div>
-            <span className="font-mono tracking-tight text-xs sm:text-sm">{COMPANY_PHONE}</span>
-          </a>
+          {HAS_PHONE && (
+            <a
+              href={PHONE_URL}
+              className="hidden lg:inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/30 text-xs sm:text-sm font-medium text-gray-200 hover:text-white transition-all duration-300 backdrop-blur-md group"
+            >
+              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300">
+                <Phone className="h-3 w-3" />
+              </div>
+              <span className="font-mono tracking-tight text-xs sm:text-sm">{COMPANY_PHONE}</span>
+            </a>
+          )}
 
           <Link
             href="/schedule"
@@ -115,13 +117,15 @@ export default function ModernNavbar() {
 
         {/* Mobile Menu Trigger */}
         <div className="flex items-center gap-2.5 md:hidden">
-          <a
-            href={PHONE_URL}
-            aria-label={`Call ${COMPANY_PHONE}`}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/5 text-indigo-300 hover:text-white hover:bg-white/10 transition"
-          >
-            <Phone className="h-3.5 w-3.5" />
-          </a>
+          {HAS_PHONE && (
+            <a
+              href={PHONE_URL}
+              aria-label={`Call ${COMPANY_PHONE}`}
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 bg-white/5 text-indigo-300 hover:text-white hover:bg-white/10 transition"
+            >
+              <Phone className="h-3.5 w-3.5" />
+            </a>
+          )}
           <Link
             href="/schedule"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/20 bg-black/60 text-xs font-medium text-white"
@@ -171,14 +175,16 @@ export default function ModernNavbar() {
               })}
 
               <div className="pt-4 border-t border-white/10 flex flex-col gap-2.5">
-                <a
-                  href={PHONE_URL}
-                  onClick={() => setOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-3 rounded-full border border-white/15 bg-white/5 text-gray-200 text-sm font-medium hover:bg-white/10 hover:text-white transition"
-                >
-                  <Phone className="h-4 w-4 text-indigo-400" />
-                  <span>Call: {COMPANY_PHONE}</span>
-                </a>
+                {HAS_PHONE && (
+                  <a
+                    href={PHONE_URL}
+                    onClick={() => setOpen(false)}
+                    className="flex items-center justify-center gap-2 w-full py-3 rounded-full border border-white/15 bg-white/5 text-gray-200 text-sm font-medium hover:bg-white/10 hover:text-white transition"
+                  >
+                    <Phone className="h-4 w-4 text-indigo-400" />
+                    <span>Call: {COMPANY_PHONE}</span>
+                  </a>
+                )}
 
                 <Link
                   href="/schedule"

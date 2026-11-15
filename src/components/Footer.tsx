@@ -3,7 +3,27 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { LINKEDIN_URL } from "@/lib/contact";
+import {
+  LINKEDIN_URL,
+  INSTAGRAM_URL,
+  FACEBOOK_URL,
+  GITHUB_URL,
+} from "@/lib/contact";
+
+const SOCIAL_LINKS = [
+  { name: "LinkedIn", href: LINKEDIN_URL },
+  { name: "Instagram", href: INSTAGRAM_URL },
+  { name: "Facebook", href: FACEBOOK_URL },
+  { name: "GitHub", href: GITHUB_URL },
+];
+
+const SITE_LINKS = [
+  { name: "Work", href: "/work" },
+  { name: "Company", href: "/about" },
+  { name: "Blog", href: "/blog" },
+  { name: "Careers", href: "/careers" },
+  { name: "Contact", href: "/contact" },
+];
 
 export default function Footer() {
   const [time, setTime] = useState("");
@@ -39,23 +59,26 @@ export default function Footer() {
           <div className="flex flex-col justify-between h-full min-h-[300px] sm:min-h-[340px]">
             <div>
               <a
-                href="mailto:contact@whizzlylab.com"
+                href="mailto:whizzlylab@gmail.com"
                 className="text-xl sm:text-2xl lg:text-3xl font-light hover:text-indigo-300 transition-colors tracking-tight font-sans block"
               >
-                contact@whizzlylab.com
+                whizzlylab@gmail.com
               </a>
-              <div className="mt-4">
-                <a
-                  href={LINKEDIN_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1 text-gray-400 text-sm hover:text-white transition-colors group"
-                >
-                  <span className="border-b border-transparent group-hover:border-white">
-                    Linkedin
-                  </span>
-                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
+              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+                {SOCIAL_LINKS.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 py-1 text-gray-400 text-sm hover:text-white transition-colors group"
+                  >
+                    <span className="border-b border-transparent group-hover:border-white">
+                      {social.name}
+                    </span>
+                    <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </a>
+                ))}
               </div>
             </div>
 
@@ -66,14 +89,14 @@ export default function Footer() {
               </p>
 
               {/* Huge Real-Time Digital Clock */}
-              <div className="text-3xl xs:text-5xl sm:text-7xl lg:text-8xl font-medium tracking-tight font-mono text-white select-none">
+              <div className="text-3xl xs:text-5xl sm:text-7xl font-medium tracking-tight font-mono text-white select-none whitespace-nowrap">
                 {time || "12:00:00 AM"}
               </div>
             </div>
           </div>
 
           {/* RIGHT COLUMNS: Navigation Links */}
-          <div className="flex gap-10 sm:gap-16 lg:gap-24 flex-wrap">
+          <div className="flex gap-x-10 gap-y-10 sm:gap-x-14 lg:gap-x-14 flex-wrap lg:flex-nowrap">
             {/* Column 1: Services */}
             <div className="flex flex-col gap-3.5">
               <h4 className="text-gray-500 text-xs sm:text-sm font-mono uppercase tracking-wider mb-2">
@@ -97,7 +120,23 @@ export default function Footer() {
               ))}
             </div>
 
-            {/* Column 2: Solutions */}
+            {/* Column 2: Studio pages */}
+            <div className="flex flex-col gap-3.5">
+              <h4 className="text-gray-500 text-xs sm:text-sm font-mono uppercase tracking-wider mb-2">
+                Studio
+              </h4>
+              {SITE_LINKS.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-xs sm:text-sm text-gray-300 hover:text-white transition-colors font-light"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+
+            {/* Column 3: Solutions */}
             <div className="flex flex-col gap-3.5">
               <h4 className="text-gray-500 text-xs sm:text-sm font-mono uppercase tracking-wider mb-2">
                 Solutions
@@ -121,12 +160,13 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-14 sm:mt-20 pt-8 border-t border-white/10 text-gray-500 text-xs sm:text-sm flex flex-col sm:flex-row justify-end items-center gap-4">
-          <div className="flex gap-6 text-gray-500">
-            <Link href="/privacy" className="hover:text-gray-300 transition-colors">
+        <div className="mt-14 sm:mt-20 pt-8 border-t border-white/10 text-gray-400 text-xs sm:text-sm flex flex-col sm:flex-row justify-between items-center gap-4 pb-16 md:pb-0 md:pr-24">
+          <p suppressHydrationWarning>© {new Date().getFullYear()} Whizzly Lab</p>
+          <div className="flex gap-6">
+            <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/contact" className="hover:text-gray-300 transition-colors">
+            <Link href="/contact" className="hover:text-white transition-colors">
               Contact
             </Link>
           </div>

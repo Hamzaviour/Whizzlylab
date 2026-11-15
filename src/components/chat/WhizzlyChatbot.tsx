@@ -141,6 +141,16 @@ function NeuralCoreShape({
 export default function WhizzlyChatbot() {
   const { currency } = useCurrency();
   const [isOpen, setIsOpen] = useState(false);
+  // The "Ask Whizzly AI" label introduces the launcher, then gets out of the way on first scroll.
+  const [labelDismissed, setLabelDismissed] = useState(false);
+  useEffect(() => {
+    if (labelDismissed) return;
+    const onScroll = () => {
+      if (window.scrollY > 120) setLabelDismissed(true);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [labelDismissed]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -218,7 +228,7 @@ export default function WhizzlyChatbot() {
         id: `assistant-${Date.now()}`,
         role: "assistant",
         content:
-          "I apologize, but I'm currently unable to reach the neural gateway. You can schedule a call directly at **/schedule** or call us at **+1 (424) 451-0714**.",
+          "I apologize, but I'm currently unable to reach the neural gateway. You can schedule a call directly at **/schedule** or email **whizzlylab@gmail.com**.",
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         actionCta: {
           text: "Schedule directly with our Lead AI Engineer:",
@@ -349,15 +359,15 @@ export default function WhizzlyChatbot() {
   return (
     <>
       {/* ── Floating Launcher Trigger ────────────────────────────────────────── */}
-      <div className="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 flex flex-col items-center gap-1.5 pointer-events-auto">
+      <div className="fixed bottom-20 right-4 md:bottom-8 md:right-8 z-50 flex flex-col items-end gap-1.5 pointer-events-auto">
         <AnimatePresence>
-          {!isOpen && (
+          {!isOpen && !labelDismissed && (
             <motion.div
               initial={{ opacity: 0, y: 8, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.9 }}
               transition={{ duration: 0.2 }}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0a0518]/95 border border-cyan-400/30 shadow-[0_4px_20px_rgba(0,240,255,0.25)] backdrop-blur-xl cursor-pointer hover:border-cyan-400/60 transition-all group select-none whitespace-nowrap"
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0a0518]/95 border border-cyan-400/30 shadow-[0_4px_20px_rgba(0,240,255,0.25)] backdrop-blur-xl cursor-pointer hover:border-cyan-400/60 transition-all group select-none whitespace-nowrap"
               onClick={() => setIsOpen(true)}
             >
               <NeuralCoreShape size={12} glow={false} />
@@ -376,7 +386,7 @@ export default function WhizzlyChatbot() {
           onClick={() => setIsOpen(!isOpen)}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.94 }}
-          className={`relative flex items-center justify-center w-14 h-14 rounded-2xl shadow-[0_0_30px_rgba(0,240,255,0.35)] transition-all duration-300 ${
+          className={`relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-2xl shadow-[0_0_30px_rgba(0,240,255,0.35)] transition-all duration-300 ${
             isOpen
               ? "bg-[#140628] border border-cyan-400/50 text-white"
               : "bg-gradient-to-br from-[#0c051a] via-[#150a2e] to-[#0a1832] text-white border border-cyan-400/40"
@@ -640,10 +650,10 @@ export default function WhizzlyChatbot() {
                   </Link>
                   <span>•</span>
                   <a
-                    href="tel:+14244510714"
+                    href="mailto:whizzlylab@gmail.com"
                     className="hover:text-cyan-300 transition-colors flex items-center gap-1"
                   >
-                    <span>+1 (424) 451-0714</span>
+                    <span>whizzlylab@gmail.com</span>
                   </a>
                 </div>
                 <span className="text-[10px] text-slate-400">Whizzly Lab Studio</span>

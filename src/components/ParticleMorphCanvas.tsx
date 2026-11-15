@@ -699,6 +699,17 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
       const canvas = canvasRef.current;
       if (!container || !canvas) return;
 
+      // No WebGL (GPU disabled, blocklisted driver, headless/sandboxed browser): skip the
+      // particle scene and let the static glow fallback show instead of throwing.
+      // Probe on a throwaway canvas so three.js never logs its own context error.
+      const probe = document.createElement("canvas");
+      const hasWebGL = !!(probe.getContext("webgl2") || probe.getContext("webgl"));
+      if (!hasWebGL) {
+        container.dataset.webgl = "off";
+        return;
+      }
+      delete container.dataset.webgl;
+
       const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
       const particleCount =
         isCoarsePointer || window.innerWidth < 768 ? MOBILE_PARTICLE_COUNT : PARTICLE_COUNT;
@@ -1156,8 +1167,13 @@ const ParticleMorphCanvas = forwardRef<ParticleMorphHandle, ParticleMorphCanvasP
     return (
       <div
         ref={containerRef}
-        className={`relative w-full h-full flex items-center justify-center select-none overflow-visible ${className}`}
+        className={`group relative w-full h-full flex items-center justify-center select-none overflow-visible ${className}`}
       >
+        {/* Shown only when WebGL is unavailable (container gets data-webgl="off"). */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-[12%] rounded-full opacity-0 group-data-[webgl=off]:opacity-100 bg-[radial-gradient(circle_at_50%_45%,rgba(129,140,248,0.35),rgba(99,102,241,0.12)_45%,transparent_70%)]"
+        />
         <canvas
           ref={canvasRef}
           className="w-full h-full block pointer-events-none touch-none"

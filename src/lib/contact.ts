@@ -2,6 +2,8 @@ export const COMPANY_EMAIL = "whizzlylab@gmail.com";
 export const COMPANY_PHONE = "";
 export const COMPANY_PHONE_RAW = "";
 export const PHONE_URL = `tel:${COMPANY_PHONE_RAW}`;
+/** False until a real number is set above; phone UI across the site hides itself when false. */
+export const HAS_PHONE = COMPANY_PHONE_RAW.length > 0;
 export const WHATSAPP_NUMBER = "";
 export const WHATSAPP_URL = PHONE_URL;
 export const LINKEDIN_URL = "https://www.linkedin.com/company/whizzly-lab";

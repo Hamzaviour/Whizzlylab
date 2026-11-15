@@ -7,119 +7,13 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ParticleMorphCanvas, { ParticleMorphHandle, ShapeType } from "./ParticleMorphCanvas";
 import { SERVICES_DATA } from "@/lib/servicesData";
-import { COMPANY_PHONE, PHONE_URL } from "@/lib/contact";
+import { COMPANY_PHONE, HAS_PHONE, PHONE_URL } from "@/lib/contact";
 import Link from "next/link";
 import Image from "next/image";
 
 // Register GSAP ScrollTrigger plugin on client
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
-}
-
-// Clean white vector logo icons for the active card's "Tools" grid
-function ServiceToolIcon({ name }: { name: string }) {
-  const n = name.toLowerCase();
-
-  if (n.includes("figma")) {
-    return (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 38 57" fill="none" stroke="currentColor" strokeWidth="2.5">
-        <path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0zM0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0zM0 9.5A9.5 9.5 0 0 1 9.5 0H19v19H9.5A9.5 9.5 0 0 1 0 9.5zM0 28.5A9.5 9.5 0 0 1 9.5 19H19v19H9.5A9.5 9.5 0 0 1 0 28.5zM19 0h9.5a9.5 9.5 0 1 1 0 19H19V0z" fill="currentColor" stroke="none" />
-      </svg>
-    );
-  }
-  if (n.includes("react")) {
-    return (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(0 12 12)" />
-        <ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)" />
-        <ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)" />
-        <circle cx="12" cy="12" r="1.8" fill="currentColor" />
-      </svg>
-    );
-  }
-  if (n.includes("next")) {
-    return (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M8.5 7.5v9M15.5 7.5l-7 9M15.5 7.5v5.5" />
-      </svg>
-    );
-  }
-  if (n.includes("type") || n.includes("ts")) {
-    return (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <rect x="3" y="3" width="18" height="18" rx="4" />
-        <path d="M8 8h5M10.5 8v8M14 12c.5-.8 1.5-1 2.2-.6.7.4 1 1.2.6 2-.4.7-1.4 1-2.2 1.4-.8.4-1.2 1.2-.8 2 .4.7 1.4 1 2.2.6" />
-      </svg>
-    );
-  }
-  if (n.includes("node")) {
-    return (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M12 2l8.5 5v10L12 22l-8.5-5V7L12 2z" />
-        <path d="M12 7l4 2.5v5L12 17l-4-2.5v-5L12 7z" />
-      </svg>
-    );
-  }
-  if (n.includes("docker")) {
-    return (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M4 13h16a3 3 0 0 1-3 3c-4 0-6 2-10 2s-3-2-3-5z" />
-        <rect x="7" y="10" width="2" height="2" />
-        <rect x="10" y="10" width="2" height="2" />
-        <rect x="13" y="10" width="2" height="2" />
-        <rect x="10" y="7" width="2" height="2" />
-      </svg>
-    );
-  }
-  if (n.includes("python")) {
-    return (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M12 3c-4 0-4 1.8-4 1.8v2.2h4v1H6s-4 0-4 4 1.8 4 1.8 4h1.2v-2c0-1.8 1.5-3 3-3h4c1.8 0 3-1.2 3-3V5s0-2-4-2h-1zm-1.5 1.5a.8.8 0 1 1 0 1.6.8.8 0 0 1 0-1.6z" />
-        <path d="M12 21c4 0 4-1.8 4-1.8v-2.2h-4v-1h6s4 0 4-4-1.8-4-1.8-4h-1.2v2c0 1.8-1.5 3-3 3h-4c-1.8 0-3 1.2-3 3V19s0 2 4 2h1zm1.5-1.5a.8.8 0 1 1 0-1.6.8.8 0 0 1 0 1.6z" />
-      </svg>
-    );
-  }
-  if (n.includes("blender")) {
-    return (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <circle cx="12" cy="14" r="5" />
-        <path d="M12 9V3M12 9l6-4M12 9l-6-4" />
-        <circle cx="12" cy="14" r="2" fill="currentColor" />
-      </svg>
-    );
-  }
-  if (n.includes("sketch")) {
-    return (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M6 3l12 0 4 6-10 12L2 9z" />
-        <path d="M2 9h20M6 3l6 6 6-6M12 9l-10 12 10-12 10 12" />
-      </svg>
-    );
-  }
-  if (n.includes("framer")) {
-    return (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M4 2h16l-8 8h8l-12 12v-8H4l8-8H4z" fill="currentColor" stroke="none" />
-      </svg>
-    );
-  }
-  if (n.includes("ai") || n.includes("torch") || n.includes("tensor") || n.includes("openai")) {
-    return (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <circle cx="12" cy="12" r="3" />
-        <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.9 2.9M15.5 15.5l2.9 2.9M5.6 18.4l2.9-2.9M15.5 8.5l2.9-2.9" />
-      </svg>
-    );
-  }
-
-  // Universal sleek tech icon
-  return (
-    <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <rect x="4" y="4" width="16" height="16" rx="3" />
-      <path d="M9 9h6M9 12h6M9 15h4" />
-    </svg>
-  );
 }
 
 export default function HeroWithServicesTransition() {
@@ -498,35 +392,41 @@ export default function HeroWithServicesTransition() {
           </nav>
 
           <div className="flex items-center gap-2.5 sm:gap-3">
-            {/* Phone Number CTA */}
-            <a
-              href={PHONE_URL}
-              className="hidden lg:inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/30 text-xs sm:text-sm font-medium text-gray-200 hover:text-white transition-all duration-300 backdrop-blur-md group"
-            >
-              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300">
-                <Phone className="h-3 w-3" />
-              </div>
-              <span className="font-mono tracking-tight text-xs sm:text-sm">{COMPANY_PHONE}</span>
-            </a>
+            {HAS_PHONE && (
+              <>
+                {/* Phone Number CTA */}
+                <a
+                  href={PHONE_URL}
+                  className="hidden lg:inline-flex items-center gap-2 px-3.5 py-2 rounded-full border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/30 text-xs sm:text-sm font-medium text-gray-200 hover:text-white transition-all duration-300 backdrop-blur-md group"
+                >
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500/20 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-colors duration-300">
+                    <Phone className="h-3 w-3" />
+                  </div>
+                  <span className="font-mono tracking-tight text-xs sm:text-sm">{COMPANY_PHONE}</span>
+                </a>
 
-            {/* Mobile / Tablet Quick Call Trigger */}
-            <a
-              href={PHONE_URL}
-              aria-label={`Call ${COMPANY_PHONE}`}
-              className="lg:hidden flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-indigo-300 hover:text-white hover:bg-white/10 transition"
-            >
-              <Phone className="h-4 w-4" />
-            </a>
+                {/* Mobile / Tablet Quick Call Trigger */}
+                <a
+                  href={PHONE_URL}
+                  aria-label={`Call ${COMPANY_PHONE}`}
+                  className="lg:hidden flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-indigo-300 hover:text-white hover:bg-white/10 transition"
+                >
+                  <Phone className="h-4 w-4" />
+                </a>
+              </>
+            )}
 
-            {/* Start Your Project CTA: appears after scrolling past hero */}
+            {/* Start Your Project CTA: always in the desktop nav; on mobile it appears
+                once the hero's own button has scrolled away. */}
             <Link
               href="/schedule"
               className={`group items-center gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-xs sm:text-sm font-medium text-white hover:border-white transition-all duration-300 ${
-                pastHero ? "hidden xs:flex" : "hidden"
+                pastHero ? "flex" : "hidden md:flex"
               }`}
             >
-              <span>Start</span>
-              <span className="hidden sm:inline">Your Project</span>
+              <span>
+                Start<span className="hidden sm:inline"> Your Project</span>
+              </span>
               <div className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-black transition-transform duration-300 group-hover:scale-110">
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </div>
@@ -592,14 +492,16 @@ export default function HeroWithServicesTransition() {
                 >
                   Contact
                 </Link>
-                <a
-                  href={PHONE_URL}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 py-3 rounded-full border border-white/15 bg-white/5 text-gray-200 text-sm font-medium hover:bg-white/10 hover:text-white transition"
-                >
-                  <Phone className="h-4 w-4 text-indigo-400" />
-                  <span>Call: {COMPANY_PHONE}</span>
-                </a>
+                {HAS_PHONE && (
+                  <a
+                    href={PHONE_URL}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center gap-2 py-3 rounded-full border border-white/15 bg-white/5 text-gray-200 text-sm font-medium hover:bg-white/10 hover:text-white transition"
+                  >
+                    <Phone className="h-4 w-4 text-indigo-400" />
+                    <span>Call: {COMPANY_PHONE}</span>
+                  </a>
+                )}
 
                 <Link
                   href="/schedule"
@@ -662,7 +564,7 @@ export default function HeroWithServicesTransition() {
         {/* Bottom Hero Elements: Subtext & CTA on left, Stats on right */}
         <div
           id="hero-bottom-actions"
-          className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-8 relative z-30 pointer-events-auto transition-opacity"
+          className="w-full max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-8 md:pr-24 relative z-30 pointer-events-auto transition-opacity"
         >
           {/* Subtext & CTA — fade in after headline */}
           <motion.div
@@ -687,9 +589,9 @@ export default function HeroWithServicesTransition() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 1.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="flex items-center gap-7 sm:gap-10 lg:gap-14"
+            className="flex items-start sm:items-center gap-7 sm:gap-10 lg:gap-14 pr-16 sm:pr-0"
           >
-            <div className="flex items-center gap-2.5">
+            <div className="flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2.5">
               <span className="text-3xl sm:text-4xl font-semibold tracking-tight text-white font-sans">
                 50+
               </span>
@@ -700,7 +602,7 @@ export default function HeroWithServicesTransition() {
               </span>
             </div>
 
-            <div className="flex items-center gap-2.5">
+            <div className="flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2.5">
               <span className="text-3xl sm:text-4xl font-semibold tracking-tight text-white font-sans">
                 100%
               </span>
@@ -711,7 +613,7 @@ export default function HeroWithServicesTransition() {
               </span>
             </div>
 
-            <div className="flex items-center gap-2.5">
+            <div className="flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-2.5">
               <span className="text-3xl sm:text-4xl font-semibold tracking-tight text-white font-sans">
                 24/7
               </span>
@@ -875,16 +777,14 @@ export default function HeroWithServicesTransition() {
                           </div>
 
                           {/* Bottom: Services List on left, Tools Icon Grid on right */}
-                          <div className="grid grid-cols-2 gap-4 border-t border-indigo-300/20 pt-5 mt-auto">
+                          <div className="grid grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] gap-4 border-t border-indigo-300/20 pt-5 mt-auto">
                             <div>
                               <div className="text-[11px] font-mono uppercase tracking-wider text-indigo-200/75 mb-3 font-medium">
                                 Services
                               </div>
                               <ul className="space-y-1.5 text-xs text-indigo-100/90 font-light leading-snug">
                                 {service.services.slice(0, 4).map((s, i) => (
-                                  <li key={i} className="line-clamp-1">
-                                    {s}
-                                  </li>
+                                  <li key={i}>{s}</li>
                                 ))}
                               </ul>
                             </div>
@@ -893,17 +793,11 @@ export default function HeroWithServicesTransition() {
                               <div className="text-[11px] font-mono uppercase tracking-wider text-indigo-200/75 mb-3 font-medium">
                                 Tools
                               </div>
-                              <div className="grid grid-cols-3 gap-2.5 items-center">
+                              <ul className="space-y-1.5 text-xs text-indigo-100/90 font-light leading-snug">
                                 {service.tools.slice(0, 6).map((tool, i) => (
-                                  <div
-                                    key={i}
-                                    title={tool}
-                                    className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10 border border-white/10 hover:bg-white/20 transition-colors"
-                                  >
-                                    <ServiceToolIcon name={tool} />
-                                  </div>
+                                  <li key={i}>{tool}</li>
                                 ))}
-                              </div>
+                              </ul>
                             </div>
                           </div>
                         </div>

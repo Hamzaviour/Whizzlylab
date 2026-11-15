@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Phone, Calendar, Send } from "lucide-react";
-import { PHONE_URL, COMPANY_PHONE } from "@/lib/contact";
+import { PHONE_URL, HAS_PHONE } from "@/lib/contact";
 
 export default function StickyMobileCTA() {
   const [visible, setVisible] = useState(false);
@@ -31,13 +31,15 @@ export default function StickyMobileCTA() {
         <Calendar className="h-3.5 w-3.5" />
         Schedule
       </Link>
-      <a
-        href={PHONE_URL}
-        className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-cyan-500/40 bg-cyan-500/15 py-2.5 text-center text-xs font-semibold text-cyan-300"
-      >
-        <Phone className="h-3.5 w-3.5" />
-        Call Us
-      </a>
+      {HAS_PHONE && (
+        <a
+          href={PHONE_URL}
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-cyan-500/40 bg-cyan-500/15 py-2.5 text-center text-xs font-semibold text-cyan-300"
+        >
+          <Phone className="h-3.5 w-3.5" />
+          Call Us
+        </a>
+      )}
       <Link
         href="/contact"
         className="flex flex-1 items-center justify-center gap-1.5 rounded-full border border-white/15 bg-white/5 py-2.5 text-center text-xs font-medium text-white"

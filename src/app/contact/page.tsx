@@ -100,10 +100,10 @@ export default function ContactPage() {
               </span>
 
               <a
-                href="mailto:contact@whizzlylab.com"
+                href="mailto:whizzlylab@gmail.com"
                 className="text-2xl sm:text-3xl font-light hover:text-indigo-300 transition-colors tracking-tight font-sans block mb-2"
               >
-                contact@whizzlylab.com
+                whizzlylab@gmail.com
               </a>
 
               <p className="text-sm text-gray-400 font-light leading-relaxed mb-8">
@@ -229,7 +229,7 @@ export default function ContactPage() {
 
                   {status === "error" && (
                     <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-300">
-                      An error occurred while submitting your message. Please email us directly at contact@whizzlylab.com.
+                      An error occurred while submitting your message. Please email us directly at whizzlylab@gmail.com.
                     </div>
                   )}
 

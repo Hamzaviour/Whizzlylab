@@ -317,7 +317,7 @@ export default function RootLayout({
         <Script id="sw-register" strategy="lazyOnload">
           {process.env.NODE_ENV === "production"
             ? `if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(function(){});}`
-            : `if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});});if(window.caches){caches.keys().then(function(ks){ks.forEach(function(k){caches.delete(k);});});}}`}
+            : `try{if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});}).catch(function(){});}if(window.caches){caches.keys().then(function(ks){ks.forEach(function(k){caches.delete(k);});}).catch(function(){});}}catch(e){}`}
         </Script>
       </body>
     </html>
