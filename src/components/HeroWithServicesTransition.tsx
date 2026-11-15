@@ -527,9 +527,12 @@ export default function HeroWithServicesTransition() {
 
         {/* Asymmetric Staggered Main Headline Over Globe (Top-Left & Bottom-Right) */}
         <div className="relative z-20 w-full max-w-5xl lg:max-w-6xl mx-auto my-auto px-4 sm:px-6 lg:px-8 pointer-events-none select-none">
-          <h1 className="w-full flex flex-col gap-2 sm:gap-4 md:gap-5 lg:gap-6 text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-[4.75rem] xl:text-[5.4rem] font-light leading-[1.18] sm:leading-[1.2] tracking-tight text-white font-sans drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
+          <h1 className="w-full flex flex-col gap-2 sm:gap-4 md:gap-5 lg:gap-6 text-3xl sm:text-5xl md:text-6xl lg:text-[4.75rem] xl:text-[5.4rem] font-light leading-[1.18] sm:leading-[1.2] tracking-tight text-white font-sans drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
+            {/* The visual lines are separate flex items, which screen readers
+                read run together. Give them one clean sentence instead. */}
+            <span className="sr-only">Building Digital Solutions That Matter</span>
             {/* Top-Left: "Building Digital" — staggered word entrance */}
-            <span className="self-start text-left whitespace-normal sm:whitespace-nowrap font-light text-white/95 pb-1">
+            <span aria-hidden="true" className="self-start text-left whitespace-normal sm:whitespace-nowrap font-light text-white/95 pb-1">
               <motion.span
                 initial={{ opacity: 0, y: 35 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -549,7 +552,7 @@ export default function HeroWithServicesTransition() {
             </span>
 
             {/* Bottom-Right: "Solutions That Matter" — staggered word entrance */}
-            <span className="self-end text-right whitespace-normal sm:whitespace-nowrap font-light text-white/95 pb-1">
+            <span aria-hidden="true" className="self-end text-right whitespace-normal sm:whitespace-nowrap font-light text-white/95 pb-1">
               <motion.span
                 initial={{ opacity: 0, y: 35 }}
                 animate={{ opacity: 1, y: 0 }}

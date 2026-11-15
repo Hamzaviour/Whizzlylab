@@ -8,12 +8,13 @@ const BUDGET_OPTIONS = [
   { value: "50k-plus", label: "$50,000+" },
 ];
 
-export default function BudgetSelect() {
+export default function BudgetSelect({ id }: { id?: string }) {
   return (
     <select
+      id={id}
       name="budget"
       defaultValue=""
-      className="w-full rounded-2xl border border-white/10 bg-[#0c0c10] px-4 py-3.5 outline-none focus:border-white/25"
+      className="w-full rounded-xl border border-white/10 bg-[#090b12] px-4 py-3.5 text-sm text-white outline-none focus:border-indigo-400 transition"
     >
       <option value="" disabled>
         Approximate budget (USD)

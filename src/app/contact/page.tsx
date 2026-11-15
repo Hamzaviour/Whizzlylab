@@ -6,7 +6,7 @@ import PageNavbar from "@/components/PageNavbar";
 import CircularInteraction from "@/components/CircularInteraction";
 import AuroraCTASection from "@/components/AuroraCTASection";
 import Footer from "@/components/Footer";
-import { submitWeb3Form, LINKEDIN_URL } from "@/lib/contact";
+import { submitWeb3Form } from "@/lib/contact";
 
 const SERVICES_OPTIONS = [
   "AI & ML Systems",
@@ -81,7 +81,7 @@ export default function ContactPage() {
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-normal tracking-tight text-white leading-[1.12]">
-            Let's Build Something <br />
+            Let&apos;s Build Something <br />
             <span className="italic font-light text-white">Meaningful</span> Together.
           </h1>
 
@@ -162,10 +162,10 @@ export default function ContactPage() {
                 <form onSubmit={onSubmit} className="space-y-6">
                   {/* Service selector pills */}
                   <div>
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block mb-3 font-medium">
+                    <p id="ct-domain" className="text-xs font-mono uppercase tracking-wider text-gray-400 block mb-3 font-medium">
                       Select Primary Domain
-                    </label>
-                    <div className="flex flex-wrap gap-2">
+                    </p>
+                    <div role="group" aria-labelledby="ct-domain" className="flex flex-wrap gap-2">
                       {SERVICES_OPTIONS.map((srv) => {
                         const isSelected = selectedService === srv;
                         return (
@@ -173,6 +173,7 @@ export default function ContactPage() {
                             key={srv}
                             type="button"
                             onClick={() => setSelectedService(srv)}
+                            aria-pressed={isSelected}
                             className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                               isSelected
                                 ? "bg-white text-black shadow-md"
@@ -188,26 +189,30 @@ export default function ContactPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block mb-2 font-medium">
+                      <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block mb-2 font-medium" htmlFor="ct-name">
                         Your Name
                       </label>
                       <input
                         required
                         type="text"
+                        id="ct-name"
                         name="name"
+                        autoComplete="name"
                         placeholder="Alex Vance"
                         className="w-full rounded-2xl bg-white/[0.03] border border-white/10 px-4 py-3.5 text-sm text-white placeholder:text-gray-600 focus:border-indigo-400 focus:outline-none transition-colors"
                       />
                     </div>
 
                     <div>
-                      <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block mb-2 font-medium">
+                      <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block mb-2 font-medium" htmlFor="ct-email">
                         Work Email
                       </label>
                       <input
                         required
                         type="email"
+                        id="ct-email"
                         name="email"
+                        autoComplete="email"
                         placeholder="alex@company.com"
                         className="w-full rounded-2xl bg-white/[0.03] border border-white/10 px-4 py-3.5 text-sm text-white placeholder:text-gray-600 focus:border-indigo-400 focus:outline-none transition-colors"
                       />
@@ -215,11 +220,12 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block mb-2 font-medium">
+                    <label className="text-xs font-mono uppercase tracking-wider text-gray-400 block mb-2 font-medium" htmlFor="ct-message">
                       Project Scope &amp; Details
                     </label>
                     <textarea
                       required
+                      id="ct-message"
                       name="message"
                       rows={5}
                       placeholder="Describe your system requirements, target deliverables, or engineering challenges..."
@@ -228,7 +234,7 @@ export default function ContactPage() {
                   </div>
 
                   {status === "error" && (
-                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-300">
+                    <div role="alert" className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-xs text-red-300">
                       An error occurred while submitting your message. Please email us directly at whizzlylab@gmail.com.
                     </div>
                   )}

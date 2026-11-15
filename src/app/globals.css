@@ -34,7 +34,7 @@
   --font-dm: var(--font-sans-primary), sans-serif;
   --font-mono: var(--font-mono), "JetBrains Mono", monospace;
   --font-space: var(--font-space-grotesk), "Space Grotesk", sans-serif;
-  --font-serif: var(--font-serif), "Playfair Display", Georgia, serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
 /* `short:` variant for low viewports (1366x768 laptops leave ~650px of page height). */
@@ -242,6 +242,16 @@ body {
       background-color var(--dur-fast) ease,
       border-color var(--dur-fast) ease,
       opacity var(--dur-fast) ease;
+  }
+
+  /* Keyboard focus ring for every interactive element. Mouse clicks don't
+     trigger :focus-visible, so pointer users never see it. */
+  :where(a, button, input, select, textarea, summary, [role="button"], [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid rgb(165 180 252);
+    outline-offset: 3px;
+  }
+  :where(input, select, textarea):focus-visible {
+    outline-offset: 1px;
   }
 }
 

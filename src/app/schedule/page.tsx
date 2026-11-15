@@ -1,14 +1,12 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import Link from "next/link";
-import { ArrowUpRight, ShieldCheck, Clock, Cpu, CheckCircle2 } from "lucide-react";
+import { ArrowUpRight, ShieldCheck, Cpu } from "lucide-react";
 import PageNavbar from "@/components/PageNavbar";
-import AuroraCTASection from "@/components/AuroraCTASection";
 import Footer from "@/components/Footer";
 import BudgetSelect from "@/components/BudgetSelect";
 import { useCurrency } from "@/lib/currency";
-import { COMPANY_EMAIL, COMPANY_PHONE, submitWeb3Form } from "@/lib/contact";
+import { COMPANY_EMAIL, submitWeb3Form } from "@/lib/contact";
 
 const SERVICE_OPTIONS = [
   "Autonomous AI Agents & RAG",
@@ -168,23 +166,27 @@ export default function SchedulePage() {
               <form onSubmit={onSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2" htmlFor="sch-name">
                       Full Name *
                     </label>
                     <input
+                      id="sch-name"
                       name="name"
+                      autoComplete="name"
                       required
                       placeholder="e.g. Alex Vance"
                       className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-sm text-white outline-none placeholder:text-gray-500 focus:border-indigo-400 transition"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2" htmlFor="sch-email">
                       Work Email *
                     </label>
                     <input
+                      id="sch-email"
                       name="email"
                       type="email"
+                      autoComplete="email"
                       required
                       placeholder="alex@enterprise.com"
                       className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-sm text-white outline-none placeholder:text-gray-500 focus:border-indigo-400 transition"
@@ -194,20 +196,24 @@ export default function SchedulePage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2" htmlFor="sch-phone">
                       Phone Number (Optional)
                     </label>
                     <input
+                      id="sch-phone"
                       name="phone"
+                      type="tel"
+                      autoComplete="tel"
                       placeholder="+1 (555) 000-0000"
                       className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-sm text-white outline-none placeholder:text-gray-500 focus:border-indigo-400 transition"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2" htmlFor="sch-service">
                       Primary Domain *
                     </label>
                     <select
+                      id="sch-service"
                       name="service"
                       required
                       defaultValue=""
@@ -227,16 +233,17 @@ export default function SchedulePage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2" htmlFor="sch-budget">
                       Estimated Budget ({currency})
                     </label>
-                    <BudgetSelect />
+                    <BudgetSelect id="sch-budget" />
                   </div>
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">
+                    <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2" htmlFor="sch-when">
                       Preferred Timeline
                     </label>
                     <input
+                      id="sch-when"
                       name="when"
                       placeholder="Immediate / Next 30 days"
                       className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-sm text-white outline-none placeholder:text-gray-500 focus:border-indigo-400 transition"
@@ -245,10 +252,11 @@ export default function SchedulePage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2">
+                  <label className="block text-xs font-mono uppercase tracking-wider text-gray-400 mb-2" htmlFor="sch-message">
                     Project Brief &amp; Technical Requirements *
                   </label>
                   <textarea
+                    id="sch-message"
                     name="message"
                     required
                     rows={4}
@@ -271,14 +279,14 @@ export default function SchedulePage() {
                 </button>
 
                 {status === "sent" && (
-                  <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center">
+                  <div role="status" className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center">
                     <p className="text-sm text-emerald-400 font-medium">
                       Consultation requested successfully. Our lead architect will follow up within 24 hours.
                     </p>
                   </div>
                 )}
                 {status === "error" && (
-                  <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-center">
+                  <div role="alert" className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-center">
                     <p className="text-sm text-red-400 font-medium">
                       Submission encountered an error. Please email us directly at {COMPANY_EMAIL}.
                     </p>
@@ -303,8 +311,6 @@ export default function SchedulePage() {
         </div>
       </section>
 
-      {/* Unified Antimatter Aurora CTA & Live Clock Footer */}
-      <AuroraCTASection />
       <Footer />
     </main>
   );
